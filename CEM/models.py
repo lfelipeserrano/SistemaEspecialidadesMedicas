@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 # Create your models here.
 class Doctor(models.Model):
@@ -16,7 +17,7 @@ class Doctor(models.Model):
     fotografiaDoctor = models.ImageField(upload_to = 'cem/imagenes/doctores/')
 
     def __str__(self):
-        return self.title
+        return self.primerApellidoDoctor
 
 class Paciente(models.Model):
     expediente = models.CharField(max_length = 20)
@@ -39,7 +40,7 @@ class Paciente(models.Model):
     antecedentes = models.TextField(max_length = 200, blank = True)
 
     def __str__(self):
-        return self.title
+        return self.expediente
 
 class Consulta(models.Model):
     idConsulta = models.AutoField(primary_key=True)
@@ -52,14 +53,14 @@ class Consulta(models.Model):
         on_delete = models.CASCADE
     )
     fechaConsulta = models.DateField()
-    pesoConsulta = models.IntegerField(blank=True)
-    presionConsulta = models.CharField(max_length = 10, blank = True)
-    temperatura = models.IntegerField(blank = True)
-    pulso = models.IntegerField(blank=True)
-    alturaConsulta = models.IntegerField(blank=True)
+    pesoConsulta = models.IntegerField(blank=True, null= True)
+    presionConsulta = models.CharField(max_length = 10, blank = True, null= True)
+    temperatura = models.IntegerField(blank = True, null= True)
+    pulso = models.IntegerField(blank=True, null= True)
+    alturaConsulta = models.IntegerField(blank=True, null= True)
     observaciones = models.TextField(max_length=500)
-    recetas = models.TextField(max_length=200, blank=True)
-    examenesSolicitados = models.TextField(max_length=200, blank=True)
+    recetas = models.TextField(max_length=200, blank=True, null= True)
+    examenesSolicitados = models.TextField(max_length=200, blank=True, null= True)
 
     def __str__(self):
-        return self.title
+        return self.fechaConsulta.strftime("%d/%m/%Y")
