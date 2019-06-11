@@ -1,9 +1,14 @@
-<html>
-    <body>
-        {% for doctor in object_list %}
-        <div>
-            <h2>{{ doctor.primerApellidoDoctor }}</h2>
-        </div>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <html>
+        <body>
+            {% for doctor in object_list %}
+            <div>
+                <h2>{{ doctor.primerApellidoDoctor }}</h2>
+            </div>
+            {% endfor %}
+        </body>
+    </html>
+{% endblock content %}
+    
