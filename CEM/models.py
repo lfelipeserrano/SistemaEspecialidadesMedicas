@@ -14,7 +14,7 @@ class Doctor(models.Model):
     telefonoDoctor = models.CharField(max_length=9)
     correoElectronico = models.CharField(max_length=50)
     duiDoctor = models.CharField(max_length = 12)
-    fotografiaDoctor = models.ImageField(upload_to = 'cem/imagenes/doctores/')
+    fotografiaDoctor = models.ImageField(upload_to = 'doctores', blank = True)
 
     def __str__(self):
         return self.primerApellidoDoctor
