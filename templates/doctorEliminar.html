@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="POST">{% csrf_token %}
+        <p>Está seguro que quiere eliminar a "{{ doctor.primerApellidoDoctor }}"?</p>
+        <input type="submit" value="Confirmar">
+    </form>
+{% endblock content %}
+    

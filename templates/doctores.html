@@ -3,9 +3,10 @@
 {% block content %}
     <html>
         <body>
+            <p><a href="{% url 'doctor_nuevo' %}">Registrar nuevo</a></p>
             {% for doctor in object_list %}
             <div>
-                <h2>{{ doctor.primerApellidoDoctor }}</h2>
+                <h2><a href="{% url 'doctor_datos' doctor.pk %}">{{ doctor.primerApellidoDoctor }}</a></h2>
             </div>
             {% endfor %}
         </body>

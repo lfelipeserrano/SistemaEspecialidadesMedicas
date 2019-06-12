@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
 
 from .models import Doctor
 from .forms import DoctorForm
@@ -40,3 +42,7 @@ def doctorEditar(request, pk):
         'form': form
     })  
 
+class DoctorEliminar(DeleteView):
+    model = Doctor
+    template_name = 'doctorDatos.html'
+    success_url = reverse_lazy('doctores')

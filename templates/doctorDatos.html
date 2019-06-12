@@ -5,5 +5,33 @@
         <h2>Dr. {{ doctor.primerApellidoDoctor }} , {{ doctor.primerNombreDoctor }}</h2>
         <h3>Especialidad: {{ doctor.especialidad }}</h3>
     </div>
+
+    <p><a href="{% url 'doctor_editar' doctor.pk %}">+ Editar datos</a></p>
+
+    <button >Editar datos</button>
+    <button data-toggle="modal"  data-target="#confirmacionEliminar">Eliminar Doctor</button>
+
+    <div class="modal fade" id="confirmacionEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Eliminar Dr. {{ doctor.primerApellidoDoctor }} , {{ doctor.primerNombreDoctor }}</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que quiere eliminar los datos?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form action="{% url 'doctor_eliminar' pk=doctor.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Confirmar">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
     
