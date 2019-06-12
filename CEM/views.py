@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView
 
 from .models import Doctor
@@ -23,4 +23,20 @@ def doctorNuevo(request):
     return render(request, 'doctorNuevo.html', {
         'form': form
     })
+
+def doctorEditar(request, pk):
+    doctor = get_object_or_404(Doctor, pk=pk)
+    if request.method == 'POST':
+        form = DoctorForm(request.POST, request.FILES, instance = doctor)
+        if form.is_valid():
+            doctor = form.save(commit=False)
+            doctor.save()
+            return redirect('doctores')
+        else:
+            form = DoctorForm()
+    else:
+        form = DoctorForm(instance = doctor)
+    return render(request, 'doctorEditar.html', {
+        'form': form
+    })  
 
