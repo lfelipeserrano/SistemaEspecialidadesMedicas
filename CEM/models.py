@@ -20,7 +20,7 @@ class Doctor(models.Model):
         return self.primerApellidoDoctor
 
 class Paciente(models.Model):
-    expediente = models.CharField(max_length = 20)
+    expediente = models.CharField(max_length = 20, primary_key = True)
     idDoctor = models.ForeignKey(
         Doctor,
         on_delete = models.CASCADE
@@ -31,8 +31,8 @@ class Paciente(models.Model):
     segundoApellidoPaciente = models.CharField(max_length=50, blank = True)
     sexoPaciente = models.BooleanField()
     fechaNacimientoPaciente = models.DateField()
-    alturaPaciente = models.IntegerField(blank = True)
-    pesoPaciente = models.FloatField(max_length=5, blank = True)
+    alturaPaciente = models.IntegerField(blank = True, null=True)
+    pesoPaciente = models.FloatField(max_length=5, blank = True, null=True)
     telefonoPaciente = models.CharField(max_length=9, blank = True)
     fotografiaPaciente = models.ImageField(upload_to = 'cem/imagenes/pacientes/', blank = True)
     institucion = models.CharField(max_length = 50, blank = True)

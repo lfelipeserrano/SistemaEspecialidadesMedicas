@@ -3,16 +3,19 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 
-from .models import Doctor
-from .forms import DoctorForm
+from .models import Doctor, Paciente
+from .forms import DoctorForm, PacienteForm
 # Create your views here.
-class DoctorListView(ListView):
-    model = Doctor
-    template_name = 'doctores.html'
 
-class DoctorDetailView(DetailView):
-    model = Doctor
-    template_name = 'doctorDatos.html'
+#VISTAS DOCTOR
+
+def doctores(request):
+    doctores =  Doctor.objects.all()
+    return render(request, 'doctores.html', {'doctores':doctores})
+
+def doctorDatos(request, pk):
+    doctor = get_object_or_404(Doctor, pk=pk)
+    return render(request, 'doctorDatos.html', {'doctor':doctor})
 
 def doctorNuevo(request):
     if request.method == 'POST':
@@ -46,3 +49,23 @@ class DoctorEliminar(DeleteView):
     model = Doctor
     template_name = 'doctorDatos.html'
     success_url = reverse_lazy('doctores')
+
+#VISTA PACIENTES
+def pacientes(request):
+    pacientes = Paciente.objects.all()
+    return render(request, 'pacientes.html', {'pacientes':pacientes})
+
+def pacienteDatos(request, pk):
+    paciente  = get_object_or_404(Paciente, pk=pk)
+    doctor = get_object_or_404(Doctor, primerApellidoDoctor=paciente.idDoctor)
+    return render(request, 'pacienteDato.html', {'paciente':paciente, 'doctor':doctor})
+
+def pacienteNuevo(request):
+    if request.method == 'POST':
+        form = PacienteForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('pacientes')
+    else:
+        form = PacienteForm()
+    return render(request, 'pacienteNuevo.html', {'form':form})

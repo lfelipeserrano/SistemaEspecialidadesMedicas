@@ -4,7 +4,7 @@
     <html>
         <body>
             <p><a href="{% url 'doctor_nuevo' %}">Registrar nuevo</a></p>
-            {% for doctor in object_list %}
+            {% for doctor in doctores %}
             <div>
                 <h2><a href="{% url 'doctor_datos' doctor.pk %}">{{ doctor.primerApellidoDoctor }}</a></h2>
             </div>

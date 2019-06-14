@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <html>
+        <body>
+            {% for paciente in pacientes %}
+            <div>
+                <h2><a href="{% url 'paciente_datos' paciente.pk %}">{{ paciente.primerApellidoPaciente }}</a></h2>
+            </div>
+            {% endfor %}
+        </body>
+    </html>
+{% endblock content %}
+    
