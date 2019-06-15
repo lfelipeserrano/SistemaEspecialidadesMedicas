@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <h2>Fecha de Consulta: {{ consulta.fechaConsulta }}</h2>
+        <h3>Doctor: {{ doctor_consulta.primerApellidoDoctor }}</h3>
+        <h3>Paciente: {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}</h3>
+    </div>
+
+    <p><a href="{% url 'consulta_editar' consulta.pk %}">+ Editar datos</a></p>
+
+    <button >Editar datos</button>
+    <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta">Eliminar Consulta</button>
+
+    <div class="modal fade" id="confirmacionEliminarConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Eliminar consulta</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que quiere eliminar los datos?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form action="{% url 'consulta_eliminar' pk=consulta.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Confirmar">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

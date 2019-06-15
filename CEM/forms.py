@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Doctor, Paciente
+from .models import Doctor, Paciente, Consulta
 
 class DoctorForm(forms.ModelForm):
     class Meta:
@@ -24,3 +24,9 @@ class PacienteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PacienteForm, self).__init__(*args, **kwargs)
         self.fields['fotografiaPaciente'].required = False
+
+class ConsultaForm(forms.ModelForm):
+    class Meta:
+        model = Consulta
+        fields = ('idDoctor', 'expediente', 'fechaConsulta', 'pesoConsulta', 'presionConsulta', 'temperatura', 'pulso', 'alturaConsulta', 'observaciones', 'recetas', 'examenesSolicitados',
+            'reporteExamenes', 'fechaUltimaRegla', )

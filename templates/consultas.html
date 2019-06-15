@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p><a href="{% url 'consulta_nuevo' %}">Registrar nuevo</a></p>
+    {% for consulta in consultas %}
+    <div>
+        <h2><a href="{% url 'consulta_datos' consulta.pk %}">{{ consulta.fechaConsulta }}</a></h2>
+    </div>
+    {% endfor %}
+{% endblock content %}
+    

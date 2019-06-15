@@ -3,7 +3,6 @@ from datetime import date
 
 # Create your models here.
 class Doctor(models.Model):
-    idDoctor = models.AutoField(primary_key=True)
     primerNombreDoctor = models.CharField(max_length=50)
     segundoNombreDoctor = models.CharField(max_length=50, blank = True, null=True)
     primerApellidoDoctor = models.CharField(max_length=50)
@@ -22,7 +21,7 @@ class Doctor(models.Model):
         return self.primerApellidoDoctor
 
 class Paciente(models.Model):
-    expediente = models.CharField(max_length = 20, primary_key = True)
+    expediente = models.CharField(max_length = 20)
     doctores = models.ManyToManyField(Doctor)
     primerNombrePaciente = models.CharField(max_length=50)
     segundoNombrePaciente = models.CharField(max_length=50, blank = True, null = True)
@@ -54,14 +53,15 @@ class Paciente(models.Model):
         return self.expediente
 
 class Consulta(models.Model):
-    idConsulta = models.AutoField(primary_key=True)
     idDoctor = models.ForeignKey(
         Doctor,
-        on_delete = models.CASCADE
+        on_delete = models.SET_NULL,
+        null = True
     )
     expediente = models.ForeignKey(
         Paciente,
-        on_delete = models.CASCADE
+        on_delete = models.SET_NULL, 
+        null = True
     )
     fechaConsulta = models.DateField()
     pesoConsulta = models.IntegerField(blank=True, null= True)
