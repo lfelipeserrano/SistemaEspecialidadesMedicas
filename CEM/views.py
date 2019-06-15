@@ -57,8 +57,9 @@ def pacientes(request):
 
 def pacienteDatos(request, pk):
     paciente  = get_object_or_404(Paciente, pk=pk)
-    doctor = get_object_or_404(Doctor, primerApellidoDoctor=paciente.idDoctor)
-    return render(request, 'pacienteDato.html', {'paciente':paciente, 'doctor':doctor})
+    doctores_paciente = paciente.doctores.all()
+    # doctor = get_object_or_404(Doctor, primerApellidoDoctor=paciente.idDoctor)
+    return render(request, 'pacienteDato.html', {'paciente':paciente, 'doctores_paciente':doctores_paciente})
 
 def pacienteNuevo(request):
     if request.method == 'POST':
@@ -69,3 +70,22 @@ def pacienteNuevo(request):
     else:
         form = PacienteForm()
     return render(request, 'pacienteNuevo.html', {'form':form})
+
+def pacienteEditar(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    if request.method == 'POST':
+        form = PacienteForm(request.POST, request.FILES, instance = paciente)
+        if form.is_valid():
+            paciente = form.save()
+            paciente.save()
+            return redirect('pacientes')
+        else:
+            form = PacienteForm()
+    else:
+        form = PacienteForm(instance = paciente)
+    return render(request, 'pacienteEditar.html', {'form':form})
+
+class PacienteEliminar(DeleteView):
+    model = Paciente
+    template_name = 'pacienteDato.html'
+    success_url = reverse_lazy('pacientes')

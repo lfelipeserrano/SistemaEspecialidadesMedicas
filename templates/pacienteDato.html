@@ -3,7 +3,38 @@
 {% block content %}
     <div>
         <h2>Paciente: {{ paciente.primeroNombrePaciente }} {{ paciente.primerApellidoPaciente }}</h2>
-        <h3>{{ doctor.primerApellidoDoctor }} {{ doctor.primerNombreDoctor }}</h3>
+        <h2>Doctores:</h2>
+        {% for doctor in doctores_paciente %}
+            <h3>{{ doctor }}</h3>
+        {% endfor %}
+    </div>
+
+    <p><a href="{% url 'paciente_editar' paciente.pk %}">+ Editar datos</a></p>
+
+    <button >Editar datos</button>
+    <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente">Eliminar Paciente</button>
+
+    <div class="modal fade" id="confirmacionEliminarPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Eliminar paciente {{ paciente.primerNombrePaciente }} {{ paciente.primerApellidoPaciente }}</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que quiere eliminar los datos?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form action="{% url 'paciente_eliminar' pk=paciente.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Confirmar">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
     
