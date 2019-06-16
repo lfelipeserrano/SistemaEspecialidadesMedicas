@@ -9,6 +9,12 @@
         <div>
             <header>
                <h1>Clínica de especialidades médicas CEM</h1>
+               <ul>
+                    <li><a href="{% url 'inicio' %}">Inicio</a></li>
+                    <li><a href="{% url 'doctor' %}">Doctores</a></li>
+                    <li><a href="{% url 'pacientes' %}">Pacientes</a></li>
+                    <li><a href="{% url 'consultas' %}">Consultas</a></li>
+                </ul>
             </header>
             {% block content %}
             {% endblock content %}

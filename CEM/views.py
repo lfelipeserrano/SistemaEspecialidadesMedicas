@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, TemplateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 
@@ -7,7 +7,12 @@ from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 # Create your views here.
 
+class inicio(TemplateView):
+    template_name = 'home.html'
+
 #VISTAS DOCTOR
+class doctorInicio(TemplateView):
+    template_name = 'doctorInicio.html'
 
 def doctores(request):
     doctores =  Doctor.objects.all()

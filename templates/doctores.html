@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p><a href="{% url 'doctor_nuevo' %}">Registrar nuevo</a></p>
-    {% for doctor in doctores %}
-    <div>
-        <h2><a href="{% url 'doctor_datos' doctor.pk %}">{{ doctor.primerApellidoDoctor }}</a></h2>
-    </div>
-    {% endfor %}
+    <ul>
+        <li><a href="{% url 'doctor_nuevo' %}">Agregar</a></li>
+    </ul>
+    <table>
+        <tr>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Teléfono</th>
+            <th>Correo electrónico</th>
+        </tr>
+        {% for doctor in doctores %}
+        <tr onclick="DoNav('{% url 'doctor_datos' doctor.pk %}')">
+            <td>{{ doctor.primerApellidoDoctor }}</td>
+            <td>{{ doctor.primerNombreDoctor }}</td>
+            <td>{{ doctor.especialidad }}</td>
+            <td>{{ doctor.telefonoDoctor }}</td>
+            <td>{{ doctor.correoElectronico }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <script>
+        function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+    </script>
 {% endblock content %}
     
