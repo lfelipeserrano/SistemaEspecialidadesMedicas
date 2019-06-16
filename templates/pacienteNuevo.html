@@ -4,8 +4,75 @@
     <h1>Nuevo paciente</h1>
     <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Guardar">
+        Expediente:
+        {{ form.expediente }}
+        Primer nombre:
+        {{ form.primerNombrePaciente }}
+        Segundo nombre:
+        {{ form.segundoNombrePaciente }}
+        Sexo:
+        <input type="radio" name="sexo" value="True" required>Masculino
+        <input type="radio" name="sexo" value="False">Femenino
+        <br>
+        <br>
+        Primer apellido:
+        {{ form.primerApellidoPaciente }}
+        Segundo apellido:
+        {{ form.segundoApellidoPaciente }}
+        Fecha de nacimiento:
+        {{ form.fechaNacimientoPaciente }}
+        <br>
+        <br>
+        Altura:
+        {{ form.alturaPaciente }}
+        Peso:
+        {{ form.pesoPaciente }}
+        Teléfono:
+        {{ form.telefonoPaciente }}
+        <br>
+        <br>
+        Doctores asignados:
+        {{ form.doctores }}
+        Institución de proveniencia:
+        {{ form.institucion }}
+        Aseguradora:
+        {{ form.aseguradora }}
+        <br>
+        <br>
+        Alergias:
+        {{ form.alergias }}
+        Lugar de proveniencia:
+        {{ form.Proveniencia }}
+        Antecedentes:
+        Tabaquista:
+        {{ form.tabquista }}
+        Etitlista:
+        {{ form.etilista }}
+        Hipertenso:
+        {{ form.hipertenso }}
+        Diabetico:
+        {{ form.diabetico }}
+        Tuberculosis:
+        {{ form.tuberculosis }}
+        Anemia:
+        {{ form.anemia }}
+        Convulsiones:
+        {{ form.convulsiones }}
+        <br>
+        <br>
+        Cáncer:
+        {{ form.cancer }}
+        Lugar de cáncer: 
+        {{ form.lugarCancer }}
+        Tratamiento:
+        {{ form.tratamientoCancer }}
+        <br>
+        Otros antecedentes:
+        {{ form.antecedentes }}
+        <br>
+        <br>
+        <a href="{% url 'paciente' %}" class="btn btn-secondary">Cancelar</a>
+        <input type="submit" value="Guardar" class="btn btn-primary">
     </form>
 {% endblock content %}
     

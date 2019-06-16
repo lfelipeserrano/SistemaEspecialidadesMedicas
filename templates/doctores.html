@@ -4,7 +4,12 @@
     <ul>
         <li><a href="{% url 'doctor_nuevo' %}">Agregar</a></li>
     </ul>
-    <table>
+    <select name="especialidad" id="especialidadSelect" onchange="seleccionEspecialidad()">
+        {% for especialidad in especialidades %}
+            <option value="{{ especialidad.especialidad }}">{{ especialidad.especialidad }}</option>
+        {% endfor %}
+    </select>
+    <table id="tablaDoctores">
         <tr>
             <th>Apellido</th>
             <th>Nombre</th>
@@ -27,6 +32,10 @@
         function DoNav(theUrl){
             document.location.href = theUrl;
         }
+
+        function seleccionEspecialidad() {
+            var especialidad = document.getElementById("especialidadSelect").value;
+            console.log(especialidad);
+        }
     </script>
 {% endblock content %}
-    

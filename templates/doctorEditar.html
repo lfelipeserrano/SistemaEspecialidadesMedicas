@@ -8,7 +8,13 @@
         Segundo nombre:
         {{ form.segundoNombreDoctor }}
         Sexo:
-        {{ form.sexoDoctor }}
+        {% if doctor.sexoDoctor %}
+            <input type="radio" name="sexo" value="True" checked>Masculino
+            <input type="radio" name="sexo" value="False">Femenino
+        {% else %}
+            <input type="radio" name="sexo" value="True">Masculino
+            <input type="radio" name="sexo" value="False" checked>Femenino
+        {% endif %}            
         <br>
         <br>
         Primer apellido:

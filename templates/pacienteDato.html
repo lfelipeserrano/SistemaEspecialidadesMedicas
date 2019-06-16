@@ -1,18 +1,93 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ul>
+        <li><a href="{% url 'paciente_nuevo' %}">Agregar</a></li>
+        <li><a href="{% url 'pacientes' %}">Listar</a></li>
+    </ul>
+
     <div>
-        <h2>Paciente: {{ paciente.primeroNombrePaciente }} {{ paciente.primerApellidoPaciente }}</h2>
-        <h2>Doctores:</h2>
+        {% if paciente.fotografiaPaciente.url != None %}
+            <img src="{{ paciente.fotografiaPaciente.url }}" alt=""  height="400" width="300">
+        {% endif %}
+        Primer Nombre: {{ paciente.primerNombrePaciente }}
+        {% if paciente.segundoNombrePaciente != None %}
+            Segundo Nombre: {{ paciente.segundoNombrePaciente }}
+        {% endif %}
+        
+        {% if paciente.sexoPaciente %}
+            Sexo: Masculino
+        {% else %}
+            Sexo: Femenino
+        {% endif %}
+        <br>
+        <br>
+        Primer Apellido: {{ paciente.primerApellidoPaciente }}
+        {% if paciente.segundoApellidoPaciente != None %}
+            Segundo Apellido: {{ paciente.segundoApellidoPaciente }}
+        {% endif %}
+        Fecha de nacimiento: {{ paciente.fechaNacimientoPaciente }}
+        <br>
+        <br>
+        Expediente: {{ paciente.expediente }}
+        Peso: {{ paciente.pesoPaciente }}
+        Altura: {{ paciente.alturaPaciente }}
+        Teléfono: {{ paciente.telefonoPaciente }}
+        <br>
+        <br>
+        Doctores asignados:
         {% for doctor in doctores_paciente %}
-            <h3>{{ doctor }}</h3>
+            Dr. {{ doctor }},
         {% endfor %}
+        Institución de proveniencia: {{ paciente.institucion }}
+        Aseguradora: {{ paciente.aseguradora }}
+        <br>
+        <br>
+        Alergias: {{ paciente.alergias }}
+        Lugar de proveniencia: {{ lugarProveniencia }}
+        Antecedentes:
+        {% if paciente.tabquista %}
+            Tabaquista
+        {% endif %}   
+        {% if paciente.etilista %}
+            Etilista
+        {% endif %}   
+        {% if paciente.hipertenso %}
+            Hipertenso
+        {% endif %}   
+        {% if paciente.diabetico %}
+            Diabetico
+        {% endif %}   
+        {% if paciente.tuberculosis %}
+            Tuberculosis
+        {% endif %}   
+        {% if paciente.anemia %}
+            Anemia
+        {% endif %}   
+        {% if paciente.convulsiones %}
+            Convulsiones
+        {% endif %}
+        <br>
+        <br>
+        Cancer:
+        {% if paciente.cancer %}
+            <input type="checkbox" checked disabled>
+            Lugar de cáncer: {{ paciente.lugarCancer }}
+            Tratamiento: {{ paciente.tratamientoCancer }}
+        {% else %}
+            <input type="checkbox" disabled>  
+        {% endif %}
+        <br>
+        <br>
+        {% if paciente.antecedentes != None %}
+            Otros antecedentes: {{ paciente.antecedentes }}
+        {% endif %}
     </div>
 
-    <p><a href="{% url 'paciente_editar' paciente.pk %}">+ Editar datos</a></p>
-
-    <button >Editar datos</button>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente">Eliminar Paciente</button>
+    <br>
+    <br>
+    <a href="{% url 'paciente_editar' paciente.pk %}" class="btn btn-secondary">Editar datos</a>
+    <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente" class="btn btn-danger">Eliminar Doctor</button>
 
     <div class="modal fade" id="confirmacionEliminarPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -27,10 +102,10 @@
                     <p>¿Está seguro que quiere eliminar los datos?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form action="{% url 'paciente_eliminar' pk=paciente.pk %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" value="Confirmar">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Confirmar" class="btn btn-danger">
                     </form>
                 </div>
             </div>

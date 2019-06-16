@@ -1,16 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ul>
+        <li><a href="{% url 'consulta_nuevo' %}">Agregar</a></li>
+        <li><a href="{% url 'consultas' %}">Listar</a></li>
+    </ul>
+
     <div>
-        <h2>Fecha de Consulta: {{ consulta.fechaConsulta }}</h2>
-        <h3>Doctor: {{ doctor_consulta.primerApellidoDoctor }}</h3>
-        <h3>Paciente: {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}</h3>
+        Paciente: {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}
+        Doctor: {{ doctor_consulta.primeroNombreDoctor }}  {{ doctor_consulta.primeroApellidoDoctor }}
+        Fecha: {{ consulta.fechaConsulta }}
+        <br>
+        <br>
+        Peso: {{ consulta.pesoConsulta }}
+        Altura: {{ consulta.alturaConsulta }}
+        Presión: {{ consulta.presionConsulta }}
+        Temperatura: {{ consulta.temperatura }}
+        Pulso: {{ consulta.pulso }}
+        <br>
+        <br>
+        {% if paciente_consulta.sexoPaciente %}
+            <p></p>
+        {% else %}
+            Fecha de ultima regla: {{ consulta.fechaUltimaRegla }}
+        {% endif %}
+        <br>
+        <br>
+        Observaciones:
+        <br>
+        {{ consulta.observaciones }}
+        <br>
+        Receta:
+        <br>
+        {{ consulta.recetas }}
+        <br>
+        Exámenes solicitados:
+        <br>
+        {{ consulta.examenesSolicitados }}
+        <br>
+        Repote de exámenes:
+        <br>
+        {{ consulta.reporteExamenes }}
     </div>
-
-    <p><a href="{% url 'consulta_editar' consulta.pk %}">+ Editar datos</a></p>
-
-    <button >Editar datos</button>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta">Eliminar Consulta</button>
+    <br>
+    <br>
+    <a href="{% url 'consulta_editar' consulta.pk %}" class="btn btn-secondary">Editar datos</a>
+    <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta" class="btn btn-danger">Eliminar Doctor</button>
 
     <div class="modal fade" id="confirmacionEliminarConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -25,10 +60,10 @@
                     <p>¿Está seguro que quiere eliminar los datos?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form action="{% url 'consulta_eliminar' pk=consulta.pk %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" value="Confirmar">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Confirmar" class="btn btn-danger">
                     </form>
                 </div>
             </div>

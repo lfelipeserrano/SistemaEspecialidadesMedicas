@@ -1,11 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p><a href="{% url 'paciente_nuevo' %}">Registrar nuevo</a></p>
-    {% for paciente in pacientes %}
-    <div>
-        <h2><a href="{% url 'paciente_datos' paciente.pk %}">{{ paciente.primerApellidoPaciente }}</a></h2>
-    </div>
-    {% endfor %}
+    <ul>
+        <li><a href="{% url 'paciente_nuevo' %}">Agregar</a></li>
+    </ul>
+
+    <select name="doctor" id="doctorSelect" onchange="seleccionDoctor()">
+        {% for doctor in doctores %}
+            <option value="{{ doctor.primerApellidoDoctor }}">{{ doctor.primerNombreDoctor }} {{ doctor.primerApellidoDoctor }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="text" id="busquedaPaciente" placeholder="Buscar paciente" title="Introduzca un apellido">
+    <table>
+        <tr>
+            <th>Expediente</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+        </tr>
+        {% for paciente in pacientes %}
+        <tr onclick="DoNav('{% url 'paciente_datos' paciente.pk %}')">
+            <td>{{ paciente.expediente }}</td>
+            <td>{{ paciente.primerNombrePaciente }}</td>
+            <td>{{ paciente.primerApellidoPaciente }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+
+        function seleccionDoctor() {
+            var especialidad = document.getElementById("doctorSelect").value;
+            console.log(especialidad);
+        }
+    </script>
 {% endblock content %}
     

@@ -4,8 +4,49 @@
     <h1>Editar consulta</h1>
     <form method="post">
     {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Guardar">
+        Doctor:
+        {{ form.idDoctor }}
+        Paciente:
+        {{ form.expediente }}
+        Fecha de consulta:
+        {{ form.fechaConsulta }}
+        <br>
+        <br>
+        Peso:
+        {{ form.pesoConsulta }}
+        Altura:
+        {{ form.alturaConsulta }}
+        Presión:
+        {{ form.presionConsulta }}
+        Temperatura:
+        {{ form.temperatura }}
+        Pulso:
+        {{ form.pulso }}
+        <br>
+        <br>
+        Fecha de ultima reglas (si aplica):
+        {{ form.fechaUltimaRegla }}
+        <br>
+        <br>
+        Observaciones:
+        <br>
+        {{ form.observaciones }}
+        <br>
+        Recetas:
+        <br>
+        {{ form.recetas }}
+        <br>
+        Exámenes solicitados:
+        <br>
+        {{ form.examenesSolicitados }}
+        <br>
+        Reporte de exámenes:
+        <br>
+        {{ form.reporteExamenes }}
+        <br>
+        <br>
+        <a href="{% url 'consulta' %}" class="btn btn-secondary">Cancelar</a>
+        <input type="submit" value="Guardar" class="btn btn-primary">
     </form>
 {% endblock content %}
     

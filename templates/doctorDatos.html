@@ -1,15 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ul>
+        <li><a href="{% url 'doctor_nuevo' %}">Agregar</a></li>
+        <li><a href="{% url 'doctores' %}">Listar</a></li>
+    </ul>
+
     <div>
-        <h2>Dr. {{ doctor.primerApellidoDoctor }} , {{ doctor.primerNombreDoctor }}</h2>
-        <h3>Especialidad: {{ doctor.especialidad }}</h3>
+        {% if doctor.fotografiaDoctor.url != None %}
+            <img src="{{ doctor.fotografiaDoctor.url }}" alt="" height="400" width="300">
+        {% endif %}
+        Primer Nombre: {{ doctor.primerNombreDoctor }}
+        {% if doctor.segundoNombreDoctor != None %}
+            Segundo Nombre: {{ doctor.segundoNombreDoctor }}
+        {% endif %}
+        {% if doctor.sexoDoctor %}
+            Sexo: Masculino
+        {% else %}
+            Sexo: Femenino
+        {% endif %}
+        <br>
+        <br>
+        Primer apellido: {{ doctor.primerApellidoDoctor }}
+        {% if doctor.segundoApellidoDoctor != None %}
+            Segundo Nombre: {{ doctor.segundoApellidoDoctor }}
+        {% endif %}
+        Fecha de nacimiento: {{ doctor.fechaNacimientoDoctor }}
+        <br>
+        <br>
+        Especialidad: {{ doctor.especialidad }}
+        Correo Electrónico: {{ doctor.correoElectronico }}
+        Número de teléfono: {{ doctor.telefonoDoctor }}
+        <br>
+        <br>
+        Numero de DUI: {{ doctor.duiDoctor }}
+        NIT: {{ doctor.nitDoctor }}
+        NRC: {{ doctor.ncfDoctor }}
     </div>
 
-    <p><a href="{% url 'doctor_editar' doctor.pk %}">+ Editar datos</a></p>
-
-    <button >Editar datos</button>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor">Eliminar Doctor</button>
+    <br>
+    <br>
+    <a href="{% url 'doctor_editar' doctor.pk %}" class="btn btn-secondary">Editar datos</a>
+    <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor" class="btn btn-danger">Eliminar Doctor</button>
 
     <div class="modal fade" id="confirmacionEliminarDoctor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -24,10 +56,10 @@
                     <p>¿Está seguro que quiere eliminar los datos?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form action="{% url 'doctor_eliminar' pk=doctor.pk %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" value="Confirmar">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Confirmar" class="btn btn-danger">
                     </form>
                 </div>
             </div>

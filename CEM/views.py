@@ -16,7 +16,8 @@ class doctorInicio(TemplateView):
 
 def doctores(request):
     doctores =  Doctor.objects.all()
-    return render(request, 'doctores.html', {'doctores':doctores})
+    especialidades = Doctor.objects.all().distinct('especialidad')
+    return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades})
 
 def doctorDatos(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
@@ -26,7 +27,12 @@ def doctorNuevo(request):
     if request.method == 'POST':
         form = DoctorForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            doctorF = form.save(commit=False)
+            if request.POST['sexo'] == 'True':
+                doctorF.sexoDoctor = True
+            else:
+                doctorF.sexoDoctor = False
+            doctorF.save()
             return redirect('doctores')
     else:
         form = DoctorForm()
@@ -40,6 +46,10 @@ def doctorEditar(request, pk):
         form = DoctorForm(request.POST, request.FILES, instance = doctor)
         if form.is_valid():
             doctor = form.save(commit=False)
+            if request.POST['sexo'] == 'True':
+                doctor.sexoDoctor = True
+            else:
+                doctor.sexoDoctor = False
             doctor.save()
             return redirect('doctores')
         else:
@@ -47,7 +57,7 @@ def doctorEditar(request, pk):
     else:
         form = DoctorForm(instance = doctor)
     return render(request, 'doctorEditar.html', {
-        'form': form
+        'form': form, 'doctor':doctor
     })  
 
 class DoctorEliminar(DeleteView):
@@ -56,9 +66,13 @@ class DoctorEliminar(DeleteView):
     success_url = reverse_lazy('doctores')
 
 #VISTA PACIENTES
+class pacienteInicio(TemplateView):
+    template_name = 'pacienteInicio.html'
+    
 def pacientes(request):
     pacientes = Paciente.objects.all()
-    return render(request, 'pacientes.html', {'pacientes':pacientes})
+    doctores = Doctor.objects.all()
+    return render(request, 'pacientes.html', {'pacientes':pacientes, 'doctores':doctores})
 
 def pacienteDatos(request, pk):
     paciente  = get_object_or_404(Paciente, pk=pk)
@@ -70,6 +84,11 @@ def pacienteNuevo(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST, request.FILES)
         if form.is_valid():
+            pacienteF = form.save(commit=False)
+            if request.POST['sexo'] == 'True':
+                pacienteF.sexoPaciente = True
+            else:
+                pacienteF.sexoPaciente = False
             form.save()
             return redirect('pacientes')
     else:
@@ -81,14 +100,18 @@ def pacienteEditar(request, pk):
     if request.method == 'POST':
         form = PacienteForm(request.POST, request.FILES, instance = paciente)
         if form.is_valid():
-            paciente = form.save()
+            paciente = form.save(commit=False)
+            if request.POST['sexo'] == 'True':
+                paciente.sexoPaciente = True
+            else:
+                paciente.sexoPaciente = False
             paciente.save()
             return redirect('pacientes')
         else:
             form = PacienteForm()
     else:
         form = PacienteForm(instance = paciente)
-    return render(request, 'pacienteEditar.html', {'form':form})
+    return render(request, 'pacienteEditar.html', {'form':form, 'paciente':paciente})
 
 class PacienteEliminar(DeleteView):
     model = Paciente
@@ -96,10 +119,14 @@ class PacienteEliminar(DeleteView):
     success_url = reverse_lazy('pacientes')
 
 #VISTAS CONSULTAS
+class consultaInicio(TemplateView):
+    template_name = 'consultaInicio.html'
 
 def consultas(request):
     consultas = Consulta.objects.all()
-    return render(request, 'consultas.html', {'consultas':consultas})
+    doctores = Doctor.objects.all()
+    pacientes = Paciente.objects.all()
+    return render(request, 'consultas.html', {'consultas':consultas, 'doctores':doctores, 'pacientes':pacientes})
 
 def consultaDatos(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)

@@ -1,11 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p><a href="{% url 'consulta_nuevo' %}">Registrar nuevo</a></p>
-    {% for consulta in consultas %}
-    <div>
-        <h2><a href="{% url 'consulta_datos' consulta.pk %}">{{ consulta.fechaConsulta }}</a></h2>
-    </div>
-    {% endfor %}
+    <ul>
+        <li><a href="{% url 'consulta_nuevo' %}">Agregar</a></li>
+    </ul>
+
+    <select name="doctor" id="doctorSelect" onchange="seleccionDoctor()">
+        {% for doctor in doctores %}
+            <option value="{{ doctor.primerApellidoDoctor }}">{{ doctor.primerNombreDoctor }} {{ doctor.primerApellidoDoctor }}</option>
+        {% endfor %}
+    </select>
+    <select name="paciente" id="pacienteSelect" onchange="seleccionPaciente()">
+        {% for paciente in pacientes %}
+            <option value="{{ paciente.primerApellidoPaciente }}">{{ paciente.primerNombrePaciente }} {{ paciente.primerApellidoPaciente }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="text" id="busquedaPaciente" placeholder="Buscar paciente" title="Introduzca un apellido">
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Doctor</th>
+            <th>Expediente</th>
+        </tr>
+        
+        {% for consulta in consultas %}
+        <tr onclick="DoNav('{% url 'consulta_datos' consulta.pk %}')">
+            <td>{{ consulta.fechaConsulta }}</td>
+            <td>{{ consulta.idDoctor }}</td>
+            <td>{{ consulta.expediente }}</td>
+        </tr>
+        {% endfor %}
+            
+    </table>
+
+    <script>
+        function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+
+        function seleccionDoctor() {
+            var doctor = document.getElementById("doctorSelect").value;
+            console.log(doctor);
+        }
+        function seleccionPaciente() {
+            var paciente = document.getElementById("pacienteSelect").value;
+            console.log(paciente);
+        }
+    </script>
 {% endblock content %}
     

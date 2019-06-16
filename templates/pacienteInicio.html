@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Gestión de pacientes</h2>
+    <ul>
+        <li><a href="{% url 'paciente_nuevo' %}">Agregar</a></li>
+        <li><a href="{% url 'pacientes' %}">Listar</a></li>
+    </ul>
+{% endblock content %}
