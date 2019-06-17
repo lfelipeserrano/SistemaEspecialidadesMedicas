@@ -1,33 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="{% url 'doctor_nuevo' %}">Agregar</a></li>
-    </ul>
-    <select name="especialidad" id="especialidadSelect" onchange="seleccionEspecialidad()">
-        {% for especialidad in especialidades %}
-            <option value="{{ especialidad.especialidad }}">{{ especialidad.especialidad }}</option>
-        {% endfor %}
-    </select>
-    <table id="tablaDoctores">
-        <tr>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>Especialidad</th>
-            <th>Teléfono</th>
-            <th>Correo electrónico</th>
-        </tr>
-        {% for doctor in doctores %}
-        <tr onclick="DoNav('{% url 'doctor_datos' doctor.pk %}')">
-            <td>{{ doctor.primerApellidoDoctor }}</td>
-            <td>{{ doctor.primerNombreDoctor }}</td>
-            <td>{{ doctor.especialidad }}</td>
-            <td>{{ doctor.telefonoDoctor }}</td>
-            <td>{{ doctor.correoElectronico }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    
+    <h1 class="h1 mb-4 text-gray-800">Doctores</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Lista de doctores en la clínica</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <label>Especialidad:
+                            <select name="especialidad" id="especialidadSelect" onchange="seleccionEspecialidad()" class="custom-select custom-select-sm form-control form-control-sm">
+                                {% for especialidad in especialidades %}
+                                    <option value="{{ especialidad.especialidad }}">{{ especialidad.especialidad }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="float-right">
+                            <label>Búsqueda:
+                                <input type="search" class="form-control form-control-sm" placeholder="">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Especialidad</th>
+                            <th>Teléfono</th>
+                            <th>Correo electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctores %}
+                        <tr onclick="DoNav('{% url 'doctor_datos' doctor.pk %}')">
+                            <td>{{ doctor.primerApellidoDoctor }}</td>
+                            <td>{{ doctor.primerNombreDoctor }}</td>
+                            <td>{{ doctor.especialidad }}</td>
+                            <td>{{ doctor.telefonoDoctor }}</td>
+                            <td>{{ doctor.correoElectronico }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <script>
         function DoNav(theUrl){
             document.location.href = theUrl;

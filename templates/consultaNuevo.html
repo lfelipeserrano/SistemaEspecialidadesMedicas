@@ -1,51 +1,92 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Nueva consulta</h1>
-    <form method="post">
-    {% csrf_token %}
-        Doctor:
-            {{ form.idDoctor }}
-            Paciente:
-            {{ form.expediente }}
-            Fecha de consulta:
-            {{ form.fechaConsulta }}
-            <br>
-            <br>
-            Peso:
-            {{ form.pesoConsulta }}
-            Altura:
-            {{ form.alturaConsulta }}
-            Presión:
-            {{ form.presionConsulta }}
-            Temperatura:
-            {{ form.temperatura }}
-            Pulso:
-            {{ form.pulso }}
-            <br>
-            <br>
-            Fecha de ultima reglas (si aplica):
-            {{ form.fechaUltimaRegla }}
-            <br>
-            <br>
-            Observaciones:
-            <br>
-            {{ form.observaciones }}
-            <br>
-            Recetas:
-            <br>
-            {{ form.recetas }}
-            <br>
-            Exámenes solicitados:
-            <br>
-            {{ form.examenesSolicitados }}
-            <br>
-            Reporte de exámenes:
-            <br>
-            {{ form.reporteExamenes }}
-            <br>
-            <br>
-            <a href="{% url 'consulta' %}" class="btn btn-secondary">Cancelar</a>
-            <input type="submit" value="Guardar" class="btn btn-primary">
+    <h1 class="h1 mb-4 text-gray-800">Nueva consulta</h1>
+    <form method="post">{% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Doctor:</label>
+                <br>
+                {{ form.idDoctor }}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Paciente:</label>
+                <br>
+                {{ form.expediente }}
+            </div>
+            <div class="form-group col-md-4">
+                <label>Fecha de consulta:</label>
+                <br>
+                {{ form.fechaConsulta }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-4">
+                <label>Peso:</label>
+                <br>
+                {{ form.pesoConsulta }}
+            </div>
+            <div class="col mb-4">
+                <label>Pulso:</label>
+                <br>
+                {{ form.pulso }}
+            </div>
+            <div class="col mb-4">
+                <label>Altura:</label>
+                <br>
+                {{ form.alturaConsulta }}
+            </div>
+            <div class="col mb-4">
+                <label>Presión:</label>
+                <br>
+                {{ form.presionConsulta }}
+            </div>
+            <div class="col mb-4">
+                <label>Temperatura:</label>
+                <br>
+                {{ form.temperatura }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label>Fecha de ultima reglas (si aplica):</label>
+                <br>
+                {{ form.fechaUltimaRegla }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label>Observaciones:</label>
+                <br>
+                {{ form.observaciones }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label>Recetas:</label>
+                <br>
+                {{ form.recetas }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label>Exámenes solicitados:</label>
+                <br>
+                {{ form.examenesSolicitados }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label>Reporte de exámenes:</label>
+                <br>
+                {{ form.reporteExamenes }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="float-right">
+                <a href="{% url 'consultas' %}" class="btn btn-secondary">Cancelar</a>
+                <input type="submit" value="Guardar" class="btn btn-primary">
+            </div>
+        </div>
     </form>
 {% endblock content %}

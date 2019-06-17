@@ -1,94 +1,138 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="{% url 'paciente_nuevo' %}">Agregar</a></li>
-        <li><a href="{% url 'pacientes' %}">Listar</a></li>
-    </ul>
-
-    <div>
-        {% if paciente.fotografiaPaciente.url != None %}
-            <img src="{{ paciente.fotografiaPaciente.url }}" alt=""  height="400" width="300">
-        {% endif %}
-        Primer Nombre: {{ paciente.primerNombrePaciente }}
-        {% if paciente.segundoNombrePaciente != None %}
-            Segundo Nombre: {{ paciente.segundoNombrePaciente }}
-        {% endif %}
-        
-        {% if paciente.sexoPaciente %}
-            Sexo: Masculino
-        {% else %}
-            Sexo: Femenino
-        {% endif %}
-        <br>
-        <br>
-        Primer Apellido: {{ paciente.primerApellidoPaciente }}
-        {% if paciente.segundoApellidoPaciente != None %}
-            Segundo Apellido: {{ paciente.segundoApellidoPaciente }}
-        {% endif %}
-        Fecha de nacimiento: {{ paciente.fechaNacimientoPaciente }}
-        <br>
-        <br>
-        Expediente: {{ paciente.expediente }}
-        Peso: {{ paciente.pesoPaciente }}
-        Altura: {{ paciente.alturaPaciente }}
-        Teléfono: {{ paciente.telefonoPaciente }}
-        <br>
-        <br>
-        Doctores asignados:
-        {% for doctor in doctores_paciente %}
-            Dr. {{ doctor }},
-        {% endfor %}
-        Institución de proveniencia: {{ paciente.institucion }}
-        Aseguradora: {{ paciente.aseguradora }}
-        <br>
-        <br>
-        Alergias: {{ paciente.alergias }}
-        Lugar de proveniencia: {{ lugarProveniencia }}
-        Antecedentes:
-        {% if paciente.tabquista %}
-            Tabaquista
-        {% endif %}   
-        {% if paciente.etilista %}
-            Etilista
-        {% endif %}   
-        {% if paciente.hipertenso %}
-            Hipertenso
-        {% endif %}   
-        {% if paciente.diabetico %}
-            Diabetico
-        {% endif %}   
-        {% if paciente.tuberculosis %}
-            Tuberculosis
-        {% endif %}   
-        {% if paciente.anemia %}
-            Anemia
-        {% endif %}   
-        {% if paciente.convulsiones %}
-            Convulsiones
-        {% endif %}
-        <br>
-        <br>
-        Cancer:
-        {% if paciente.cancer %}
-            <input type="checkbox" checked disabled>
-            Lugar de cáncer: {{ paciente.lugarCancer }}
-            Tratamiento: {{ paciente.tratamientoCancer }}
-        {% else %}
-            <input type="checkbox" disabled>  
-        {% endif %}
-        <br>
-        <br>
-        {% if paciente.antecedentes != None %}
-            Otros antecedentes: {{ paciente.antecedentes }}
-        {% endif %}
+    <div class="row">
+        <div class="col-md-3">
+            {% if paciente.fotografiaPaciente.url != None %}     
+                <img src="{{ paciente.fotografiaPaciente.url }}" alt="" height="400" width="300">
+            {% else %}
+                {% if paciente.sexoPaciente %}
+                    <img src="/CEM/imagenes/pacientes/sinfoto.png" alt="" height="300" width="200">
+                {% else %}
+                    <img src="/CEM/imagenes/pacientes/sinfoto.png" alt="" height="300" width="200">
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <p><b>Primer Nombre:</b> {{ paciente.primerNombrePaciente }}</p>
+        </div>
+        <div class="col-md-3">
+            {% if paciente.segundoNombrePaciente != None %}
+                <p><b>Segundo Nombre:</b>  {{ paciente.segundoNombrePaciente }}</p>
+            {% else %}
+                <p><b>Segundo Nombre:</b></p>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if paciente.sexoPaciente %}
+                <p><b>Sexo:</b> Masculino</p>
+            {% else %}
+                <p><b>Sexo:</b> Femenino</p>
+            {% endif %}
+        </div>
     </div>
-
-    <br>
-    <br>
-    <a href="{% url 'paciente_editar' paciente.pk %}" class="btn btn-secondary">Editar datos</a>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente" class="btn btn-danger">Eliminar Doctor</button>
-
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Primer Apellido:</b> {{ paciente.primerApellidoPaciente }}</p>
+        </div>
+        <div class="col-md-4">
+            {% if paciente.segundoApellidoPaciente != None %}
+                <p><b>Segundo Apellido:</b> {{ paciente.segundoApellidoPaciente }}</p>
+            {% else %}
+                <p><b>Segundo Apellido:</b></p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <p><b>Fecha de nacimiento:</b> {{ paciente.fechaNacimientoPaciente }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p><b>Expediente:</b> {{ paciente.expediente }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><b>Peso:</b> {{ paciente.pesoPaciente }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><b>Altura:</b> {{ paciente.alturaPaciente }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><b>Teléfono:</b> {{ paciente.telefonoPaciente }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Doctores asignados:</b>
+                {% for doctor in doctores_paciente %}
+                    Dr. {{ doctor }},
+                {% endfor %}
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Institución de proveniencia:</b> {{ paciente.institucion }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Aseguradora:</b> {{ paciente.aseguradora }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Alergias:</b> {{ paciente.alergias }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Lugar de proveniencia:</b>  {{ lugarProveniencia }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Antecedentes:</b></p>
+            <p>{% if paciente.tabquista %}
+                Tabaquista
+            {% endif %}   
+            {% if paciente.etilista %}
+                Etilista
+            {% endif %}   
+            {% if paciente.hipertenso %}
+                Hipertenso
+            {% endif %}   
+            {% if paciente.diabetico %}
+                Diabetico
+            {% endif %}   
+            {% if paciente.tuberculosis %}
+                Tuberculosis
+            {% endif %}   
+            {% if paciente.anemia %}
+                Anemia
+            {% endif %}   
+            {% if paciente.convulsiones %}
+                Convulsiones
+            {% endif %}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Cancer:</b>
+                {% if paciente.cancer %}
+                    <input type="checkbox" checked disabled>
+                    Lugar de cáncer: {{ paciente.lugarCancer }}
+                    Tratamiento: {{ paciente.tratamientoCancer }}
+                {% else %}
+                    <input type="checkbox" disabled>  
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if paciente.antecedentes != None %}
+                <p><b>Otros antecedentes:</b> {{ paciente.antecedentes }}</p>
+            {% endif %} 
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="float-right">
+            <a href="{% url 'paciente_editar' paciente.pk %}" class="btn btn-secondary">Editar datos</a>
+            <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente" class="btn btn-danger">Eliminar Doctor</button>
+        </div>
+    </div>
     <div class="modal fade" id="confirmacionEliminarPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

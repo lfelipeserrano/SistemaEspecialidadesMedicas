@@ -1,52 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="{% url 'consulta_nuevo' %}">Agregar</a></li>
-        <li><a href="{% url 'consultas' %}">Listar</a></li>
-    </ul>
 
-    <div>
-        Paciente: {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}
-        Doctor: {{ doctor_consulta.primeroNombreDoctor }}  {{ doctor_consulta.primeroApellidoDoctor }}
-        Fecha: {{ consulta.fechaConsulta }}
-        <br>
-        <br>
-        Peso: {{ consulta.pesoConsulta }}
-        Altura: {{ consulta.alturaConsulta }}
-        Presión: {{ consulta.presionConsulta }}
-        Temperatura: {{ consulta.temperatura }}
-        Pulso: {{ consulta.pulso }}
-        <br>
-        <br>
-        {% if paciente_consulta.sexoPaciente %}
-            <p></p>
-        {% else %}
-            Fecha de ultima regla: {{ consulta.fechaUltimaRegla }}
-        {% endif %}
-        <br>
-        <br>
-        Observaciones:
-        <br>
-        {{ consulta.observaciones }}
-        <br>
-        Receta:
-        <br>
-        {{ consulta.recetas }}
-        <br>
-        Exámenes solicitados:
-        <br>
-        {{ consulta.examenesSolicitados }}
-        <br>
-        Repote de exámenes:
-        <br>
-        {{ consulta.reporteExamenes }}
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Paciente:</b> {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Doctor:</b> {{ doctor_consulta.primeroNombreDoctor }}  {{ doctor_consulta.primeroApellidoDoctor }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Fecha:</b> {{ consulta.fechaConsulta }}</p>
+        </div>
     </div>
-    <br>
-    <br>
-    <a href="{% url 'consulta_editar' consulta.pk %}" class="btn btn-secondary">Editar datos</a>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta" class="btn btn-danger">Eliminar Doctor</button>
-
+    <div class="row">
+        <div class="col mb-4">
+            <p><b>Peso:</b> {{ consulta.pesoConsulta }}</p>
+        </div>
+        <div class="col mb-4">
+            <p><b>Altura:</b> {{ consulta.alturaConsulta }}</p>
+        </div>
+        <div class="col mb-4">
+            <p><b>Presión:</b> {{ consulta.presionConsulta }}</p>
+        </div>
+        <div class="col mb-4">
+            <p><b>Temperatura:</b> {{ consulta.temperatura }}</p>
+        </div>
+        <div class="col mb-4">
+            <p><b>Pulso:</b> {{ consulta.pulso }}</p>
+        </div>
+    </div>
+    {% if paciente_consulta.sexoPaciente %}
+        <p></p>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <p><b>Fecha de ultima regla:</b> {{ consulta.fechaUltimaRegla }}</p>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Observaciones:</b></p>
+            <br>
+            {{ consulta.observaciones }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Receta:</b></p>
+            <br>
+            {{ consulta.recetas }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Exámenes solicitados:</b></p>
+            <br>
+            {{ consulta.examenesSolicitados }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Repote de exámenes:</b></p>
+            <br>
+            {{ consulta.reporteExamenes }}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="float-right">
+            <a href="{% url 'consulta_editar' consulta.pk %}" class="btn btn-secondary">Editar datos</a>
+            <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta" class="btn btn-danger">Eliminar Doctor</button>
+        </div>
+    </div>
     <div class="modal fade" id="confirmacionEliminarConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

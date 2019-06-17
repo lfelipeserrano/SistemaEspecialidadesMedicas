@@ -1,31 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="{% url 'paciente_nuevo' %}">Agregar</a></li>
-    </ul>
+    <h1 class="h1 mb-4 text-gray-800">Pacientes</h1>
 
-    <select name="doctor" id="doctorSelect" onchange="seleccionDoctor()">
-        {% for doctor in doctores %}
-            <option value="{{ doctor.primerApellidoDoctor }}">{{ doctor.primerNombreDoctor }} {{ doctor.primerApellidoDoctor }}</option>
-        {% endfor %}
-    </select>
-
-    <input type="text" id="busquedaPaciente" placeholder="Buscar paciente" title="Introduzca un apellido">
-    <table>
-        <tr>
-            <th>Expediente</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-        </tr>
-        {% for paciente in pacientes %}
-        <tr onclick="DoNav('{% url 'paciente_datos' paciente.pk %}')">
-            <td>{{ paciente.expediente }}</td>
-            <td>{{ paciente.primerNombrePaciente }}</td>
-            <td>{{ paciente.primerApellidoPaciente }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Lista de pacientes en la clínica</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <label>Doctor:
+                            <select name="doctor" id="doctorSelect" onchange="seleccionDoctor()" class="custom-select custom-select-sm form-control form-control-sm">
+                                {% for doctor in doctores %}
+                                    <option value="{{ doctor.primerApellidoDoctor }}">{{ doctor.primerNombreDoctor }} {{ doctor.primerApellidoDoctor }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="float-right">
+                            <label>Búsqueda:
+                                <input type="search" class="form-control form-control-sm" placeholder="">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paciente in pacientes %}
+                        <tr onclick="DoNav('{% url 'paciente_datos' paciente.pk %}')">
+                            <td>{{ paciente.expediente }}</td>
+                            <td>{{ paciente.primerNombrePaciente }}</td>
+                            <td>{{ paciente.primerApellidoPaciente }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <script>
         function DoNav(theUrl){

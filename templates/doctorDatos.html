@@ -1,53 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="{% url 'doctor_nuevo' %}">Agregar</a></li>
-        <li><a href="{% url 'doctores' %}">Listar</a></li>
-    </ul>
-
-    <div>
-        {% if doctor.fotografiaDoctor.url != None %}
-            <img src="{{ doctor.fotografiaDoctor.url }}" alt="" height="400" width="300">
-        {% endif %}
-        Primer Nombre: {{ doctor.primerNombreDoctor }}
-        {% if doctor.segundoNombreDoctor != None %}
-            Segundo Nombre: {{ doctor.segundoNombreDoctor }}
-        {% endif %}
-        {% if doctor.sexoDoctor %}
-            Sexo: Masculino
-        {% else %}
-            Sexo: Femenino
-        {% endif %}
-        <br>
-        <br>
-        Primer apellido: {{ doctor.primerApellidoDoctor }}
-        {% if doctor.segundoApellidoDoctor != None %}
-            Segundo Nombre: {{ doctor.segundoApellidoDoctor }}
-        {% endif %}
-        Fecha de nacimiento: {{ doctor.fechaNacimientoDoctor }}
-        <br>
-        <br>
-        Especialidad: {{ doctor.especialidad }}
-        Correo Electrónico: {{ doctor.correoElectronico }}
-        Número de teléfono: {{ doctor.telefonoDoctor }}
-        <br>
-        <br>
-        Numero de DUI: {{ doctor.duiDoctor }}
-        NIT: {{ doctor.nitDoctor }}
-        NRC: {{ doctor.ncfDoctor }}
+    
+    {% if doctor.sexoDoctor %}
+        <h1 class="h1 mb-4 text-gray-800">Dr. {{ doctor.primerApellidoDoctor }}</h1>
+    {% else %}
+        <h1 class="h1 mb-4 text-gray-800">Dra. {{ doctor.primerApellidoDoctor }}</h1>
+    {% endif %}
+        
+    <div class="row">
+        <div class="col-md-3">
+            {% if doctor.fotografiaDoctor.url != None %}     
+                <img src="{{ doctor.fotografiaDoctor.url }}" alt="" height="400" width="300">
+            {% else %}
+                {% if doctor.sexoDoctor %}
+                    <img src="/CEM/imagenes/doctores/defaultDr.jpg" alt="" height="300" width="200">
+                {% else %}
+                    <img src="/CEM/imagenes/doctores/defaultDra.jpg" alt="" height="300" width="200">
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <p><b>Primer Nombre:</b>  {{ doctor.primerNombreDoctor }}</p>
+        </div>
+        <div class="col-md-3">
+            {% if doctor.segundoNombreDoctor != None %}
+               <p><b>Segundo Nombre:</b> {{ doctor.segundoNombreDoctor }}</p>
+            {% else %}
+                <p><b>Segundo Nombre:</b></p>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if doctor.sexoDoctor %}
+                <p><b>Sexo:</b> Masculino</p>
+            {% else %}
+                <p><b>Sexo:</b> Femenino</p>
+            {% endif %}
+        </div>
     </div>
-
-    <br>
-    <br>
-    <a href="{% url 'doctor_editar' doctor.pk %}" class="btn btn-secondary">Editar datos</a>
-    <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor" class="btn btn-danger">Eliminar Doctor</button>
-
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Primer apellido:</b> {{ doctor.primerApellidoDoctor }}</p>
+        </div>
+        <div class="col-md-4">
+            {% if doctor.segundoApellidoDoctor != None %}
+                <p><b>Segundo Nombre:</b> {{ doctor.segundoApellidoDoctor }}</p>
+            {% else %}
+                <p><b>Segundo Nombre:</b></p>
+            {% endif %}
+        </div>
+        <div class="col-md4">
+            <p><b>Fecha de nacimiento:</b> {{ doctor.fechaNacimientoDoctor }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Especialidad:</b> {{ doctor.especialidad }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Correo Electrónico:</b> {{ doctor.correoElectronico }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>Número de teléfono:</b> {{ doctor.telefonoDoctor }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p><p>Numero de DUI:</> {{ doctor.duiDoctor }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>NIT:</b> {{ doctor.nitDoctor }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><b>NRC:</b> {{ doctor.ncfDoctor }}</p>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="float-right">
+            <a href="{% url 'doctor_editar' doctor.pk %}" class="btn btn-secondary">Editar datos</a>
+            <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor" class="btn btn-danger">Eliminar Doctor</button>  
+        </div>
+    </div>
     <div class="modal fade" id="confirmacionEliminarDoctor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">Eliminar Dr. {{ doctor.primerApellidoDoctor }} , {{ doctor.primerNombreDoctor }}</h2>
+                    <h2 class="modal-title">Eliminar Dr. {{ doctor.primerNombreDoctor }} {{ doctor.primerApellidoDoctor }}</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
