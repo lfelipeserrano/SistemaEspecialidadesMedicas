@@ -6,6 +6,13 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name="login"),
     path('permisoDenegado/', permisoDenegado, name='permisos'),
+
+    #URL Usuarios
+    path('nuevoUsuario/', signup, name='signup'),
+    path('usuario/list/', usuarios, name='usuarios'),
+    path('usuario/<int:pk>/', usuarioDatos, name='usuario_datos'),
+    path('usuario/<int:pk>/editar/', usuarioEditar, name='usuario_editar'),
+    path('usuario/<int:pk>/eliminar/', usuarioEliminar, name='usuario_eliminar'),
     #URL Consulta
     # path('consulta/', consultaInicio.as_view(), name='consulta'),
     path('consulta/<int:pk>/eliminar/', consultaEliminarFuncion, name='consulta_eliminar'),

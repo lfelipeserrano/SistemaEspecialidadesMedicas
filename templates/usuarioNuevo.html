@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+              <div class="col-lg-7">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Nuevo usuario</h1>
+                  </div>
+                  <form class="user" method="post"> {% csrf_token %}
+                    <div class="form-group text-center">
+                        <label>Usuario:</label>
+                        <br>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group text-center">
+                        <label>Contraseña:</label>
+                        <br>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="form-group text-center">
+                        <label>Confirmar contraseña:</label>
+                        <br>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="form-group text-center">
+                        <select name="grupo" id="grupo" class="custom-select custom-select-sm form-control">
+                            <option value="doctor">Doctor</option>
+                            <option value="asistente">Asistente</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Crear" class="btn btn-primary btn-user btn-block">
+                    <a href="{% url 'inicio' %}" class="btn btn-secondary mr-2 btn-block btn-user">Cancelar</a>
+                    <hr>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+    </div>
+{% endblock content %}
+    

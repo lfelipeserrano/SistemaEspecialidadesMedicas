@@ -51,7 +51,35 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      
+      {% if perms.CEM.view_user or perms.CEM.change_user or perms.CEM.add_user or perms.CEM.delete_user %}
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Administrador
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo0" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-user-shield"></i>
+          <span>Usuarios</span>
+        </a>
+        <div id="collapseTwo0" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Acciones:</h6>
+            {% if perms.CEM.add_user %}
+              <a class="collapse-item" href="{% url 'signup' %}">Agregar</a>
+            {% endif %}
+            {% if perms.CEM.view_user %}
+              <a class="collapse-item" href="{% url 'usuarios' %}">Listar</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+
+       <!-- Divider -->
+       <hr class="sidebar-divider">
+      {% endif %}
+
       {% if perms.CEM.view_doctor or perms.CEM.change_doctor or perms.CEM.add_doctor or perms.CEM.delete_doctor %}
       <!-- Heading -->
       <div class="sidebar-heading">

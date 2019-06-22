@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView, TemplateView, TemplateVie
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 
 from .models import Doctor, Paciente, Consulta
@@ -18,6 +20,66 @@ def error_404_view(request, exception):
 def permisoDenegado(request):
     return render(request, 'permisos.html')
 
+@permission_required('CEM.add_user', login_url='permisos')
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            if  request.POST['grupo'] == 'doctor':
+                grupo = Group.objects.get(name='Doctores')
+                usuario.groups.add(grupo)
+            else :
+                grupo = Group.objects.get(name='Asistentes')
+                usuario.groups.add(grupo)
+            # login(request, user)
+            return redirect('inicio')
+    else:
+        form = UserCreationForm()
+    return render(request, 'usuarioNuevo.html', {'form': form})
+
+@permission_required('CEM.view_user', login_url='permisos')
+def usuarios(request):
+    usuarios = User.objects.all()
+    grupos = Group.objects.all()
+    return render(request, 'usuarios.html', {'usuarios':usuarios, 'grupos':grupos})
+
+@permission_required('CEM.view_user', login_url='permisos')
+def usuarioDatos(request, pk):
+    usuario = get_object_or_404(User, pk=pk)
+    grupos = usuario.groups.all()
+    return  render(request, 'usuarioDatos.html', {'usuario':usuario, 'grupos':grupos})
+
+@permission_required('CEM.change_user', login_url='permisos')
+def usuarioEditar(request, pk):
+    usuario = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST, instance = usuario)
+        if form.is_valid():
+            usuarioF = form.save(commit=False)
+            if  request.POST['grupo'] == 'doctor':
+                usuario.groups.clear()
+                grupo = Group.objects.get(name='Doctores')
+                usuario.groups.add(grupo)
+            else :
+                usuario.groups.clear()
+                grupo = Group.objects.get(name='Asistentes')
+                usuario.groups.add(grupo)
+            form.save()
+            return redirect('usuarios')
+        else:
+            form = UserCreationForm()
+    else:
+        form = UserCreationForm(instance = usuario)
+    return render(request, 'usuarioEditar.html', {'form':form, 'usuario':usuario})
+
+@permission_required('CEM.change_user', login_url='permisos')
+def usuarioEliminar(request, pk):
+    temp = User.objects.get(pk=pk).delete()
+    return redirect('usuarios')
 #VISTAS DOCTOR
 class doctorInicio(TemplateView):
     template_name = 'doctorInicio.html'
