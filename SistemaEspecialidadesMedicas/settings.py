@@ -129,3 +129,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'CEM/imagenes')
 STATICFILES_DIRS = [
     'static'
 ]
+
+LOGIN_REDIRECT_URL = 'inicio'

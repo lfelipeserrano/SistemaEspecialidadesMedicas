@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+
+            <!-- 404 Error Text -->
+        <div class="text-center">
+            <div class="error mx-auto" data-text="Permiso">Permiso</div>
+            <div class="error mx-auto" data-text="Denegado">Denegado</div>
+            <p class="lead text-gray-800 mb-5">Permisos insuficientes</p>
+            <p class="text-gray-500 mb-0">Parece que no tienes suficientes permisos para acceder a esta función.</p>
+            <a href="{% url 'inicio' %}">&larr; Inicio</a>
+        </div>
+
+    </div>
+{% endblock content %}
+    

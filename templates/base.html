@@ -43,6 +43,8 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
+      
+      {% if perms.CEM.view_doctor or perms.CEM.change_doctor or perms.CEM.add_doctor or perms.CEM.delete_doctor %}
       <!-- Heading -->
       <div class="sidebar-heading">
         Doctores
@@ -57,15 +59,21 @@
         <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Acciones:</h6>
-            <a class="collapse-item" href="{% url 'doctor_nuevo' %}">Agregar</a>
-            <a class="collapse-item" href="{% url 'doctores' %}">Listar</a>
+            {% if perms.CEM.add_doctor %}
+              <a class="collapse-item" href="{% url 'doctor_nuevo' %}">Agregar</a>
+            {% endif %}
+            {% if perms.CEM.view_doctor %}
+              <a class="collapse-item" href="{% url 'doctores' %}">Listar</a>
+            {% endif %}
           </div>
         </div>
       </li>
 
        <!-- Divider -->
        <hr class="sidebar-divider">
+      {% endif %}
 
+      {% if perms.CEM.view_paciente or perms.CEM.change_paciente or perms.CEM.add_paciente or perms.CEM.delete_paciente %}
        <!-- Heading -->
        <div class="sidebar-heading">
          Pacientes
@@ -80,15 +88,21 @@
          <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
            <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header">Acciones:</h6>
-             <a class="collapse-item" href="{% url 'paciente_nuevo' %}">Agregar</a>
-             <a class="collapse-item" href="{% url 'pacientes' %}">Listar</a>
+            {% if perms.CEM.add_paciente %}
+              <a class="collapse-item" href="{% url 'paciente_nuevo' %}">Agregar</a>
+            {% endif %}
+            {% if perms.CEM.view_paciente %}
+              <a class="collapse-item" href="{% url 'pacientes' %}">Listar</a>
+            {% endif %}
            </div>
          </div>
        </li>
 
         <!-- Divider -->
       <hr class="sidebar-divider">
+      {% endif %}
 
+      {% if perms.CEM.view_consulta or perms.CEM.change_consulta or perms.CEM.add_consulta or perms.CEM.delete_consulta %}
       <!-- Heading -->
       <div class="sidebar-heading">
         Consultas
@@ -103,14 +117,19 @@
         <div id="collapseTwo3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Acciones:</h6>
-            <a class="collapse-item" href="{% url 'consulta_nuevo' %}">Agregar</a>
-            <a class="collapse-item" href="{% url 'consultas' %}">Listar</a>
+            {% if perms.CEM.add_consulta %}
+              <a class="collapse-item" href="{% url 'consulta_nuevo' %}">Agregar</a>
+            {% endif %}
+            {% if perms.CEM.view_consulta %}
+              <a class="collapse-item" href="{% url 'consultas' %}">Listar</a>
+            {% endif %}
           </div>
         </div>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
+      {% endif %}
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -140,19 +159,35 @@
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
+            
+            {% if request.user.is_authenticated %}  
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ request.user.username }}</span>
+                  <img class="img-profile rounded-circle" src="/CEM/imagenes/male-user-shadow.png">
                 </a>
-              </div>
-            </li>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                  </a>
+                </div>
+              </li>
+            {% else %}
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link" href="{% url 'login' %}" id="userDropdown">
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión</span>
+                </a>
+                <!-- Dropdown - User Information -->
+                <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                  </a>
+                </div> -->
+              </li>
+            {% endif %}
 
           </ul>
 
@@ -198,15 +233,15 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">¿Seguro que quires salir?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-body">Presiona "Logout" si quieres terminar la sesión.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
         </div>
       </div>
     </div>

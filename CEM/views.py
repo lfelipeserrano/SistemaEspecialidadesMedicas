@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView, TemplateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import permission_required, user_passes_test
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
@@ -10,19 +12,28 @@ from .forms import DoctorForm, PacienteForm, ConsultaForm
 class inicio(TemplateView):
     template_name = 'home.html'
 
+def error_404_view(request, exception):
+    return render(request, 'error_404.html')
+
+def permisoDenegado(request):
+    return render(request, 'permisos.html')
+
 #VISTAS DOCTOR
 class doctorInicio(TemplateView):
     template_name = 'doctorInicio.html'
 
+@permission_required('CEM.view_doctor', login_url='permisos')
 def doctores(request):
     doctores =  Doctor.objects.all()
     especialidades = Doctor.objects.all().distinct('especialidad')
     return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades})
 
+@permission_required('CEM.view_doctor', login_url='permisos')
 def doctorDatos(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
     return render(request, 'doctorDatos.html', {'doctor':doctor})
 
+@permission_required('CEM.add_doctor', login_url='permisos')
 def doctorNuevo(request):
     if request.method == 'POST':
         form = DoctorForm(request.POST, request.FILES)
@@ -40,6 +51,7 @@ def doctorNuevo(request):
         'form': form
     })
 
+@permission_required('CEM.change_doctor', login_url='permisos')
 def doctorEditar(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
     if request.method == 'POST':
@@ -60,26 +72,29 @@ def doctorEditar(request, pk):
         'form': form, 'doctor':doctor
     })  
 
-class DoctorEliminar(DeleteView):
-    model = Doctor
-    template_name = 'doctorDatos.html'
-    success_url = reverse_lazy('doctores')
+@permission_required('CEM.delete_doctor', login_url='permisos')
+def doctorEliminarFuncion(request, pk):
+    temp = Doctor.objects.get(pk=pk).delete()
+    return redirect('doctores')
 
 #VISTA PACIENTES
 class pacienteInicio(TemplateView):
     template_name = 'pacienteInicio.html'
     
+@permission_required('CEM.view_paciente', login_url='permisos')
 def pacientes(request):
     pacientes = Paciente.objects.all()
     doctores = Doctor.objects.all()
     return render(request, 'pacientes.html', {'pacientes':pacientes, 'doctores':doctores})
 
+@permission_required('CEM.view_paciente', login_url='permisos')
 def pacienteDatos(request, pk):
     paciente  = get_object_or_404(Paciente, pk=pk)
     doctores_paciente = paciente.doctores.all()
     # doctor = get_object_or_404(Doctor, primerApellidoDoctor=paciente.idDoctor)
     return render(request, 'pacienteDato.html', {'paciente':paciente, 'doctores_paciente':doctores_paciente})
 
+@permission_required('CEM.add_paciente', login_url='permisos')
 def pacienteNuevo(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST, request.FILES)
@@ -95,6 +110,7 @@ def pacienteNuevo(request):
         form = PacienteForm()
     return render(request, 'pacienteNuevo.html', {'form':form})
 
+@permission_required('CEM.change_paciente', login_url='permisos')
 def pacienteEditar(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     if request.method == 'POST':
@@ -113,21 +129,23 @@ def pacienteEditar(request, pk):
         form = PacienteForm(instance = paciente)
     return render(request, 'pacienteEditar.html', {'form':form, 'paciente':paciente})
 
-class PacienteEliminar(DeleteView):
-    model = Paciente
-    template_name = 'pacienteDato.html'
-    success_url = reverse_lazy('pacientes')
+@permission_required('CEM.delete_paciente', login_url='permisos')
+def pacienteEliminarFuncion(request, pk):
+    temp = Paciente.objects.get(pk=pk).delete()
+    return redirect('pacientes')
 
 #VISTAS CONSULTAS
 class consultaInicio(TemplateView):
     template_name = 'consultaInicio.html'
 
+@permission_required('CEM.view_consulta', login_url='permisos')
 def consultas(request):
     consultas = Consulta.objects.all()
     doctores = Doctor.objects.all()
     pacientes = Paciente.objects.all()
     return render(request, 'consultas.html', {'consultas':consultas, 'doctores':doctores, 'pacientes':pacientes})
 
+@permission_required('CEM.view_consulta', login_url='permisos')
 def consultaDatos(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     if consulta.idDoctor != None:
@@ -140,6 +158,7 @@ def consultaDatos(request, pk):
         paciente_consulta = Doctor.objects.none()
     return render(request, 'consultaDato.html', {'consulta':consulta, 'doctor_consulta':doctor_consulta, 'paciente_consulta':paciente_consulta})
 
+@permission_required('CEM.add_consulta', login_url='permisos')
 def consultaNuevo(request):
     if request.method == 'POST':
         form = ConsultaForm(request.POST)
@@ -150,6 +169,7 @@ def consultaNuevo(request):
         form = ConsultaForm()
     return render(request, 'consultaNuevo.html', {'form':form})
 
+@permission_required('CEM.change_consulta', login_url='permisos')
 def consultaEditar(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     if request.method == 'POST':
@@ -164,7 +184,11 @@ def consultaEditar(request, pk):
         form = ConsultaForm(instance = consulta)
     return render(request, 'consultaEditar.html', {'form':form})
 
-class ConsultaEliminar(DeleteView):
-    model = Consulta
-    template_name = 'consultaDato.html'
-    success_url = reverse_lazy('consultas')
+@permission_required('CEM.delete_consulta', login_url='permisos')
+def consultaEliminarFuncion(request, pk):
+    temp = Consulta.objects.get(pk=pk).delete()
+    return redirect('consultas')
+
+def logout_view(request):
+    logout(request)
+    return redirect('inicio')
