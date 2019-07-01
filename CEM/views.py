@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
+from django.db.models import Q
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
@@ -86,9 +87,16 @@ class doctorInicio(TemplateView):
 
 @permission_required('CEM.view_doctor', login_url='permisos')
 def doctores(request):
-    doctores =  Doctor.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        doctores = get_doc_queryset(query)
+    else :
+        doctores =  Doctor.objects.all()
     especialidades = Doctor.objects.all().distinct('especialidad')
-    return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades})
+    return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades, 'query':query})
 
 @permission_required('CEM.view_doctor', login_url='permisos')
 def doctorDatos(request, pk):
@@ -145,7 +153,14 @@ class pacienteInicio(TemplateView):
     
 @permission_required('CEM.view_paciente', login_url='permisos')
 def pacientes(request):
-    pacientes = Paciente.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query  = str(query)
+    if query !=  None :
+        pacientes = get_paciente_queryset(query)
+    else :
+        pacientes = Paciente.objects.all()
     doctores = Doctor.objects.all()
     return render(request, 'pacientes.html', {'pacientes':pacientes, 'doctores':doctores})
 
@@ -202,7 +217,14 @@ class consultaInicio(TemplateView):
 
 @permission_required('CEM.view_consulta', login_url='permisos')
 def consultas(request):
-    consultas = Consulta.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        consultas = get_consulta_queryset(query)
+    else :
+        consultas = Consulta.objects.all()
     doctores = Doctor.objects.all()
     pacientes = Paciente.objects.all()
     return render(request, 'consultas.html', {'consultas':consultas, 'doctores':doctores, 'pacientes':pacientes})
@@ -254,3 +276,46 @@ def consultaEliminarFuncion(request, pk):
 def logout_view(request):
     logout(request)
     return redirect('inicio')
+
+def get_doc_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        docs = Doctor.objects.filter(
+            Q(primerApellidoDoctor__icontains=q) |
+            Q(primerNombreDoctor__icontains=q)
+        ).distinct()
+    
+        for doc in docs:
+            queryset.append(doc)
+    
+    return list(set(queryset))
+
+def get_paciente_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        pacientes = Paciente.objects.filter(
+            Q(primerApellidoPaciente__icontains=q) |
+            Q(primerNombrePaciente__icontains=q) |
+            Q(expediente__icontains=q)
+        ).distinct()
+    
+        for paciente in pacientes:
+            queryset.append(paciente)
+    
+    return list(set(queryset))
+
+def get_consulta_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        consultas = Consulta.objects.filter(
+            Q(idDoctor_id__icontains=q) |
+            Q(expediente_id__icontains=q)
+        ).distinct()
+    
+        for consulta in consultas:
+            queryset.append(consulta)
+    
+    return list(set(queryset))
