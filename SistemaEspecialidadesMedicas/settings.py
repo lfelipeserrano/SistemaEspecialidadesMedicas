@@ -79,13 +79,14 @@ WSGI_APPLICATION = 'SistemaEspecialidadesMedicas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-import dj_database_url
-from decouple import config
 DATABASES = {
     'default': {
-        'ENGINE': dj_database_url.config(
-            default=config('DATABASE_URL')
-        )
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd6jrpsddh76njs',
+        'USER': 'glzrqwdevrqhuz',
+        'PASSWORD': 'a67c3cae3ddaba4af2d1f3a079ab9dfbbd6836575d044a5b1947025475a96022',
+        'HOST': 'ec2-54-83-1-101.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
