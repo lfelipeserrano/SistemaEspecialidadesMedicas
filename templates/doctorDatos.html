@@ -25,13 +25,13 @@
     </div>
     <br>
     
-        <div class="row">
+    <div class="row">
         <div class="col-md-4">
             <p><b>Primer Nombre:</b> {{ doctor.primerNombreDoctor }}</p>
         </div>
         <div class="col-md-4">
             {% if doctor.segundoNombreDoctor != None %}
-               <p><b>Segundo Nombre:</b> {{ doctor.segundoNombreDoctor }}</p>
+                <p><b>Segundo Nombre:</b> {{ doctor.segundoNombreDoctor }}</p>
             {% else %}
                 <p><b>Segundo Nombre:</b></p>
             {% endif %}
@@ -42,7 +42,6 @@
             {% else %}
                 <p><b>Sexo:</b> Femenino</p>
             {% endif %}
-        </div>
         </div>
     </div>
     <div class="row">
