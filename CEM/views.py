@@ -283,7 +283,8 @@ def get_doc_queryset(query=None):
     for q in queries:
         docs = Doctor.objects.filter(
             Q(primerApellidoDoctor__icontains=q) |
-            Q(primerNombreDoctor__icontains=q)
+            Q(primerNombreDoctor__icontains=q) |
+            Q(especialidad__icontains=q)
         ).distinct()
     
         for doc in docs:
@@ -298,7 +299,8 @@ def get_paciente_queryset(query=None):
         pacientes = Paciente.objects.filter(
             Q(primerApellidoPaciente__icontains=q) |
             Q(primerNombrePaciente__icontains=q) |
-            Q(expediente__icontains=q)
+            Q(expediente__icontains=q) |
+            Q(doctores__id__icontains=q)
         ).distinct()
     
         for paciente in pacientes:
@@ -311,11 +313,24 @@ def get_consulta_queryset(query=None):
     queries = query.split(" ")
     for q in queries:
         consultas = Consulta.objects.filter(
-            Q(idDoctor_id__icontains=q) |
-            Q(expediente_id__icontains=q)
+            Q(fechaConsulta__icontains=q) |
+            Q(idDoctor__id__icontains=q)
         ).distinct()
     
         for consulta in consultas:
             queryset.append(consulta)
     
     return list(set(queryset))
+
+# def get_doctorPaciente_queryset(query=None):
+#     queryset = []
+#     queries = query.split(" ")
+#     for q in queries:
+#         doctorPaciente = paciente.doctores.filter(
+#             Q(doctor_id__icontains=q)
+#         ).distinct()
+    
+#     for doctor in doctorPaciente:
+#         queryset.append(doctor)
+
+#     return  list(set(queryset))

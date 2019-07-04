@@ -30,9 +30,11 @@
                     </div>
                     <div class="col-sm-12 col-md-4">
                         <div class="float-right">
-                            <label>Búsqueda:
-                                <input type="text" id="busquedaPaciente" title="Introduzca un apellido"  class="form-control form-control-sm" placeholder="">
-                            </label>
+                            <form method="get">
+                                <label>Búsqueda:
+                                    <input type="text" id="busquedaPaciente" title="Introduzca un apellido"  class="form-control form-control-sm" placeholder="" name="q" id="id_q">
+                                </label>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -70,6 +72,7 @@
             var paciente = document.getElementById("pacienteSelect").value;
             console.log(paciente);
         }
+        document.getElementById("id_q").value = "{{ query }}"
     </script>
 {% endblock content %}
     
