@@ -3,31 +3,36 @@
 {% block content %}
 
     <div class="row">
+            <div class="col-md-4">
+                    <p><b>Fecha:</b> {{ consulta.fechaConsulta }}</p>
+                </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <p><b>Paciente:</b> {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}</p>
-            <a href="#" data-toggle="modal" data-target="#datosPacientes">Ver datos</a>
-        </div>
+        
+                <a href="#" data-toggle="modal" data-target="#datosPacientes">Ver datos</a>
+       </div>
+    </div>
+        <div class="row">
         <div class="col-md-4">
             <p><b>Doctor:</b> {{ doctor_consulta.primeroNombreDoctor }}  {{ doctor_consulta.primeroApellidoDoctor }}</p>
         </div>
-        <div class="col-md-4">
-            <p><b>Fecha:</b> {{ consulta.fechaConsulta }}</p>
-        </div>
     </div>
     <div class="row">
-        <div class="col mb-4">
+        <div class="col md-4">
             <p><b>Peso:</b> {{ consulta.pesoConsulta }}</p>
         </div>
-        <div class="col mb-4">
+        <div class="col md-4">
             <p><b>Altura:</b> {{ consulta.alturaConsulta }}</p>
         </div>
-        <div class="col mb-4">
+        <div class="col md-4">
             <p><b>Presión:</b> {{ consulta.presionConsulta }}</p>
         </div>
-        <div class="col mb-4">
+        <div class="col md-4">
             <p><b>Temperatura:</b> {{ consulta.temperatura }}</p>
         </div>
-        <div class="col mb-4">
+        <div class="col md-4">
             <p><b>Pulso:</b> {{ consulta.pulso }}</p>
         </div>
     </div>
@@ -43,21 +48,18 @@
     <div class="row">
         <div class="col-md-12">
             <p><b>Observaciones:</b></p>
-            <br>
             {{ consulta.observaciones }}
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <p><b>Receta:</b></p>
-            <br>
             {{ consulta.recetas }}
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <p><b>Exámenes solicitados:</b></p>
-            <br>
             {{ consulta.examenesSolicitados }}
         </div>
     </div>

@@ -9,33 +9,40 @@
     {% endif %}
         
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm">
+            
             {% if doctor.fotografiaDoctor.url != None %}     
-                <img src="{{ doctor.fotografiaDoctor.url }}" alt="" height="400" width="300">
+                <img src="{{ doctor.fotografiaDoctor.url }}" class="rounded mx-auto d-block" alt="" height="400" width="300">
             {% else %}
                 {% if doctor.sexoDoctor %}
-                    <img src="/CEM/imagenes/doctores/defaultDr.jpg" alt="" height="300" width="200">
+                    <img src="/CEM/imagenes/doctores/defaultDr.jpg" class="rounded mx-auto d-block" alt="" height="300" width="200">
                 {% else %}
-                    <img src="/CEM/imagenes/doctores/defaultDra.jpg" alt="" height="300" width="200">
+                    <img src="/CEM/imagenes/doctores/defaultDra.jpg" class="rounded mx-auto d-block" alt="" height="300" width="200">
                 {% endif %}
             {% endif %}
+
         </div>
-        <div class="col-md-3">
-            <p><b>Primer Nombre:</b>  {{ doctor.primerNombreDoctor }}</p>
+    </div>
+    <br>
+    
+        <div class="row">
+        <div class="col-md-4">
+            <p><b>Primer Nombre:</b> {{ doctor.primerNombreDoctor }}</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             {% if doctor.segundoNombreDoctor != None %}
                <p><b>Segundo Nombre:</b> {{ doctor.segundoNombreDoctor }}</p>
             {% else %}
                 <p><b>Segundo Nombre:</b></p>
             {% endif %}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             {% if doctor.sexoDoctor %}
                 <p><b>Sexo:</b> Masculino</p>
             {% else %}
                 <p><b>Sexo:</b> Femenino</p>
             {% endif %}
+        </div>
         </div>
     </div>
     <div class="row">
@@ -66,7 +73,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <p><p>Numero de DUI:</> {{ doctor.duiDoctor }}</p>
+            <p><b>Numero de DUI:</b> {{ doctor.duiDoctor }}</b>
         </div>
         <div class="col-md-4">
             <p><b>NIT:</b> {{ doctor.nitDoctor }}</p>

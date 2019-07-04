@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import date
-from .validators import validate_email,validate_nombre,validate_apellido,validate_texto,validate_telefono,validate_dui,validate_nit,validate_nrc
+from .validators import validate_email,validate_nombre,validate_apellido,validate_telefono,validate_dui,validate_nit,validate_nrc
 
 
 # Create your models here.
@@ -9,7 +9,7 @@ class Doctor(models.Model):
     segundoNombreDoctor = models.CharField(max_length=50, blank = True, null=True,validators=[validate_nombre])
     primerApellidoDoctor = models.CharField(max_length=50,validators=[validate_apellido])
     segundoApellidoDoctor = models.CharField(max_length=50, blank = True, null=True,validators=[validate_apellido])
-    especialidad = models.CharField(max_length=50,validators=[validate_texto])
+    especialidad = models.CharField(max_length=50)
     sexoDoctor = models.BooleanField()
     fechaNacimientoDoctor = models.DateField()
     telefonoDoctor = models.CharField(max_length=9,validators=[validate_telefono])
@@ -35,10 +35,10 @@ class Paciente(models.Model):
     pesoPaciente = models.FloatField(max_length=5, blank = True, null=True)
     telefonoPaciente = models.CharField(max_length=9, blank = True, null = True,validators=[validate_telefono])
     fotografiaPaciente = models.ImageField(upload_to = 'cem/imagenes/pacientes/', blank = True, null = True)
-    institucion = models.CharField(max_length = 50, blank = True, null = True,validators=[validate_texto])
+    institucion = models.CharField(max_length = 50, blank = True, null = True)
     aseguradora = models.CharField(max_length = 50, blank = True, null = True)
     alergias = models.TextField(max_length = 200, blank = True)
-    lugarProveniencia = models.CharField(max_length = 100, blank = True, null = True,validators=[validate_texto])
+    lugarProveniencia = models.CharField(max_length = 100, blank = True, null = True)
     tabquista = models.BooleanField()
     etilista = models.BooleanField()
     hipertenso = models.BooleanField()
@@ -47,7 +47,7 @@ class Paciente(models.Model):
     anemia = models.BooleanField()
     convulsiones = models.BooleanField()
     cancer = models.BooleanField()
-    lugarCancer = models.CharField(max_length = 50, blank = True, null = True,validators=[validate_texto])
+    lugarCancer = models.CharField(max_length = 50, blank = True, null = True)
     tratamientoCancer = models.CharField(max_length = 100, blank = True, null = True)
     antecedentes = models.TextField(max_length = 200, blank = True)
 

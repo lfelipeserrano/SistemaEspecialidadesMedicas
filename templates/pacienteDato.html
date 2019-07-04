@@ -2,28 +2,37 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm">
             {% if paciente.fotografiaPaciente.url != None %}     
-                <img src="{{ paciente.fotografiaPaciente.url }}" alt="" height="400" width="300">
+                <img src="{{ paciente.fotografiaPaciente.url }}" class="rounded mx-auto d-block" alt="" height="400" width="300">
             {% else %}
                 {% if paciente.sexoPaciente %}
-                    <img src="/CEM/imagenes/pacientes/sinfoto.png" alt="" height="300" width="200">
+                    <img src="/CEM/imagenes/pacientes/sinfoto.png"class="rounded mx-auto d-block"  alt="" height="300" width="200">
                 {% else %}
-                    <img src="/CEM/imagenes/pacientes/sinfoto.png" alt="" height="300" width="200">
+                    <img src="/CEM/imagenes/pacientes/sinfoto.png" class="rounded mx-auto d-block" alt="" height="300" width="200">
                 {% endif %}
             {% endif %}
         </div>
-        <div class="col-md-3">
+    </div> 
+    <br>
+    <div class="row">
+
+            <div class="col-md-3">
+                    <p><b>Expediente:</b> {{ paciente.expediente }}</p>
+                </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
             <p><b>Primer Nombre:</b> {{ paciente.primerNombrePaciente }}</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             {% if paciente.segundoNombrePaciente != None %}
                 <p><b>Segundo Nombre:</b>  {{ paciente.segundoNombrePaciente }}</p>
             {% else %}
                 <p><b>Segundo Nombre:</b></p>
             {% endif %}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             {% if paciente.sexoPaciente %}
                 <p><b>Sexo:</b> Masculino</p>
             {% else %}
@@ -47,16 +56,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
-            <p><b>Expediente:</b> {{ paciente.expediente }}</p>
-        </div>
-        <div class="col-md-3">
+        
+        <div class="col-md-4">
             <p><b>Peso:</b> {{ paciente.pesoPaciente }}</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <p><b>Altura:</b> {{ paciente.alturaPaciente }}</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <p><b>Teléfono:</b> {{ paciente.telefonoPaciente }}</p>
         </div>
     </div>
