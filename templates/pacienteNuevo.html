@@ -14,11 +14,13 @@
                 <label for="">Primer nombre:</label>
                 <br>
                 {{ form.primerNombrePaciente }}
+                {{form.primerNombrePaciente.errors}}
             </div>
             <div class="form-group col-md-3">
                 <label for="">Segundo nombre:</label>
                 <br>
                 {{ form.segundoNombrePaciente }}
+                {{form.segundoNombrePaciente.errors}}
             </div>
             <div class="form-group col-md-3">
                 <label for="">Sexo:</label>
@@ -32,11 +34,13 @@
                 <label for="">Primer apellido:</label>
                 <br>
                 {{ form.primerApellidoPaciente }}
+                {{form.primerApellidoPaciente.errors}}
             </div>
             <div class="form-group col-md-4>
                 <label for="">Segundo apellido:</label>
                 <br>
                 {{ form.segundoApellidoPaciente }}
+                {{form.segundoApellidoPaciente.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label for="">Fecha de nacimiento:</label>
@@ -59,6 +63,7 @@
                 <label for="">Teléfono:</label>
                 <br>
                 {{ form.telefonoPaciente }}
+                {{form.telefonoPaciente.errors}}
             </div>
         </div>
         <div class="form-row">

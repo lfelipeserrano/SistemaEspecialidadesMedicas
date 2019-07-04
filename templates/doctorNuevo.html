@@ -28,11 +28,13 @@
                <label> Primer apellido:</label>
                <br>
                 {{ form.primerApellidoDoctor }}
+                {{form.primerApellidoDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Segundo apellido:</label>
                 <br>
                 {{ form.segundoApellidoDoctor }}
+                {{form.segundoApellidoDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Fecha de nacimiento:</label>
@@ -56,6 +58,7 @@
                 <label>Número de teléfono:</label>
                 <br>
                 {{ form.telefonoDoctor }}
+                {{form.telefonoDoctor.errors}}
             </div>
         </div>
         <div class="form-row">
@@ -63,16 +66,19 @@
                 <label>DUI:</label>
                 <br>
                 {{ form.duiDoctor }}
+                {{form.duiDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>NIT:</label>
                 <br>
                 {{ form.nitDoctor }}
+                {{form.nitDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>NRC:</label>
                 <br>
                 {{ form.ncfDoctor }}
+                {{form.ncfDoctor.errors}}
             </div>
         </div>
         <div class="form-group">
