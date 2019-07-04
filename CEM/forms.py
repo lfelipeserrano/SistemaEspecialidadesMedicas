@@ -1,5 +1,8 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 from .models import Doctor, Paciente, Consulta
 

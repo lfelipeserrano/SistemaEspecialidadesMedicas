@@ -25,7 +25,7 @@ SECRET_KEY = 'vywna#2ly^^aes7674pj)9agg@8-7f^c2dmtzgg6_$8vt1+31m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cemapp.herokuapp.com']
 
 
 # Application definition
@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+    'cloudinary',
     'CEM',
 ]
 
 MIDDLEWARE = [
+     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -133,3 +135,9 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'inicio'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+import dj_database_url 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

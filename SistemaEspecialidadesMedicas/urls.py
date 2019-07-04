@@ -19,6 +19,9 @@ from . import settings
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 urlpatterns = [
     path('admin/', admin.site.urls),

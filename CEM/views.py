@@ -7,10 +7,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 from django.db.models import Q
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 # Create your views here.
+
+cloudinary.config(
+    cloud_name = "cemproject", 
+    api_key = "385198511276985", 
+    api_secret = "rQM7FyLe2hlX0LZC0H9yR3Nkm1o" 
+)
 
 class inicio(TemplateView):
     template_name = 'home.html'

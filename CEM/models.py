@@ -1,5 +1,9 @@
 from django.db import models
 from datetime import date
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Doctor(models.Model):
@@ -15,7 +19,7 @@ class Doctor(models.Model):
     duiDoctor = models.CharField(max_length = 12)
     nitDoctor = models.CharField(max_length = 20)
     ncfDoctor = models.CharField(max_length = 15)
-    fotografiaDoctor = models.ImageField(upload_to = 'doctores', blank = True, null=True)
+    fotografiaDoctor = CloudinaryField('image')
 
     def __str__(self):
         return self.primerApellidoDoctor
@@ -32,7 +36,7 @@ class Paciente(models.Model):
     alturaPaciente = models.IntegerField(blank = True, null=True)
     pesoPaciente = models.FloatField(max_length=5, blank = True, null=True)
     telefonoPaciente = models.CharField(max_length=9, blank = True, null = True)
-    fotografiaPaciente = models.ImageField(upload_to = 'cem/imagenes/pacientes/', blank = True, null = True)
+    fotografiaPaciente = CloudinaryField('image')
     institucion = models.CharField(max_length = 50, blank = True, null = True)
     aseguradora = models.CharField(max_length = 50, blank = True, null = True)
     alergias = models.TextField(max_length = 200, blank = True)
