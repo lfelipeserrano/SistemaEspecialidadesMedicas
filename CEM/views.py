@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
+from .validators import validate_email
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm

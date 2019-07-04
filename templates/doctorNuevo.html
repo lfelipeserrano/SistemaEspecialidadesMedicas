@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {{ form.media }}
     <h1 class="h1 mb-4 text-gray-800">Nuevo doctor</h1>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -49,6 +50,7 @@
                 <label>Correo electrónico:</label>
                 <br>
                 {{ form.correoElectronico }}
+                {{form.correoElectronico.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Número de teléfono:</label>

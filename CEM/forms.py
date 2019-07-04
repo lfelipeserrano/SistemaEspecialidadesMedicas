@@ -1,6 +1,6 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
-
+from .validators import validate_email
 from .models import Doctor, Paciente, Consulta
 
 class DoctorForm(forms.ModelForm):
@@ -10,7 +10,8 @@ class DoctorForm(forms.ModelForm):
         'telefonoDoctor', 'correoElectronico', 'duiDoctor', 'nitDoctor', 'ncfDoctor', 'fotografiaDoctor', )
         widgets = {
             'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y')
-        }
+        }           
+   
 
     def __init__(self, *args, **kwargs):
         super(DoctorForm, self).__init__(*args, **kwargs)
@@ -23,7 +24,9 @@ class PacienteForm(forms.ModelForm):
         'alturaPaciente', 'pesoPaciente', 'telefonoPaciente', 'fotografiaPaciente', 'institucion', 'aseguradora', 'alergias', 'lugarProveniencia', 'tabquista', 'etilista',
         'hipertenso', 'diabetico', 'tuberculosis', 'anemia', 'convulsiones', 'convulsiones', 'cancer', 'lugarCancer', 'tratamientoCancer', 'antecedentes', )
         widgets = {
-            'fechaNacimientoPaciente' : DatePickerInput(format='%d/%m/%Y')
+            'fechaNacimientoPaciente' : DatePickerInput(format='%d/%m/%Y'),
+            'alturaPaciente' : forms.TextInput(attrs={'placeholder':'Altura en centimetros'}),
+            'pesoPaciente' : forms.TextInput(attrs={'placeholder':'Peso en libras'})
         }
 
     # idDoctor = forms.ModelChoiceField(queryset=Doctor.objects.all())
