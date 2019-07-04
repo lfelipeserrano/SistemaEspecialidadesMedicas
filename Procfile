@@ -1,1 +1,1 @@
-web: gunicorn SistemaEspecialidadesMedicas.wsgi --log-file - 
+web: gunicorn SistemaEspecialidadesMedicas.wsgi --log-file -
