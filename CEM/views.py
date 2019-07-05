@@ -45,9 +45,16 @@ def signup(request):
 
 @permission_required('CEM.view_user', login_url='permisos')
 def usuarios(request):
-    usuarios = User.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        usuarios = get_usuario_queryset(query)
+    else :
+        usuarios = User.objects.all()
     grupos = Group.objects.all()
-    return render(request, 'usuarios.html', {'usuarios':usuarios, 'grupos':grupos})
+    return render(request, 'usuarios.html', {'usuarios':usuarios, 'grupos':grupos, 'query':query})
 
 @permission_required('CEM.view_user', login_url='permisos')
 def usuarioDatos(request, pk):
@@ -323,15 +330,15 @@ def get_consulta_queryset(query=None):
     
     return list(set(queryset))
 
-# def get_doctorPaciente_queryset(query=None):
-#     queryset = []
-#     queries = query.split(" ")
-#     for q in queries:
-#         doctorPaciente = paciente.doctores.filter(
-#             Q(doctor_id__icontains=q)
-#         ).distinct()
-    
-#     for doctor in doctorPaciente:
-#         queryset.append(doctor)
+def get_usuario_queryset(query=None):
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        usuarios = User.objects.filter(
+            Q(username__icontains=q)
+        ).distinct()
 
-#     return  list(set(queryset))
+        for usuario in usuarios:
+            queryset.append(usuario)
+
+    return list(set(queryset))

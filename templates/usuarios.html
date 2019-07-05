@@ -10,20 +10,13 @@
         <div class="card-body">
             <div class="table-responsive">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <label>Grupo:
-                            <select name="grupo" id="grupoSelect" onchange="seleccionGrupo()" class="custom-select custom-select-sm form-control form-control-sm">
-                                {% for grupo in grupos %}
-                                    <option value="{{ grupo.name }}">{{ grupo.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="float-right">
-                            <label>Búsqueda:
-                                <input type="search" class="form-control form-control-sm" placeholder="">
-                            </label>
+                    <div class="col-sm-12 col-md-12">
+                        <div class="float-left">
+                            <form method="get">
+                                <label>Búsqueda:
+                                    <input type="search" class="form-control form-control-sm" placeholder="Usuario" name="q" id="id_q">
+                                </label>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -53,6 +46,8 @@
                 var grupo = document.getElementById("grupoSelect").value;
                 console.log(grupo);
             }
+
+            document.getElementById("id_q").value = "{{ query }}"
         </script>
 {% endblock content %}
     
