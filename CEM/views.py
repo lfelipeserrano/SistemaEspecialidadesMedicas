@@ -199,7 +199,7 @@ def pacienteEditar(request, pk):
                 paciente.sexoPaciente = True
             else:
                 paciente.sexoPaciente = False
-            paciente.save()
+            form.save()
             return redirect('pacientes')
         else:
             form = PacienteForm()
