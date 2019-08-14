@@ -4,150 +4,183 @@
 {{ form.media }}
     <h1 class="h1 mb-4 text-gray-800">Nuevo paciente</h1>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <label for="">Expediente:</label>
-                <br>
-                {{ form.expediente }}
+        <div class="form-row form-group ">
+            <div class="col">
+                <label for="">Expediente:</label><br>
+
+                {{ form.expediente }}<!--DEBE AUTOGENERARSE-->
             </div>
-            <div class="form-group col-md-3">
+        </div>
+        
+        <div class="form-row form-group mt-2">
+            <div class="col-4">
                 <label for="">Primer nombre:</label>
                 <br>
                 {{ form.primerNombrePaciente }}
                 {{form.primerNombrePaciente.errors}}
             </div>
-            <div class="form-group col-md-3">
+            <div class="col-4">       
                 <label for="">Segundo nombre:</label>
                 <br>
                 {{ form.segundoNombrePaciente }}
                 {{form.segundoNombrePaciente.errors}}
             </div>
-            <div class="form-group col-md-3">
+            <div class="col-4">  
                 <label for="">Sexo:</label>
                 <br>
                 <input type="radio" name="sexo" value="True" required> Masculino
                 <input type="radio" name="sexo" value="False"> Femenino
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
+
+
+
+        <div class="form-row form-group mt-4">
+            <div class=" col-md-4">
                 <label for="">Primer apellido:</label>
                 <br>
                 {{ form.primerApellidoPaciente }}
                 {{form.primerApellidoPaciente.errors}}
             </div>
-            <div class="form-group col-md-4>
+            <div class="col-md-4">
                 <label for="">Segundo apellido:</label>
                 <br>
                 {{ form.segundoApellidoPaciente }}
                 {{form.segundoApellidoPaciente.errors}}
             </div>
-            <div class="form-group col-md-4">
+            <div class="col-md-4">
                 <label for="">Fecha de nacimiento:</label>
                 <br>
                 {{ form.fechaNacimientoPaciente }}
             </div>
         </div>
+
         <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="">Altura:</label>
-                <br>
-                {{ form.alturaPaciente }}
+                <div class="form-group col-md-4">
+                    <label for="">Altura:</label>
+                    <br>
+                    {{ form.alturaPaciente }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">Peso:</label>
+                    <br>
+                    {{ form.pesoPaciente }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">Teléfono:</label>
+                    <br>
+                    {{ form.telefonoPaciente }}
+                </div>
             </div>
-            <div class="form-group col-md-4>
-                <label for="">Peso:</label>
-                <br>
-                {{ form.pesoPaciente }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="">Teléfono:</label>
-                <br>
-                {{ form.telefonoPaciente }}
-                {{form.telefonoPaciente.errors}}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
+
+        <div class="form-row mt-4  justify-content-between">
+            <div class="form-group col-md-2">
                 <label for="">Doctores asignados:</label>
                 <br>
                 {{ form.doctores }}
             </div>
-            <div class="form-group col-md-4>
+            <div class="form-group col-md-2">
+                    <label for="">Lugar de proveniencia:</label>
+                    <br>
+                    {{ form.lugarProveniencia }}
+            </div>
+
+            <div class="form-group col-md-2">
                 <label for="">Institución de proveniencia:</label>
                 <br>
                 {{ form.institucion }}
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <label for="">Aseguradora:</label>
                 <br>
                 {{ form.aseguradora }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row form-group">
+            <div class="col-4">
                 <label for="">Alergias</label>
                 <br>
                 {{ form.alergias }}
             </div>
+
+            <div class="col-8">
+                    <label for="">Antecedentes:</label>
+                    <br>
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.tabquista }} Tabaquista
+                        </label> 
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.etilista }} Etitlista
+                        </label> 
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.hipertenso }} Hipertenso
+                        </label> 
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.diabetico }} Diabetico
+                        </label> 
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.tuberculosis }} Tuberculosis
+                        </label> 
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.anemia }} Anemia
+                        </label> 
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label ">
+                            {{ form.convulsiones }} Convulsiones
+                        </label> 
+                    </div> 
+                    
+                        <div class="form-check mt-3">
+                            <label class="form-check-label ">
+                                {{ form.cancer }} Cáncer
+                            </label> 
+                        
+                            <label class="ml-5">Lugar de cáncer:</label>
+                            {{ form.lugarCancer }}
+                        
+                            <label class="ml-5">Tratamiento:</label>
+                            {{ form.tratamientoCancer }}
+                        </div>
+                    
+                                        
+            </div>
         </div>
+
+
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="">Lugar de proveniencia:</label>
-                <br>
-                {{ form.lugarProveniencia }}
-            </div>
-            <div class="form-group col-md-8">
-                <label for="">Antecedentes:</label>
-                <br>
-                Tabaquista:
-                {{ form.tabquista }}
-                Etitlista:
-                {{ form.etilista }}
-                Hipertenso:
-                {{ form.hipertenso }}
-                Diabetico:
-                {{ form.diabetico }}
-                Tuberculosis:
-                {{ form.tuberculosis }}
-                Anemia:
-                {{ form.anemia }}
-                Convulsiones:
-                {{ form.convulsiones }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="">Cáncer:</label>
-                <br>
-                {{ form.cancer }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="">Lugar de cáncer:</label>
-                <br>
-                {{ form.lugarCancer }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="">Tratamiento:</label>
-                <br>
-                {{ form.tratamientoCancer }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
                 <label for="">Otros antecedentes:</label>
                 <br>
                 {{ form.antecedentes }}
             </div>
+
+            <div class="form-group col-4  align-self-end">
+                <label>Fotografía:</label>
+                <br>
+                {{ form.fotografiaPaciente }}
+            </div>
         </div>
-        <div class="form-group">
-            <label>Fotografía:</label>
-            <br>
-            {{ form.fotografiaPaciente }}
-        </div>
-        <div class="col-md-12">
-            <div class="float-right">
-                <a href="{% url 'pacientes' %}" class="btn btn-secondary">Cancelar</a>
-                <input type="submit" value="Guardar" class="btn btn-primary">
+        
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-2 ml-5">
+                    <a href="{% url 'pacientes' %}" class="btn btn-secondary">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-primary">
             </div>
         </div>
     </form>
