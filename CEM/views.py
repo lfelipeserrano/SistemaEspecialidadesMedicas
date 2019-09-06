@@ -9,6 +9,13 @@ from django.contrib.auth.decorators import permission_required, user_passes_test
 from .validators import validate_email
 from django.db.models import Q
 
+#Importamos settings para poder tener a la mano la ruta de la carpeta media
+from django.conf import settings 
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.views.generic import View
+from django.http import HttpResponse # importe nuevo para pdf
+
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 # Create your views here.
@@ -342,3 +349,28 @@ def get_usuario_queryset(query=None):
             queryset.append(usuario)
 
     return list(set(queryset))
+
+#REPORTE CONSULTAS
+class ReporteConsultaPDF(View):
+    def cabecera(self,pdf):
+        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
+        archivo_imagen = settings.MEDIA_ROOT+'/logo.png'
+        #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
+        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+    
+    def get(self, request, *args, **kwargs):
+        #Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        #Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        #Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response

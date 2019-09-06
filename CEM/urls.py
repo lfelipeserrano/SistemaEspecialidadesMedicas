@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from .views import *
 
 urlpatterns = [
@@ -36,6 +37,9 @@ urlpatterns = [
     path('doctor/nuevo/', doctorNuevo, name='doctor_nuevo'),
     path('doctor/<int:pk>/', doctorDatos, name='doctor_datos'),
     path('doctor/list/', doctores, name='doctores'),
+
+    #URL reporte consultas
+    path('reporte_consultas_pdf/', login_required(ReporteConsultaPDF.as_view()), name="reporte_consultas_pdf"),
 
     path('', inicio.as_view(), name='inicio')
 ]
