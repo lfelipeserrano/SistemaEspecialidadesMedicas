@@ -8,27 +8,34 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 from .validators import validate_email
 from django.db.models import *
+from django.db import models 
+from  datetime import datetime
+
+from .models import Doctor, Paciente, Consulta
+from .forms import DoctorForm, PacienteForm, ConsultaForm
 
 #Importamos settings para poder tener a la mano la ruta de la carpeta media
 from django.conf import settings 
 from io import BytesIO
-from reportlab.lib.pagesizes import A4, landscape #nueva
+from reportlab.lib.pagesizes import A4,letter #nueva
 from reportlab.pdfbase import pdfmetrics #nueva
 from reportlab.pdfgen import canvas
 from django.views.generic import View
 from django.http import HttpResponse 
+
 # importe nuevo para pdf
-from reportlab.platypus import SimpleDocTemplate, TableSyle
+from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
+from reportlab.platypus import SimpleDocTemplate,TableStyle
 from reportlab.platypus.tables import Table
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, Spacer, Flowable
+from reportlab.platypus import Paragraph,Spacer,Flowable
 from reportlab.lib import colors
 
+cm = 2.54
 
 
 
-from .models import Doctor, Paciente, Consulta
-from .forms import DoctorForm, PacienteForm, ConsultaForm
+
 # Create your views here.
 
 class inicio(TemplateView):
@@ -362,17 +369,14 @@ def get_usuario_queryset(query=None):
     return list(set(queryset))
 
 #REPORTE CONSULTAS
-class ReporteConsultaPDF(View):
+"""class ReporteConsultaPDF(View):
     def cabecera(self,pdf):
         #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
         archivo_imagen = settings.MEDIA_ROOT+'/logo.png'
-
         #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
         pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
-
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 16)
-
         #Dibujamos una cadena en la ubicación X,Y especificada
         pdf.drawString(230, 790, u"CLINICAS CEM")
         pdf.setFont("Helvetica", 14)
@@ -393,8 +397,83 @@ class ReporteConsultaPDF(View):
         pdf = buffer.getvalue()
         buffer.close()
         response.write(pdf)
-        return response
+        return response"""
     
-    #MODIFICAR  LOS DATOS PARA LOS CAMPOS REQUERIDOS DE CONSULTAS EN LA  BASE DE DATOS
+    #REPORTE CONSULTAS
+def reporteConsultas(request):
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(response, pagesize=letter)
 
-   
+        style = getSampleStyleSheet()
+        elementos=[]
+        texto1 = Paragraph("Reporte de Consultas",style['Heading1'])
+        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
+        #img.hAlign = 'LEFT'
+        dibujo = Drawing(30,30)
+        #dibujo.translate(10,10)
+        dibujo.add(img)                 #1
+        elementos.append(dibujo)
+        #dibujo = Drawing(30,30)
+        #dibujo.add(Line(400, 50, 510, 50))
+        ahora = datetime.now()
+        fecha = ahora.strftime("%d/%m/%Y")
+        
+        move = movText(387,25,fecha)
+        elementos.append(move)
+
+        elementos.append(texto1)        #3   
+        line= linea(450,0)
+        elementos.append(line)   
+        # story.append(Spacer(0, 20))
+        tab = Spacer(1,40)
+        elementos.append(tab)
+       #table
+        encabezados = ('DOCTOR','EXPEDIENTE','FECHA CONSULTA','PESO  CONSULTA',)
+        info_tabla = [(cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
+        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
+        
+        tabla.setStyle(TableStyle(
+            [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+            ]
+        ))
+
+        elementos.append(tabla)                 #4
+        elementos.append(Spacer(1,40))
+        pdf.build(elementos)
+        """pdf = canvas.Canvas(buffer, pagesize=A4)
+        pdf.drawImage("CEM/imagenes/logo.PNG",50,760,width=200,height=50)
+        pdf.setFont("Helvetica",20)
+        pdf.drawString(230,730,"REPORTE") 
+        pdf.setFont("Helvetica",18)
+        pdf.drawString(240,712,"Doctores")
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)"""
+
+        return response
+
+
+class linea(Flowable):
+    def __init__(self,width,height):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        self.canv.line(0,self.height,self.width,self.height)    
+
+
+class movText(Flowable):
+    def __init__(self,x,y,text=""):
+        Flowable.__init__(self)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self):
+        self.canv.drawString(self.x,self.y,self.text)
