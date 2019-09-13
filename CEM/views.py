@@ -7,14 +7,25 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 from .validators import validate_email
-from django.db.models import Q
+from django.db.models import *
 
 #Importamos settings para poder tener a la mano la ruta de la carpeta media
 from django.conf import settings 
 from io import BytesIO
+from reportlab.lib.pagesizes import A4, landscape #nueva
+from reportlab.pdfbase import pdfmetrics #nueva
 from reportlab.pdfgen import canvas
 from django.views.generic import View
-from django.http import HttpResponse # importe nuevo para pdf
+from django.http import HttpResponse 
+# importe nuevo para pdf
+from reportlab.platypus import SimpleDocTemplate, TableSyle
+from reportlab.platypus.tables import Table
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, Spacer, Flowable
+from reportlab.lib import colors
+
+
+
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
@@ -355,8 +366,17 @@ class ReporteConsultaPDF(View):
     def cabecera(self,pdf):
         #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
         archivo_imagen = settings.MEDIA_ROOT+'/logo.png'
+
         #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
         pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+
+        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+        pdf.setFont("Helvetica", 16)
+
+        #Dibujamos una cadena en la ubicación X,Y especificada
+        pdf.drawString(230, 790, u"CLINICAS CEM")
+        pdf.setFont("Helvetica", 14)
+        pdf.drawString(200, 770, u"REPORTE DE PERSONAS")
     
     def get(self, request, *args, **kwargs):
         #Indicamos el tipo de contenido a devolver, en este caso un pdf
@@ -374,3 +394,7 @@ class ReporteConsultaPDF(View):
         buffer.close()
         response.write(pdf)
         return response
+    
+    #MODIFICAR  LOS DATOS PARA LOS CAMPOS REQUERIDOS DE CONSULTAS EN LA  BASE DE DATOS
+
+   
