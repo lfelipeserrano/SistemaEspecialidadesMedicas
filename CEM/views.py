@@ -17,7 +17,7 @@ from .forms import DoctorForm, PacienteForm, ConsultaForm
 #Importamos settings para poder tener a la mano la ruta de la carpeta media
 from django.conf import settings 
 from io import BytesIO
-from reportlab.lib.pagesizes import A4,letter #nueva
+from reportlab.lib.pagesizes import A4, letter, landscape #nueva
 from reportlab.pdfbase import pdfmetrics #nueva
 from reportlab.pdfgen import canvas
 from django.views.generic import View
@@ -367,43 +367,21 @@ def get_usuario_queryset(query=None):
             queryset.append(usuario)
 
     return list(set(queryset))
-
-#REPORTE CONSULTAS
-"""class ReporteConsultaPDF(View):
-    def cabecera(self,pdf):
-        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-        archivo_imagen = settings.MEDIA_ROOT+'/logo.png'
-        #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
-        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
-        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
-        pdf.setFont("Helvetica", 16)
-        #Dibujamos una cadena en la ubicación X,Y especificada
-        pdf.drawString(230, 790, u"CLINICAS CEM")
-        pdf.setFont("Helvetica", 14)
-        pdf.drawString(200, 770, u"REPORTE DE PERSONAS")
-    
-    def get(self, request, *args, **kwargs):
-        #Indicamos el tipo de contenido a devolver, en este caso un pdf
-        response = HttpResponse(content_type='application/pdf')
-        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
-        buffer = BytesIO()
-        #Canvas nos permite hacer el reporte con coordenadas X y Y
-        pdf = canvas.Canvas(buffer)
-        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
-        self.cabecera(pdf)
-        #Con show page hacemos un corte de página para pasar a la siguiente
-        pdf.showPage()
-        pdf.save()
-        pdf = buffer.getvalue()
-        buffer.close()
-        response.write(pdf)
-        return response"""
-    
+   
     #REPORTE CONSULTAS
 def reporteConsultas(request):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = SimpleDocTemplate(response, pagesize=letter)
+
+        """PONDREMOS LA PAGINA DE MANERA HORIZONTAL
+        pdf = SimpleDocTemplate(buffer,
+                                pagesize=landscape(letter),
+                                rightMargin=40,
+                                leftMargin=40,
+                                topMargin=60,
+                                bottomMargin=18
+                                )"""
 
         style = getSampleStyleSheet()
         elementos=[]
@@ -428,7 +406,7 @@ def reporteConsultas(request):
         # story.append(Spacer(0, 20))
         tab = Spacer(1,40)
         elementos.append(tab)
-       #table
+        #table
         encabezados = ('DOCTOR','EXPEDIENTE','FECHA CONSULTA','PESO  CONSULTA',)
         info_tabla = [(cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
         tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
@@ -440,23 +418,11 @@ def reporteConsultas(request):
             ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
             ]
         ))
-
         elementos.append(tabla)                 #4
         elementos.append(Spacer(1,40))
         pdf.build(elementos)
-        """pdf = canvas.Canvas(buffer, pagesize=A4)
-        pdf.drawImage("CEM/imagenes/logo.PNG",50,760,width=200,height=50)
-        pdf.setFont("Helvetica",20)
-        pdf.drawString(230,730,"REPORTE") 
-        pdf.setFont("Helvetica",18)
-        pdf.drawString(240,712,"Doctores")
-        pdf.save()
-        pdf = buffer.getvalue()
-        buffer.close()
-        response.write(pdf)"""
-
+     
         return response
-
 
 class linea(Flowable):
     def __init__(self,width,height):
@@ -466,7 +432,6 @@ class linea(Flowable):
 
     def draw(self):
         self.canv.line(0,self.height,self.width,self.height)    
-
 
 class movText(Flowable):
     def __init__(self,x,y,text=""):
