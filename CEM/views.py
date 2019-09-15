@@ -368,7 +368,7 @@ def get_usuario_queryset(query=None):
 
     return list(set(queryset))
    
-    #REPORTE CONSULTAS
+    ################REPORTE CONSULTAS#########################
 def reporteConsultas(request):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
@@ -442,3 +442,5 @@ class movText(Flowable):
 
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
+        ################ FIN   DEL   REPORTE   DE   CONSULTAS   ###################
+
