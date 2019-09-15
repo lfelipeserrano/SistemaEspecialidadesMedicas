@@ -74,6 +74,14 @@
         }
         document.getElementById("id_q").value = "{{ query }}"
     </script>
-    <input type="button" onclick=" location.href= 'http://127.0.0.1:8000/reporte_consultas_pdf/' " value="PDF" name="reporte consultas PDF" />
+
+    <!--BOTON PARA REDIRIGIR AL PDF DE REPORTE DE CONSULTAS-->
+    <div class="col-md-12">
+            <div class="float-right">
+                <!--<a href="{% url 'doctores' %}" class="btn btn-secondary mr-2">Cancelar</a> -->
+                <input type="button" onclick="location.href= 'reporte_consultas_pdf'" value="Generar PDF" class="btn btn-primary mr-2">
+            </div>
+    </div>
+            
 {% endblock content %}
     
