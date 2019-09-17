@@ -36,6 +36,7 @@ urlpatterns = [
     path('doctor/nuevo/', doctorNuevo, name='doctor_nuevo'),
     path('doctor/<int:pk>/', doctorDatos, name='doctor_datos'),
     path('doctor/list/', doctores, name='doctores'),
+    path('doctor/reporteDoctores/', reporteDoctores, name='reporteDoctores'),
 
     path('', inicio.as_view(), name='inicio')
 ]
