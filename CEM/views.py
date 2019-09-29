@@ -175,7 +175,7 @@ def doctorEditar(request, pk):
 def doctorEliminarFuncion(request, pk):
     temp = Doctor.objects.get(pk=pk).delete()
     return redirect('doctores')
-
+    
 #VISTA PACIENTES
 class pacienteInicio(TemplateView):
     template_name = 'pacienteInicio.html'
