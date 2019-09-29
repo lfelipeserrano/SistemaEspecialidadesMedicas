@@ -10,6 +10,7 @@ import calendar
 from .models import *
 from .utils import Calendar
 from .forms import EventForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -24,7 +25,14 @@ class CalendarView(generic.ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = Calendar(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True)
+        if  self.request.user.groups.all()[0].name == "Doctores" :
+            doctores = Doctor.objects.all()
+            for doctor in doctores :
+                if  doctor.user == self.request.user :
+                    html_cal = cal.formatmonth(doctor, withyear=True)
+        else :
+            html_cal = cal.formatmonth(withyear=True)
+            
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)

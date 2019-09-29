@@ -1,70 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <style>
-    .calendar {
-    width: 75%;
-    margin: auto;
-    font-size: 13px;
-    }
+    <h1 class="h1 mb-4 text-gray-800">Calendario</h1>
 
-    .calendar tr, .calendar td {
-    border: 1px solid black;
-    }
-
-    .calendar th {
-    padding: 10px;
-    text-align: center;
-    font-size: 18px;
-    }
-
-    .calendar td {
-    width: 100px;
-    height: 100px;
-    padding: 20px 0px 0px 5px;
-    }
-
-    .month {
-    font-size: 25px;
-    }
-
-    .date {
-    font-size: 16px;
-    }
-
-    ul {
-    height: 50%;
-    padding: 0px 5px 0px 20px;
-    }
-
-    a {
-    color: #17a2b8;
-    }
-    
-    .left {
-    float: left;
-    }
-
-    .right {
-    float: right;
-    }
-
-    .btn {
-    outline: none;
-    color: black;
-    background-color: transparent;
-    box-shadow: 0 0 0 0;
-    }
-
-    .clearfix {
-    margin: 15px;
-    }
-    </style>
-
-<div class="clearfix">
-	<a class="btn btn-info left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-	<a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
-	<a class="btn btn-info right" href="{% url 'event_new' %}"> New Event </a>
-</div>
-    {{ calendar }}
+    <div class="row">
+        <div class="col-12">
+            {{ calendar }}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col text-center">
+            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+            <a class="btn btn-secondary" href="{% url 'event_new' %}"> New Event </a>
+            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+        </div>
+    </div>
 {% endblock content%}

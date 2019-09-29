@@ -5,7 +5,7 @@ from .views import *
 from . import views
 
 urlpatterns = [
-   path('calendario/', index, name='inicio'),
+   # path('calendario/', index, name='inicioCalendario'),
    url(r'^calendar/$', views.CalendarView.as_view(), name='calendar'),
    url(r'^event/new/$', views.event, name='event_new'),
    url(r'^event/edit/(?P<event_id>\d+)/$', views.event, name='event_edit')
