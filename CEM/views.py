@@ -28,6 +28,7 @@ from reportlab.platypus.tables import Table
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph,Spacer,Flowable
 from reportlab.lib import colors
+from  datetime import datetime
 
 cm = 2.54
 
@@ -305,8 +306,66 @@ def logout_view(request):
     logout(request)
     return redirect('inicio')
 
-<<<<<<< HEAD
-"""
+
+    def get_doc_queryset(query=None):
+        queryset =[]
+        queries = query.split(" ")
+    for q in queries:
+        docs = Doctor.objects.filter(
+            Q(primerApellidoDoctor__icontains=q) |
+            Q(primerNombreDoctor__icontains=q) |
+            Q(especialidad__icontains=q)
+        ).distinct()
+    
+        for doc in docs:
+            queryset.append(doc)
+    
+    return list(set(queryset))
+
+def get_paciente_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        pacientes = Paciente.objects.filter(
+            Q(primerApellidoPaciente__icontains=q) |
+            Q(primerNombrePaciente__icontains=q) |
+            Q(expediente__icontains=q) |
+            Q(doctores__id__icontains=q)
+        ).distinct()
+    
+        for paciente in pacientes:
+            queryset.append(paciente)
+    
+    return list(set(queryset))
+
+def get_consulta_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        consultas = Consulta.objects.filter(
+            Q(fechaConsulta__icontains=q) |
+            Q(idDoctor__id__icontains=q)
+        ).distinct()
+    
+        for consulta in consultas:
+            queryset.append(consulta)
+    
+    return list(set(queryset))
+
+def get_usuario_queryset(query=None):
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        usuarios = User.objects.filter(
+            Q(username__icontains=q)
+        ).distinct()
+
+        for usuario in usuarios:
+            queryset.append(usuario)
+
+    return list(set(queryset))
+
+
 #para generar pdf de pacientes
 ################REPORTE PACIENTES#########################
 def reportePacientes(request):
@@ -444,63 +503,4 @@ class movText(Flowable):
 
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
-        ################ FIN   DEL   REPORTE   DE   DOCTORES   ###################"""
-=======
-def get_doc_queryset(query=None):
-    queryset =[]
-    queries = query.split(" ")
-    for q in queries:
-        docs = Doctor.objects.filter(
-            Q(primerApellidoDoctor__icontains=q) |
-            Q(primerNombreDoctor__icontains=q) |
-            Q(especialidad__icontains=q)
-        ).distinct()
-    
-        for doc in docs:
-            queryset.append(doc)
-    
-    return list(set(queryset))
-
-def get_paciente_queryset(query=None):
-    queryset =[]
-    queries = query.split(" ")
-    for q in queries:
-        pacientes = Paciente.objects.filter(
-            Q(primerApellidoPaciente__icontains=q) |
-            Q(primerNombrePaciente__icontains=q) |
-            Q(expediente__icontains=q) |
-            Q(doctores__id__icontains=q)
-        ).distinct()
-    
-        for paciente in pacientes:
-            queryset.append(paciente)
-    
-    return list(set(queryset))
-
-def get_consulta_queryset(query=None):
-    queryset =[]
-    queries = query.split(" ")
-    for q in queries:
-        consultas = Consulta.objects.filter(
-            Q(fechaConsulta__icontains=q) |
-            Q(idDoctor__id__icontains=q)
-        ).distinct()
-    
-        for consulta in consultas:
-            queryset.append(consulta)
-    
-    return list(set(queryset))
-
-def get_usuario_queryset(query=None):
-    queryset = []
-    queries = query.split(" ")
-    for q in queries:
-        usuarios = User.objects.filter(
-            Q(username__icontains=q)
-        ).distinct()
-
-        for usuario in usuarios:
-            queryset.append(usuario)
-
-    return list(set(queryset))
->>>>>>> 32bbc2f3c9b011448d40b77b3fd2cc3c29974d12
+        ################ FIN   DEL   REPORTE   DE   DOCTORES   ###################
