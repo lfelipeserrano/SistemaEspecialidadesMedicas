@@ -6,9 +6,33 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
+from .validators import validate_email
+from django.db.models import *
+from django.db import models 
+from  datetime import datetime
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
+
+#Importamos settings para poder tener a la mano la ruta de la carpeta media
+from django.conf import settings 
+from io import BytesIO
+from reportlab.lib.pagesizes import A4, letter, landscape #nueva
+from reportlab.pdfbase import pdfmetrics #nueva
+from reportlab.pdfgen import canvas
+from django.views.generic import View
+from django.http import HttpResponse 
+
+# importe nuevo para pdf
+from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
+from reportlab.platypus import SimpleDocTemplate,TableStyle
+from reportlab.platypus.tables import Table
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph,Spacer,Flowable
+from reportlab.lib import colors
+
+cm = 2.54
+
 # Create your views here.
 
 class inicio(TemplateView):
@@ -254,3 +278,143 @@ def consultaEliminarFuncion(request, pk):
 def logout_view(request):
     logout(request)
     return redirect('inicio')
+
+"""
+#para generar pdf de pacientes
+################REPORTE PACIENTES#########################
+def reportePacientes(request):
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(response, pagesize=letter)
+
+
+        style = getSampleStyleSheet()
+        elementos=[]
+        texto1 = Paragraph("Reporte de Pacientes",style['Heading1'])
+        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
+        #img.hAlign = 'LEFT'
+        dibujo = Drawing(30,30)
+        #dibujo.translate(10,10)
+        dibujo.add(img)                 #1
+        elementos.append(dibujo)
+        #dibujo = Drawing(30,30)
+        #dibujo.add(Line(400, 50, 510, 50))
+        ahora = datetime.now()
+        fecha = ahora.strftime("%d/%m/%Y")
+        
+        move = movText(387,25,fecha)
+        elementos.append(move)
+
+        elementos.append(texto1)        #3   
+        line= linea(450,0)
+        elementos.append(line)   
+        # story.append(Spacer(0, 20))
+        tab = Spacer(1,40)
+        elementos.append(tab)
+        #table
+        encabezados = ('N. EXPEDIENTE','NOMBRES','APELLIDOS','FECHA NACIMIENTO',)
+        info_tabla = [(pac.expediente, pac.primerNombrePaciente, pac.primerApellidoPaciente, pac.fechaNacimientoPaciente) for pac in Paciente.objects.all()]
+        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
+        
+        tabla.setStyle(TableStyle(
+            [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+            ]
+        ))
+        elementos.append(tabla)                 #4
+        elementos.append(Spacer(1,40))
+        pdf.build(elementos)
+     
+        return response
+
+class linea(Flowable):
+    def __init__(self,width,height):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        self.canv.line(0,self.height,self.width,self.height)    
+
+class movText(Flowable):
+    def __init__(self,x,y,text=""):
+        Flowable.__init__(self)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self):
+        self.canv.drawString(self.x,self.y,self.text)
+        ################ FIN   DEL   REPORTE   DE   PACIENTES   ###################
+
+
+#para generar pdf de doctores
+################REPORTE DOCTORES#########################
+def reporteDoctores(request):
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(response, pagesize=letter)
+
+
+        style = getSampleStyleSheet()
+        elementos=[]
+        texto1 = Paragraph("Reporte de Doctores",style['Heading1'])
+        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
+        #img.hAlign = 'LEFT'
+        dibujo = Drawing(30,30)
+        #dibujo.translate(10,10)
+        dibujo.add(img)                 #1
+        elementos.append(dibujo)
+        #dibujo = Drawing(30,30)
+        #dibujo.add(Line(400, 50, 510, 50))
+        ahora = datetime.now()
+        fecha = ahora.strftime("%d/%m/%Y")
+        
+        move = movText(387,25,fecha)
+        elementos.append(move)
+
+        elementos.append(texto1)        #3   
+        line= linea(450,0)
+        elementos.append(line)   
+        # story.append(Spacer(0, 20))
+        tab = Spacer(1,40)
+        elementos.append(tab)
+        #table
+        encabezados = ('NOMBRES','APELLIDOS','ESPECIALIDAD','FECHA NACIMIENTO',)
+        info_tabla = [(doc.primerNombreDoctor, doc.primerApellidoDoctor, doc.especialidad, doc.fechaNacimientoDoctor) for doc in Doctor.objects.all()]
+        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
+        
+        tabla.setStyle(TableStyle(
+            [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+            ]
+        ))
+        elementos.append(tabla)                 #4
+        elementos.append(Spacer(1,40))
+        pdf.build(elementos)
+     
+        return response
+
+class linea(Flowable):
+    def __init__(self,width,height):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        self.canv.line(0,self.height,self.width,self.height)    
+
+class movText(Flowable):
+    def __init__(self,x,y,text=""):
+        Flowable.__init__(self)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self):
+        self.canv.drawString(self.x,self.y,self.text)
+        ################ FIN   DEL   REPORTE   DE   DOCTORES   ###################"""
