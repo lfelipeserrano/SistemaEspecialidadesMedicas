@@ -7,9 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 from .validators import validate_email
-from django.db.models import *
-from django.db import models 
-from  datetime import datetime
+from django.db.models import Q
 
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
@@ -67,9 +65,16 @@ def signup(request):
 
 @permission_required('CEM.view_user', login_url='permisos')
 def usuarios(request):
-    usuarios = User.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        usuarios = get_usuario_queryset(query)
+    else :
+        usuarios = User.objects.all()
     grupos = Group.objects.all()
-    return render(request, 'usuarios.html', {'usuarios':usuarios, 'grupos':grupos})
+    return render(request, 'usuarios.html', {'usuarios':usuarios, 'grupos':grupos, 'query':query})
 
 @permission_required('CEM.view_user', login_url='permisos')
 def usuarioDatos(request, pk):
@@ -110,9 +115,16 @@ class doctorInicio(TemplateView):
 
 @permission_required('CEM.view_doctor', login_url='permisos')
 def doctores(request):
-    doctores =  Doctor.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        doctores = get_doc_queryset(query)
+    else :
+        doctores =  Doctor.objects.all()
     especialidades = Doctor.objects.all().distinct('especialidad')
-    return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades})
+    return render(request, 'doctores.html', {'doctores':doctores, 'especialidades':especialidades, 'query':query})
 
 @permission_required('CEM.view_doctor', login_url='permisos')
 def doctorDatos(request, pk):
@@ -169,7 +181,14 @@ class pacienteInicio(TemplateView):
     
 @permission_required('CEM.view_paciente', login_url='permisos')
 def pacientes(request):
-    pacientes = Paciente.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query  = str(query)
+    if query !=  None :
+        pacientes = get_paciente_queryset(query)
+    else :
+        pacientes = Paciente.objects.all()
     doctores = Doctor.objects.all()
     return render(request, 'pacientes.html', {'pacientes':pacientes, 'doctores':doctores})
 
@@ -207,7 +226,7 @@ def pacienteEditar(request, pk):
                 paciente.sexoPaciente = True
             else:
                 paciente.sexoPaciente = False
-            paciente.save()
+            form.save()
             return redirect('pacientes')
         else:
             form = PacienteForm()
@@ -226,7 +245,14 @@ class consultaInicio(TemplateView):
 
 @permission_required('CEM.view_consulta', login_url='permisos')
 def consultas(request):
-    consultas = Consulta.objects.all()
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+    if query != None :
+        consultas = get_consulta_queryset(query)
+    else :
+        consultas = Consulta.objects.all()
     doctores = Doctor.objects.all()
     pacientes = Paciente.objects.all()
     return render(request, 'consultas.html', {'consultas':consultas, 'doctores':doctores, 'pacientes':pacientes})
@@ -279,6 +305,7 @@ def logout_view(request):
     logout(request)
     return redirect('inicio')
 
+<<<<<<< HEAD
 """
 #para generar pdf de pacientes
 ################REPORTE PACIENTES#########################
@@ -418,3 +445,62 @@ class movText(Flowable):
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
         ################ FIN   DEL   REPORTE   DE   DOCTORES   ###################"""
+=======
+def get_doc_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        docs = Doctor.objects.filter(
+            Q(primerApellidoDoctor__icontains=q) |
+            Q(primerNombreDoctor__icontains=q) |
+            Q(especialidad__icontains=q)
+        ).distinct()
+    
+        for doc in docs:
+            queryset.append(doc)
+    
+    return list(set(queryset))
+
+def get_paciente_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        pacientes = Paciente.objects.filter(
+            Q(primerApellidoPaciente__icontains=q) |
+            Q(primerNombrePaciente__icontains=q) |
+            Q(expediente__icontains=q) |
+            Q(doctores__id__icontains=q)
+        ).distinct()
+    
+        for paciente in pacientes:
+            queryset.append(paciente)
+    
+    return list(set(queryset))
+
+def get_consulta_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
+    for q in queries:
+        consultas = Consulta.objects.filter(
+            Q(fechaConsulta__icontains=q) |
+            Q(idDoctor__id__icontains=q)
+        ).distinct()
+    
+        for consulta in consultas:
+            queryset.append(consulta)
+    
+    return list(set(queryset))
+
+def get_usuario_queryset(query=None):
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        usuarios = User.objects.filter(
+            Q(username__icontains=q)
+        ).distinct()
+
+        for usuario in usuarios:
+            queryset.append(usuario)
+
+    return list(set(queryset))
+>>>>>>> 32bbc2f3c9b011448d40b77b3fd2cc3c29974d12

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {{ form.media }}
     <h1 class="h1 mb-4 text-gray-800">Nuevo doctor</h1>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -27,11 +28,13 @@
                <label> Primer apellido:</label>
                <br>
                 {{ form.primerApellidoDoctor }}
+                {{form.primerApellidoDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Segundo apellido:</label>
                 <br>
                 {{ form.segundoApellidoDoctor }}
+                {{form.segundoApellidoDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Fecha de nacimiento:</label>
@@ -49,11 +52,13 @@
                 <label>Correo electrónico:</label>
                 <br>
                 {{ form.correoElectronico }}
+                {{form.correoElectronico.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>Número de teléfono:</label>
                 <br>
                 {{ form.telefonoDoctor }}
+                {{form.telefonoDoctor.errors}}
             </div>
         </div>
         <div class="form-row">
@@ -61,16 +66,19 @@
                 <label>DUI:</label>
                 <br>
                 {{ form.duiDoctor }}
+                {{form.duiDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>NIT:</label>
                 <br>
                 {{ form.nitDoctor }}
+                {{form.nitDoctor.errors}}
             </div>
             <div class="form-group col-md-4">
                 <label>NRC:</label>
                 <br>
                 {{ form.ncfDoctor }}
+                {{form.ncfDoctor.errors}}
             </div>
         </div>
         <div class="form-group">
@@ -78,8 +86,8 @@
             <br>
             {{ form.fotografiaDoctor }}
         </div>
-        <div class="col-md-12">
-            <div class="float-right">
+        <div class="row justify-content-center mt-4">
+                <div class="col text-center">
                 <a href="{% url 'doctores' %}" class="btn btn-secondary mr-2">Cancelar</a>
                 <input type="submit" value="Guardar" class="btn btn-primary mr-2">
             </div>

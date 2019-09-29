@@ -1,6 +1,6 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
-
+from .validators import validate_email
 from .models import Doctor, Paciente, Consulta
 
 class DoctorForm(forms.ModelForm):
@@ -9,8 +9,13 @@ class DoctorForm(forms.ModelForm):
         fields = ('primerNombreDoctor', 'segundoNombreDoctor', 'primerApellidoDoctor', 'segundoApellidoDoctor', 'especialidad', 'sexoDoctor', 'fechaNacimientoDoctor',
         'telefonoDoctor', 'correoElectronico', 'duiDoctor', 'nitDoctor', 'ncfDoctor', 'fotografiaDoctor', )
         widgets = {
-            'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y')
-        }
+            'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y'),
+            'nitDoctor': forms.TextInput(attrs={'placeholder':'9999-999999-999-9'}),
+            'duiDoctor': forms.TextInput(attrs={'placeholder':'99999999-9'}),
+            'ncfDoctor': forms.TextInput(attrs={'placeholder':'999999-9'}),
+            'telefonoDoctor': forms.TextInput(attrs={'placeholder':'9999-9999'})
+        }           
+   
 
     def __init__(self, *args, **kwargs):
         super(DoctorForm, self).__init__(*args, **kwargs)
@@ -23,7 +28,11 @@ class PacienteForm(forms.ModelForm):
         'alturaPaciente', 'pesoPaciente', 'telefonoPaciente', 'fotografiaPaciente', 'institucion', 'aseguradora', 'alergias', 'lugarProveniencia', 'tabquista', 'etilista',
         'hipertenso', 'diabetico', 'tuberculosis', 'anemia', 'convulsiones', 'convulsiones', 'cancer', 'lugarCancer', 'tratamientoCancer', 'antecedentes', )
         widgets = {
-            'fechaNacimientoPaciente' : DatePickerInput(format='%d/%m/%Y')
+            'fechaNacimientoPaciente' : DatePickerInput(format='%d/%m/%Y'),
+            'alturaPaciente' : forms.TextInput(attrs={'placeholder':'Altura en centimetros'}),
+            'pesoPaciente' : forms.TextInput(attrs={'placeholder':'Peso en libras'}),
+            'telefonoPaciente' : forms.TextInput(attrs={'placeholder':'9999-9999'})
+
         }
 
     # idDoctor = forms.ModelChoiceField(queryset=Doctor.objects.all())
