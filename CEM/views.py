@@ -27,7 +27,7 @@ from django.http import HttpResponse
 from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
 from reportlab.platypus import SimpleDocTemplate,TableStyle
 from reportlab.platypus.tables import Table
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import Paragraph,Spacer,Flowable
 from reportlab.lib import colors
 
@@ -374,37 +374,44 @@ def reporteConsultas(request):
         buffer = BytesIO()
         pdf = SimpleDocTemplate(response, pagesize=letter)
 
-        """PONDREMOS LA PAGINA DE MANERA HORIZONTAL
-        pdf = SimpleDocTemplate(buffer,
+        #PONDREMOS LA PAGINA DE MANERA HORIZONTAL
+        """pdf = SimpleDocTemplate(buffer,
                                 pagesize=landscape(letter),
-                                rightMargin=40,
-                                leftMargin=40,
-                                topMargin=60,
-                                bottomMargin=18
+                                rightMargin=30,
+                                leftMargin=430,
+                                topMargin=50,
+                                bottomMargin=5
                                 )"""
 
         style = getSampleStyleSheet()
         elementos=[]
-        texto1 = Paragraph("Reporte de Consultas",style['Heading1'])
-        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
-        #img.hAlign = 'LEFT'
-        dibujo = Drawing(30,30)
+        #texto1 = Paragraph("CLINICA ESPECIALIDADES MEDICAS",style['Heading2'])
+        #texto2 = Paragraph("REPORTE DE CONSULTAS",style['Heading2'])
+        img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
+        img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+        img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
+        img3 = Image(115,5,175,18,"CEM/imagenes/repconsultext.jpg")
+       
+        dibujo = Drawing(30,30)#margen superior e izquierdo
+        
         #dibujo.translate(10,10)
-        dibujo.add(img)                 #1
+        dibujo.add(img)  
+        dibujo.add(img1)
+        dibujo.add(img2)
+        dibujo.add(img3)               
         elementos.append(dibujo)
         #dibujo = Drawing(30,30)
         #dibujo.add(Line(400, 50, 510, 50))
         ahora = datetime.now()
         fecha = ahora.strftime("%d/%m/%Y")
-        
-        move = movText(387,25,fecha)
-        elementos.append(move)
+       
+        line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
+        elementos.append(line)  
 
-        elementos.append(texto1)        #3   
-        line= linea(450,0)
-        elementos.append(line)   
+        move = movText(387,-20,fecha) #move = movText(387,25,fecha)
+        elementos.append(move) 
         # story.append(Spacer(0, 20))
-        tab = Spacer(1,40)
+        tab = Spacer(0,40)
         elementos.append(tab)
         #table
         encabezados = ('DOCTOR','EXPEDIENTE','FECHA CONSULTA','PESO  CONSULTA',)
