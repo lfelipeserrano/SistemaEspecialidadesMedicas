@@ -10,7 +10,7 @@ from .validators import validate_email
 from django.db.models import *
 from django.db import models 
 from  datetime import datetime
-
+import locale
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 
@@ -402,13 +402,15 @@ def reporteConsultas(request):
         elementos.append(dibujo)
         #dibujo = Drawing(30,30)
         #dibujo.add(Line(400, 50, 510, 50))
+        locale.setlocale(locale.LC_ALL, 'esp')
         ahora = datetime.now()
-        fecha = ahora.strftime("%d/%m/%Y")
+        fecha = ahora.strftime("%A %d de %B del %Y")
+        
        
         line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
         elementos.append(line)  
 
-        move = movText(387,-20,fecha) #move = movText(387,25,fecha)
+        move = movText(250,-20,fecha) #move = movText(387,25,fecha)
         elementos.append(move) 
         # story.append(Spacer(0, 20))
         tab = Spacer(0,40)
