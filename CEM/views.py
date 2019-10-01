@@ -370,7 +370,18 @@ def get_usuario_queryset(query=None):
     return list(set(queryset))
    
     ################REPORTE CONSULTAS#########################
-def reporteConsultas(request):
+def reporteConsultas(request,pk):
+    consulta = get_object_or_404(Consulta, pk=pk)
+    if consulta.idDoctor != None:
+        doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
+    else:
+        doctor_consulta = Doctor.objects.none()
+    if consulta.expediente != None:
+        paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
+    else:
+        paciente_consulta = Doctor.objects.none()
+
+
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = SimpleDocTemplate(buffer,
