@@ -45,6 +45,7 @@ urlpatterns = [
 
     #URL reporte consultas
     path('reporte_consultas_pdf/', login_required(reporteConsultas), name="reporte_consultas_pdf"),
+    path('consulta/reporteConsultas/<int:pk>/', reporteConsultas, name="reporteCons"),
 
     path('', inicio.as_view(), name='inicio')
 ]
