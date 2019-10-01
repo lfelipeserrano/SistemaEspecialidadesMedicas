@@ -374,15 +374,6 @@ def reporteConsultas(request):
         buffer = BytesIO()
         pdf = SimpleDocTemplate(response, pagesize=letter)
 
-        #PONDREMOS LA PAGINA DE MANERA HORIZONTAL
-        """pdf = SimpleDocTemplate(buffer,
-                                pagesize=landscape(letter),
-                                rightMargin=30,
-                                leftMargin=430,
-                                topMargin=50,
-                                bottomMargin=5
-                                )"""
-
         style = getSampleStyleSheet()
         elementos=[]
         #texto1 = Paragraph("CLINICA ESPECIALIDADES MEDICAS",style['Heading2'])
@@ -405,17 +396,17 @@ def reporteConsultas(request):
         locale.setlocale(locale.LC_ALL, 'esp')
         ahora = datetime.now()
         fecha = ahora.strftime("%A %d de %B del %Y")
-        
-       
+
         line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
         elementos.append(line)  
 
         move = movText(250,-20,fecha) #move = movText(387,25,fecha)
         elementos.append(move) 
-        # story.append(Spacer(0, 20))
+        
+        """#DESDE AQUI EMPIEZA LA TABLA--------------------------
         tab = Spacer(0,40)
         elementos.append(tab)
-        #table
+        
         encabezados = ('DOCTOR','EXPEDIENTE','FECHA CONSULTA','PESO  CONSULTA',)
         info_tabla = [(cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
         tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
@@ -428,9 +419,9 @@ def reporteConsultas(request):
             ]
         ))
         elementos.append(tabla)                 #4
-        elementos.append(Spacer(1,40))
+        elementos.append(Spacer(1,40))"""
+        
         pdf.build(elementos)
-     
         return response
 
 class linea(Flowable):
