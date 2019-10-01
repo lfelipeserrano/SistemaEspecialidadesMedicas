@@ -402,6 +402,11 @@ def reporteConsultas(request):
 
         move = movText(275,-20,fecha) #move = movText(387,25,fecha)
         elementos.append(move) 
+
+        ########################
+        idDoctor=request.Doctor(idDoctor)
+        #info = [cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
+        elementos.append(idDoctor) 
         
         """#DESDE AQUI EMPIEZA LA TABLA--------------------------
         tab = Spacer(0,40)
