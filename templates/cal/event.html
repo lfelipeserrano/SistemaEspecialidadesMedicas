@@ -20,53 +20,54 @@
       {% endfor %}
   {% endif %}
 
-<div class="container-fluid">
-  <div class="row justify-content-center align-content-center">
-    <div class="col-sm-6 text-center">
-      <div class="info-form">
-          <form method="post" class="justify-content-center">{% csrf_token %}
-              <div class="form-row">
-                <div class="col-md-12">
-                  <label>Título: </label>
-                  <br>
-                  {{ form.title }}
+<form method="post" class="justify-content-center">{% csrf_token %}
+  <div class="container-fluid">
+    <div class="row justify-content-center align-content-center">
+      <div class="col-sm-6 text-center">
+        <div class="info-form">
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Título: </label>
+                    <br>
+                    {{ form.title }}
+                  </div>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-12">
-                  <label>Descripción: </label>
-                  <br>
-                  {{ form.description }}
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Descripción: </label>
+                    <br>
+                    {{ form.description }}
+                  </div>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-12">
-                  <label>Doctor:</label>
-                  <br>
-                  {{ form.idDoctor }}
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Doctor:</label>
+                    <br>
+                    {{ form.idDoctor }}
+                  </div>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-12">
-                  <label>Fecha de inicio: </label>
-                  {{ form.start_time }}
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Fecha de inicio: </label>
+                    {{ form.start_time }}
+                  </div>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-12">
-                  <label>Fecha final: </label>
-                  {{ form.end_time }}
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Fecha final: </label>
+                    {{ form.end_time }}
+                  </div>
                 </div>
-              </div>
-              <div class="row justify-content-center mt-4">
-                <div class="col text-center">
-                    <a href="{% url 'calendar' %}" class="btn btn-secondary mr-2">Cancelar</a>
-                    <input type="submit" value="Guardar" class="btn btn-primary mr-2">
-                </div>
-              </div>
-            </form>
+              
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <div class="row justify-content-center mt-4">
+    <div class="col text-center">
+        <a href="{% url 'calendar' %}" class="btn btn-secondary mr-2">Cancelar</a>
+        <input type="submit" value="Guardar" class="btn btn-primary mr-2">
+    </div>
+  </div>
+</form>
 {% endblock %}
