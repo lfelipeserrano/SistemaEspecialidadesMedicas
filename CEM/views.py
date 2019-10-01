@@ -400,7 +400,7 @@ def reporteConsultas(request):
         line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
         elementos.append(line)  
 
-        move = movText(250,-20,fecha) #move = movText(387,25,fecha)
+        move = movText(275,-20,fecha) #move = movText(387,25,fecha)
         elementos.append(move) 
         
         """#DESDE AQUI EMPIEZA LA TABLA--------------------------

@@ -75,6 +75,11 @@
             <a href="{% url 'consulta_editar' consulta.pk %}" class="btn btn-secondary">Editar datos</a>
             <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta" class="btn btn-danger">Eliminar Consulta</button>
         </div>
+        <!--agregando boton de GENERAR PDF-->
+        <div class="float-left">
+                <a href="{% url 'reporte_consultas_pdf' %}" class="btn btn-primary mr-2">Generar PDF</a>
+                <!--<input type="button" onclick=" location.href= 'reporte_consultas_pdf/'" value="Generar PDF" class="btn btn-primary mr-2">-->
+        </div>
     </div>
     <div class="modal fade" id="confirmacionEliminarConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
