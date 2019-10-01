@@ -11,6 +11,7 @@ from django.db.models import *
 from django.db import models 
 from  datetime import datetime
 import locale
+from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 
@@ -372,12 +373,14 @@ def get_usuario_queryset(query=None):
 def reporteConsultas(request):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
-        pdf = SimpleDocTemplate(response, pagesize=letter)
+        pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title = "Reporte de consulta")
 
         style = getSampleStyleSheet()
+        style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
         elementos=[]
-        #texto1 = Paragraph("CLINICA ESPECIALIDADES MEDICAS",style['Heading2'])
-        #texto2 = Paragraph("REPORTE DE CONSULTAS",style['Heading2'])
+        
         img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
         img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
         img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
@@ -385,47 +388,52 @@ def reporteConsultas(request):
        
         dibujo = Drawing(30,30)#margen superior e izquierdo
         
+        styleC = style['Heading1']
+        styleC.alignment = 1
+        t1 = Paragraph("Reporte de Consulta",styleC)
+        
         #dibujo.translate(10,10)
         dibujo.add(img)  
         dibujo.add(img1)
         dibujo.add(img2)
         dibujo.add(img3)               
         elementos.append(dibujo)
-        #dibujo = Drawing(30,30)
-        #dibujo.add(Line(400, 50, 510, 50))
-        locale.setlocale(locale.LC_ALL, 'esp')
+        
+        locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
         ahora = datetime.now()
         fecha = ahora.strftime("%A %d de %B del %Y")
+
+        docnom1 = doctorDatos.primerNombreDoctor
+    
+        docape1 = paciente_consulta.primerNombrePaciente
+        peso = paciente_consulta.pesoConsulta
+        altura = paciente_consulta.alturaConsulta
+        presion = paciente_consulta.presionConsulta
+        temp = paciente_consulta.temperatura
+        pulso = paciente_consulta.pulso
+        regla = paciente_consulta.fechaUltimaRegla
+        obs = paciente_consulta.observaciones
+        receta = paciente_consulta.recetas
+        exsol = paciente_consulta.examenesSolicitados
+        repexa = paciente_consulta.reporteExamenes
+
+        """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+        ahora = datetime.now()
+        dia = ahora.strftime("%d")
+        mes = meses[ahora.month-1]
+        anio = ahora.strftime("%Y")"""
+
+        styleJ = style['BodyText']
+        styleJ.alignment = TA_JUSTIFY
+        parrafo = "El infrascrito Medico "+ docnom1 +" \n"+ docape1 + " /n"+ peso +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + altura + " " + presion + "</b> con expediente clinico numero <b>"+ receta +"</b> quien presenta: "+ obs +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ fecha+""
+        parrafo2 = "A peticion de la parte interesada y para usos legales que al mismo convengan se extiende la presente en la Ciudad de San Salvador, a los "+ presion  +" dias del mes de "+ mes +" Año "+anio+" "
+    
 
         line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
         elementos.append(line)  
 
         move = movText(275,-20,fecha) #move = movText(387,25,fecha)
-        elementos.append(move) 
-
-        ########################
-        idDoctor=request.Doctor(idDoctor)
-        #info = [cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
-        elementos.append(idDoctor) 
-        
-        """#DESDE AQUI EMPIEZA LA TABLA--------------------------
-        tab = Spacer(0,40)
-        elementos.append(tab)
-        
-        encabezados = ('DOCTOR','EXPEDIENTE','FECHA CONSULTA','PESO  CONSULTA',)
-        info_tabla = [(cons.idDoctor, cons.expediente, cons.fechaConsulta, cons.pesoConsulta) for cons in Consulta.objects.all()]
-        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
-        
-        tabla.setStyle(TableStyle(
-            [
-            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
-            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
-            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
-            ]
-        ))
-        elementos.append(tabla)                 #4
-        elementos.append(Spacer(1,40))"""
-        
+        elementos.append(move)  
         pdf.build(elementos)
         return response
 
