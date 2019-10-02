@@ -25,6 +25,15 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
+            <b><label>Paciente:</label></b>
+            <br>
+            {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}
+            <br>
+            <a href="#" data-toggle="modal" data-target="#datosPacientes">Ver datos</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <b><label>Fecha de inicio:</label></b>
             <br>
             {{ instance.start_time }}
@@ -63,6 +72,53 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <input type="submit" value="Confirmar" class="btn btn-danger">
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="datosPacientes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Datos generales de {{ paciente_consulta.primerNombrePaciente }}</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <b>Primer nombre:</b> {{ paciente_consulta.primerNombrePaciente }}
+                <br>
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Segundo nombre:</b> {{ paciente_consulta.segundoNombrePaciente }}
+                    <br>
+                {% endif %}
+                <b>Primer apellido:</b> {{ paciente_consulta.primerApellidoPaciente }}
+                <br>
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Segundo apellido:</b> {{ paciente_consulta.SegundoApellidoPaciente }}
+                    <br>
+                {% endif %}
+                <b>Fecha de nacimiento:</b> {{ paciente_consulta.fechaNacimientoPaciente }}
+                <br>
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Altura:</b> {{ paciente_consulta.alturaPaciente }}
+                    <br>
+                {% endif %}
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Peso:</b> {{ paciente_consulta.pesoPaciente }}
+                    <br>
+                {% endif %}
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Alergias:</b> {{ paciente_consulta.alergias }}
+                    <br>
+                {% endif %}
+                {% if paciente_consulta.segundoNombrePaciente != None %}
+                    <b>Lugar de proveniencia:</b> {{ paciente_consulta.lugarProveniencia }}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

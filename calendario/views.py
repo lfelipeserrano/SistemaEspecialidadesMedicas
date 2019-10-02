@@ -72,7 +72,11 @@ def event(request, event_id=None):
 
 def eventDetail(request, event_id):
     instance = get_object_or_404(Event, pk=event_id)
-    return render(request, 'cal/eventDetail.html', {'instance':instance})
+    if instance.expediente != None:
+        paciente_consulta = Paciente.objects.get(expediente = instance.expediente)
+    else :
+        paciente_consulta = Doctor.objects.none()
+    return render(request, 'cal/eventDetail.html', {'instance':instance, 'paciente_consulta':paciente_consulta})
 
 def eventoEliminar(request, event_id=None):
     temp = Event.objects.get(pk=event_id).delete()
