@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.contrib.auth.decorators import permission_required
 import calendar
 
 from .models import *
@@ -13,9 +14,6 @@ from .forms import EventForm
 from django.contrib.auth.models import User
 
 # Create your views here.
-
-def index(request):
-    return HttpResponse('hello')
 
 class CalendarView(generic.ListView):
     model = Event
@@ -57,6 +55,7 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
+@permission_required('calendario.change_event', login_url='permisos')
 def event(request, event_id=None):
     instance = Event()
     if event_id:
@@ -70,6 +69,7 @@ def event(request, event_id=None):
         return HttpResponseRedirect(reverse('calendar'))
     return render(request, 'cal/event.html', {'form': form, 'instance' : instance})
 
+@permission_required('calendario.view_event', login_url='permisos')
 def eventDetail(request, event_id):
     instance = get_object_or_404(Event, pk=event_id)
     if instance.expediente != None:
@@ -78,6 +78,7 @@ def eventDetail(request, event_id):
         paciente_consulta = Doctor.objects.none()
     return render(request, 'cal/eventDetail.html', {'instance':instance, 'paciente_consulta':paciente_consulta})
 
+@permission_required('calendario.delete_event', login_url='permisos')
 def eventoEliminar(request, event_id=None):
     temp = Event.objects.get(pk=event_id).delete()
     return redirect('calendar')
