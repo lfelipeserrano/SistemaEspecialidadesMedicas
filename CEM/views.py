@@ -307,9 +307,9 @@ def logout_view(request):
     return redirect('inicio')
 
 
-    def get_doc_queryset(query=None):
-        queryset =[]
-        queries = query.split(" ")
+def get_doc_queryset(query=None):
+    queryset =[]
+    queries = query.split(" ")
     for q in queries:
         docs = Doctor.objects.filter(
             Q(primerApellidoDoctor__icontains=q) |
@@ -317,8 +317,8 @@ def logout_view(request):
             Q(especialidad__icontains=q)
         ).distinct()
     
-        for doc in docs:
-            queryset.append(doc)
+    for doc in docs:
+        queryset.append(doc)
     
     return list(set(queryset))
 
@@ -369,48 +369,81 @@ def get_usuario_queryset(query=None):
 #para generar pdf de pacientes
 ################REPORTE PACIENTES#########################
 def reportePacientes(request):
+    #paciente = get_object_or_404(Paciente, pk=pk)
         response = HttpResponse(content_type='application/pdf')
+        pdf_name = "pacientes.pdf" 
         buffer = BytesIO()
         pdf = SimpleDocTemplate(response, pagesize=letter)
 
-
         style = getSampleStyleSheet()
+        #style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
         elementos=[]
-        texto1 = Paragraph("Reporte de Pacientes",style['Heading1'])
-        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
+        texto1 = Paragraph("CLINICA DE ESPECIALIDADES MEDICAS",style['Heading1'])
+        texto2 = Paragraph("REPORTE DE PACIENTES",style['Heading1'])
+        img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+        img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+        
         #img.hAlign = 'LEFT'
         dibujo = Drawing(30,30)
-        #dibujo.translate(10,10)
-        dibujo.add(img)                 #1
+
+        dibujo.add(img)
+        dibujo.add(img1)                #1
         elementos.append(dibujo)
-        #dibujo = Drawing(30,30)
-        #dibujo.add(Line(400, 50, 510, 50))
+    
         ahora = datetime.now()
         fecha = ahora.strftime("%d/%m/%Y")
         
-        move = movText(387,25,fecha)
+        move = movText(587,25,fecha)
         elementos.append(move)
 
-        elementos.append(texto1)        #3   
+        elementos.append(texto1)
+        elementos.append(texto2)        #3   
         line= linea(450,0)
         elementos.append(line)   
-        # story.append(Spacer(0, 20))
-        tab = Spacer(1,40)
-        elementos.append(tab)
-        #table
-        encabezados = ('N. EXPEDIENTE','NOMBRES','APELLIDOS','FECHA NACIMIENTO',)
-        info_tabla = [(pac.expediente, pac.primerNombrePaciente, pac.primerApellidoPaciente, pac.fechaNacimientoPaciente) for pac in Paciente.objects.all()]
-        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
-        
-        tabla.setStyle(TableStyle(
-            [
-            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
-            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
-            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
-            ]
-        ))
-        elementos.append(tabla)                 #4
-        elementos.append(Spacer(1,40))
+        elementos.append(Spacer(1,40))                #1
+        elementos.append(Spacer(1, 12))
+        texto = 'Numero Expediente:' 
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Nombres: ' 
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Apellidos: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Sexo: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Fecha de Nacimiento: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Telefono: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Peso: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Altura: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Doctores asignados: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Institucion de proveniencia: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Domicilio: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Aseguradora: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Alergias: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
+        texto = 'Antecedentes: '
+        elementos.append(Paragraph(texto, style["Normal"]))
+        elementos.append(Spacer(1, 12))
         pdf.build(elementos)
      
         return response
@@ -446,15 +479,15 @@ def reporteDoctores(request):
 
         style = getSampleStyleSheet()
         elementos=[]
-        texto1 = Paragraph("Reporte de Doctores",style['Heading1'])
-        img = Image(0,0,200,50,"CEM/imagenes/logo.png")
+        texto1 = Paragraph("Reporte de Doctor",style['Heading1'])
+        img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+        img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
         #img.hAlign = 'LEFT'
         dibujo = Drawing(30,30)
         #dibujo.translate(10,10)
         dibujo.add(img)                 #1
         elementos.append(dibujo)
-        #dibujo = Drawing(30,30)
-        #dibujo.add(Line(400, 50, 510, 50))
+
         ahora = datetime.now()
         fecha = ahora.strftime("%d/%m/%Y")
         
@@ -467,19 +500,7 @@ def reporteDoctores(request):
         # story.append(Spacer(0, 20))
         tab = Spacer(1,40)
         elementos.append(tab)
-        #table
-        encabezados = ('NOMBRES','APELLIDOS','ESPECIALIDAD','FECHA NACIMIENTO',)
-        info_tabla = [(doc.primerNombreDoctor, doc.primerApellidoDoctor, doc.especialidad, doc.fechaNacimientoDoctor) for doc in Doctor.objects.all()]
-        tabla = Table([encabezados]+ info_tabla, colWidths=[120,120,100,100]) 
-        
-        tabla.setStyle(TableStyle(
-            [
-            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
-            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
-            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
-            ]
-        ))
-        elementos.append(tabla)                 #4
+                      
         elementos.append(Spacer(1,40))
         pdf.build(elementos)
      
