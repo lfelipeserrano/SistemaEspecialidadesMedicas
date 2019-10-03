@@ -140,7 +140,7 @@
             <button data-toggle="modal"  data-target="#confirmacionEliminarPaciente" class="btn btn-danger">Eliminar Paciente</button>
             <!--Boton para generar PDF-->
             <div class="float-right">
-                <a href="{% url 'reporte_pacientes_pdf' %}" class="btn btn-primary mr-2">Generar PDF</a>
+                <a href="{% url 'reportePac' paciente.pk %}" class="btn btn-primary mr-2">Generar PDF</a> 
             </div>
         </div>
     </div>

@@ -44,8 +44,8 @@ urlpatterns = [
     path('doctor/list/', doctores, name='doctores'),
 
     #Reporte pacientes
-    path('reporte_pacientes_pdf/', login_required(reportePacientes), name="reporte_pacientes_pdf"),
-    path('reporte_doctores_pdf/', login_required(reporteDoctores), name="reporte_doctores_pdf"),
+    path('doctor/reporteDoctores/<int:pk>/', reporteDoctores, name='reporteDoc'),
+    path('paciente/reportePacientes/<str:pk>/', reportePacientes, name='reportePac'),
 
     path('', inicio.as_view(), name='inicio')
 ]
