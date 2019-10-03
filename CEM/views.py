@@ -11,7 +11,7 @@ from django.db.models import *
 from django.db import models 
 from  datetime import datetime
 import locale
-from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
+from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 
@@ -369,8 +369,8 @@ def get_usuario_queryset(query=None):
 
     return list(set(queryset))
    
-    ################REPORTE CONSULTAS#########################
-def reporteConsultas(request,pk):
+    ############# prueba de reporte consutla ###################
+def reporteConsultas(request,pk):####################
     consulta = get_object_or_404(Consulta, pk=pk)
     if consulta.idDoctor != None:
         doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
@@ -380,82 +380,106 @@ def reporteConsultas(request,pk):
         paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
     else:
         paciente_consulta = Doctor.objects.none()
-
-
-        response = HttpResponse(content_type='application/pdf')
-        buffer = BytesIO()
-        pdf = SimpleDocTemplate(buffer,
+    
+    ##################################################
+    response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Prueba.pdf"'
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
                             pagesize=letter,
-                            title = "Reporte de consulta")
+                            title = "Constancia por Incapacidad")
 
-        style = getSampleStyleSheet()
-        style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
-        elementos=[]
-        
-        img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
-        img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
-        img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
-        img3 = Image(115,5,175,18,"CEM/imagenes/repconsultext.jpg")
+    style = getSampleStyleSheet()
+    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
+
+    elementos = []
+   # img = Image("CEM/imagenes/logo.PNG",width=200, height=50 )
+   # img.hAlign = 'LEFT'
+    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
+    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
+    img3 = Image(115,5,175,18,"CEM/imagenes/repconsultext.jpg")
        
-        dibujo = Drawing(30,30)#margen superior e izquierdo
+    dibujo = Drawing(30,30)#margen superior e izquierdo de donde empieza el pdf
         
-        styleC = style['Heading1']
-        styleC.alignment = 1
-        t1 = Paragraph("Reporte de Consulta",styleC)
-        
-        #dibujo.translate(10,10)
-        dibujo.add(img)  
-        dibujo.add(img1)
-        dibujo.add(img2)
-        dibujo.add(img3)               
-        elementos.append(dibujo)
-        
-        locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
-        ahora = datetime.now()
-        fecha = ahora.strftime("%A %d de %B del %Y")
+    dibujo.add(img)  
+    dibujo.add(img1)
+    dibujo.add(img2)
+    dibujo.add(img3)               
+    elementos.append(dibujo)
 
-        docnom1 = doctorDatos.primerNombreDoctor
+            #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
+    """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    dias = ("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo")
+    ahora = datetime.now()
+    #dia = ahora.strftime("%d")
+    dia = dias[ahora.month-1]
+    mes = meses[ahora.month-1]
+    anio = ahora.strftime("%Y")"""
+   
+            #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
+    locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
+    ahora = datetime.now()
+    fecha = ahora.strftime("%A %d de %B del %Y")
+    move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
+    elementos.append(move)
+            #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
+    line = linea(450,0,0)
+    elementos.append(line)
+    elementos.append(Spacer(1,10))
+
+            #ORDEN DE VARIABLES SEGUN consultaDatos.html
+    f = consulta.fechaConsulta
+    f2 = f.strftime("%d/%m/%Y")
+    pacnom1 = paciente_consulta.primerNombrePaciente
+    pacape1 = paciente_consulta.primerApellidoPaciente
+    docnom1 = doctor_consulta.primerNombreDoctor
+    docape1 = doctor_consulta.primerApellidoDoctor
+    peso = paciente_consulta.pesoPaciente
+    altura = paciente_consulta.alturaPaciente
+    presion = consulta.presionConsulta
+    temp = consulta.temperatura
+    pulso = consulta.pulso
+    regla = consulta.fechaUltimaRegla
+    obs = consulta.observaciones
+    receta = consulta.recetas
+    exsol = consulta.examenesSolicitados
+    repexa = consulta.reporteExamenes
+
+                #FORMATO  PARA EL PARRAFO
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    styleJ.fontSize = 15
+    styleJ.fontName="Times-Roman"
+    #styleJ.lineHeight= 1
+
+                #PARRAFO CONCATENADO CON VARIABLES
+    parrafo = "<br/><br/><br/><b>Fecha: </b>"+f2+"<br/><br/><b>Paciente: </b>"+pacnom1+" "+pacape1+"<br/><br/><b>Doctor: </b>"+docnom1+" "+docape1+"<br/><br/><b>Peso en libras: </b>"+str(peso)+"<br/><br/><b>Altura en centimetros: </b>"+str(altura)+"<br/><br/><b>Presion: </b>"+str(presion)+"<br/><br/><b>Tempreratura en grados centigrados: </b>"+str(temp)+"<br/><br/><b>Pulso: </b>"+str(pulso)+"<br/><br/><b>Observaciones: </b>"+obs+"<br/><br/><b>Recetas: </b>"+receta+"<br/><br/><b>Examenes solicitados: </b>"+exsol+"<br/><br/><b>Reporte de examenes: </b>"+repexa
+
+    """styleC = style['Heading4']
+    styleC.alignment = 1
+    FYS = "firma""" #este texto es por si se usa la firma
+    #elementos.append(Paragraph(FYS ,styleC)) 
+   
+    #elementos.append(titulo2)
+    #elementos.append(Spacer(1,5))
+    elementos.append(Paragraph(parrafo ,styleJ))
+    elementos.append(Spacer(1,10))
     
-        docape1 = paciente_consulta.primerNombrePaciente
-        peso = paciente_consulta.pesoConsulta
-        altura = paciente_consulta.alturaConsulta
-        presion = paciente_consulta.presionConsulta
-        temp = paciente_consulta.temperatura
-        pulso = paciente_consulta.pulso
-        regla = paciente_consulta.fechaUltimaRegla
-        obs = paciente_consulta.observaciones
-        receta = paciente_consulta.recetas
-        exsol = paciente_consulta.examenesSolicitados
-        repexa = paciente_consulta.reporteExamenes
-
-        """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
-        ahora = datetime.now()
-        dia = ahora.strftime("%d")
-        mes = meses[ahora.month-1]
-        anio = ahora.strftime("%Y")"""
-
-        styleJ = style['BodyText']
-        styleJ.alignment = TA_JUSTIFY
-        parrafo = "El infrascrito Medico "+ docnom1 +" \n"+ docape1 + " /n"+ peso +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + altura + " " + presion + "</b> con expediente clinico numero <b>"+ receta +"</b> quien presenta: "+ obs +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ fecha+""
-        parrafo2 = "A peticion de la parte interesada y para usos legales que al mismo convengan se extiende la presente en la Ciudad de San Salvador, a los "+ presion  +" dias del mes de "+ mes +" Año "+anio+" "
-    
-
-        line= linea(450,0)#dibujamos una linea(largo a la derecha, interlineado)
-        elementos.append(line)  
-
-        move = movText(275,-20,fecha) #move = movText(387,25,fecha)
-        elementos.append(move)  
-        pdf.build(elementos)
-        return response
+    pdf.build(elementos)
+    response.write(buffer.getvalue())
+    buffer.close()  
+    return response
 
 class linea(Flowable):
-    def __init__(self,width,height):
+    def __init__(self,width,height,width2):
         Flowable.__init__(self)
         self.width = width
         self.height = height
+        self.width2 = width2
 
     def draw(self):
-        self.canv.line(0,self.height,self.width,self.height)    
+        self.canv.line(self.width,self.height,self.width2,self.height) 
 
 class movText(Flowable):
     def __init__(self,x,y,text=""):
@@ -467,4 +491,3 @@ class movText(Flowable):
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
         ################ FIN   DEL   REPORTE   DE   CONSULTAS   ###################
-
