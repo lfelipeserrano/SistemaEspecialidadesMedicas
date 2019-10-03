@@ -450,7 +450,7 @@ def reporteDoctores(request, pk):
     #styleJ.lineHeight= 1
 
                 #PARRAFO CONCATENADO CON VARIABLES
-    parrafo = "<br/><br/><br/><b>DATOS DE DOCTOR </b><br/><br/><br/><b>Nombre: </b>"+drnom1+" "+drape1+"<br/><br/><b>Especialidad: </b>"+dresp+"<br/><br/><b>Sexo: </b>"+str(drsex)+"<br/><br/><b>Fecha de Nacimiento: </b>"+str(drfecha)+"<br/><br/><b>Telefono: </b>"+drtele+"<br/><br/><b>Correo electronico: </b>"+email+"<br/><br/><b>DUI: </b>"+dui+"<br/><br/><b>NIT: </b>"+nit+"<br/><br/><b>NCF: </b>"+nc
+    parrafo = "<br/><br/><br/><b>DATOS DE DOCTOR </b><br/><br/><br/><br/><b>Nombre: </b>"+drnom1+" "+drape1+"<br/><br/><br/><b>Especialidad: </b>"+dresp+"<br/><br/><br/><b>Sexo: </b>"+str(drsex)+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(drfecha)+"<br/><br/><br/><b>Telefono: </b>"+drtele+"<br/><br/><br/><b>Correo electronico: </b>"+email+"<br/><br/><br/><b>DUI: </b>"+dui+"<br/><br/><br/><b>NIT: </b>"+nit+"<br/><br/><br/><b>NCF: </b>"+nc
 
     """styleC = style['Heading4']
     styleC.alignment = 1
@@ -556,7 +556,7 @@ def reportePacientes(request, pk):
     #styleJ.lineHeight= 1
 
                 #PARRAFO CONCATENADO CON VARIABLES
-    parrafo = "<br/><br/><br/><b>DATOS DE PACIENTE </b><br/><br/><br/><b>Numero de expediente:    </b>"+str(pexp)+"<br/><br/><br/><b>Nombre:</b>"+pnom1+" "+pape1+"<br/><br/><b>Sexo: </b>"+str(psexo)+"<br/><br/><b>Fecha de Nacimiento: </b>"+str(pfnac)+"<br/><br/><b>Altura: </b>"+str(paltura)+"<br/><br/><b>Peso: </b>"+str(ppeso)+"<br/><br/><b>Telefono: </b>"+str(ptel)+"<br/><br/><b>Institucion de proveniencia: </b>"+str(pinst)+"<br/><br/><b>Aseguradora: </b>"+str(pase)+"<br/><br/><b>Alergias: </b>"+str(paler)+"<br/><br/><b>Domicilio: </b>"+str(pprov)+"<br/><br/><b>Antecedentes: </b>"+str(pantec)
+    parrafo = "<br/><br/><br/><b>DATOS DE PACIENTE </b><br/><br/><br/><br/><b>Numero de expediente:    </b>"+str(pexp)+"<br/><br/><br/><b>Nombre:</b>"+pnom1+" "+pape1+"<br/><br/><br/><b>Sexo: </b>"+str(psexo)+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(pfnac)+"<br/><br/><br/><b>Altura: </b>"+str(paltura)+"<br/><br/><br/><b>Peso: </b>"+str(ppeso)+"<br/><br/><br/><b>Telefono: </b>"+str(ptel)+"<br/><br/><br/><b>Institucion de proveniencia: </b>"+str(pinst)+"<br/><br/><br/><b>Aseguradora: </b>"+str(pase)+"<br/><br/><br/><b>Alergias: </b>"+str(paler)+"<br/><br/><br/><b>Domicilio: </b>"+str(pprov)+"<br/><br/><br/><b>Antecedentes: </b>"+str(pantec)
 
     """styleC = style['Heading4']
     styleC.alignment = 1
