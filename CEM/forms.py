@@ -6,7 +6,7 @@ from .models import Doctor, Paciente, Consulta
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
-        fields = ('primerNombreDoctor', 'segundoNombreDoctor', 'primerApellidoDoctor', 'segundoApellidoDoctor', 'especialidad', 'sexoDoctor', 'fechaNacimientoDoctor',
+        fields = ('user','primerNombreDoctor', 'segundoNombreDoctor', 'primerApellidoDoctor', 'segundoApellidoDoctor', 'especialidad', 'sexoDoctor', 'fechaNacimientoDoctor',
         'telefonoDoctor', 'correoElectronico', 'duiDoctor', 'nitDoctor', 'ncfDoctor', 'fotografiaDoctor', )
         widgets = {
             'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y'),
