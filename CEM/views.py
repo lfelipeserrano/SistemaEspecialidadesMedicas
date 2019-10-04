@@ -413,7 +413,7 @@ def reporteDoctorIncapacidad(request,pk):
     dibujo.add(img1)
     dibujo2 = Drawing(0,0)
     dibujo2.add(img2)
-    line= linea(15,-15,488)
+    line= lineaRD(15,-15,488)
    
 
     #styleC = style['Heading3']
@@ -443,7 +443,7 @@ def reporteDoctorIncapacidad(request,pk):
     parrafo = "<b>A quien le interese</b><br/><br/><br/>El infrascrito Medico "+ especialidad +" "+ nom1D + " "+ ape1D +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + nom1P + " " + ape1P + "</b> con expediente clinico numero <b>"+exp+"</b> quien presenta: "+ observaciones +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ f2+""
     
     
-    line2 = linea(100,0,372)
+    line2 = lineaRD(100,0,372)
     styleC = style['Heading4']
     styleC.alignment = 1
     FYS = "Firma y Sello"
@@ -512,7 +512,7 @@ def reporteDoctorConstancia(request,pk):
     dibujo.add(img1)
     dibujo2 = Drawing(0,0)
     dibujo2.add(img2)
-    line= linea(15,-15,488)
+    line= lineaRD(15,-15,488)
  
     #title = Paragraph('<para align=center><b>Industry Earnings Call Transcripts Report</b></para>',style['Normal'])
     styleJ = style['BodyText']
@@ -521,7 +521,7 @@ def reporteDoctorConstancia(request,pk):
     styleC = style['Heading3']
     styleC.alignment = 1
     doc = "Dr.(a) "+ nomApeD +" "
-    line2 = linea(100,0,372)
+    line2 = lineaRD(100,0,372)
     #texInferior1=Paragraph("<para color=red >Hospital &emsp; instituto de ojos local 2-40<br/>Boulevard Tutunichapa Sas Salvador</para>",style['BodyText'])
     #texInferior2=Paragraph("<para color=red >Telefono:2517-9097/2556-5236 Celular. 7237-1722 <br/>cem-atencioncliente@outlook.com</para>",style['BodyText'])
 
@@ -549,7 +549,7 @@ def reporteDoctorConstancia(request,pk):
 
 
 
-class linea(Flowable):
+class lineaRD(Flowable):
     def __init__(self,width,height,width2):
         Flowable.__init__(self)
         self.width = width
