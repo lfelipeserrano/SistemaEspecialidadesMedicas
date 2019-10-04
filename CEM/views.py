@@ -370,7 +370,7 @@ def get_usuario_queryset(query=None):
 
     return list(set(queryset))
 
-  ############# prueba de reporte consutla ###################
+    ############# prueba de reporte consutla ###################
 def reporteConsultas(request,pk):####################
     consulta = get_object_or_404(Consulta, pk=pk)
     if consulta.idDoctor != None:
@@ -457,7 +457,6 @@ def reporteConsultas(request,pk):####################
                 #PARRAFO CONCATENADO CON VARIABLES
     parrafo = "<br/><br/><br/><b>Fecha: </b>"+f2+"<br/><br/><b>Paciente: </b>"+pacnom1+" "+pacape1+"<br/><br/><b>Doctor: </b>"+docnom1+" "+docape1+"<br/><br/><b>Peso en libras: </b>"+str(peso)+"<br/><br/><b>Altura en centimetros: </b>"+str(altura)+"<br/><br/><b>Presion: </b>"+str(presion)+"<br/><br/><b>Tempreratura en grados centigrados: </b>"+str(temp)+"<br/><br/><b>Pulso: </b>"+str(pulso)+"<br/><br/><b>Observaciones: </b>"+obs+"<br/><br/><b>Recetas: </b>"+receta+"<br/><br/><b>Examenes solicitados: </b>"+exsol+"<br/><br/><b>Reporte de examenes: </b>"+repexa
 
-
     """styleC = style['Heading4']
     styleC.alignment = 1
     FYS = "firma""" #este texto es por si se usa la firma
@@ -492,7 +491,6 @@ class movText(Flowable):
 
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
-
         ################ FIN   DEL   REPORTE   DE   CONSULTAS   ###################
 
 ############################  REPORTE DOCTORES  #########################################
