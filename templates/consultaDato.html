@@ -3,12 +3,13 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4">
                 <p><b>Fecha:</b> {{ consulta.fechaConsulta }}</p>
         </div>
-        <div class="col-md-4 ">
+        <div class="col-md-8 ">
             <div class="float-right"> 
-            <a href="{% url 'reporteDoctorCons' consulta.pk %}" class="btn btn-primary">Constancia Medica</a>
+            <a href="{% url 'reporteCons' consulta.pk %}" class="btn btn-primary">PDF DE CONSULTAS</a>
+	    <a href="{% url 'reporteDoctorCons' consulta.pk %}" class="btn btn-primary">Constancia Medica</a>
             <a href="{% url 'reporteDoctorInc' consulta.pk %}" class="btn btn-primary">Constancia por Incapacidad</a>
             </div>
         </div>
