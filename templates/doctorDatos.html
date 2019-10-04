@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
-    {% if doctor.sexoDoctor %}
-        <h1 class="h1 mb-4 text-gray-800">Dr. {{ doctor.primerApellidoDoctor }}</h1>
-    {% else %}
-        <h1 class="h1 mb-4 text-gray-800">Dra. {{ doctor.primerApellidoDoctor }}</h1>
-    {% endif %}
-        
+    <div class="row">
+        <div class="col-md-6">   
+            {% if doctor.sexoDoctor %}
+                <h1 class="h1 mb-4 text-gray-800">Dr. {{ doctor.primerApellidoDoctor }}</h1>
+            {% else %}
+                <h1 class="h1 mb-4 text-gray-800">Dra. {{ doctor.primerApellidoDoctor }}</h1>
+            {% endif %}
+        </div>    
+    </div>    
     <div class="row">
         <div class="col-sm">
             

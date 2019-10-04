@@ -15,6 +15,24 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
 from .models import Doctor, Paciente, Consulta
 from .forms import DoctorForm, PacienteForm, ConsultaForm
 
+<<<<<<< HEAD
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4,letter   
+from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
+from reportlab.platypus import SimpleDocTemplate,TableStyle#,Image
+from reportlab.platypus.tables import Table
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.platypus import Paragraph,Spacer,Flowable
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_RIGHT, TA_LEFT
+from reportlab.lib.units import cm
+import time
+from datetime import datetime
+from datetime import date
+import locale
+=======
 #Importamos settings para poder tener a la mano la ruta de la carpeta media
 from django.conf import settings 
 from io import BytesIO
@@ -31,10 +49,12 @@ from reportlab.platypus.tables import Table
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import Paragraph,Spacer,Flowable
 from reportlab.lib import colors
-from reportlab.lib.units import inch, cm
+
+cm = 2.54
 
 
 
+>>>>>>> master
 
 # Create your views here.
 
@@ -368,8 +388,31 @@ def get_usuario_queryset(query=None):
             queryset.append(usuario)
 
     return list(set(queryset))
+<<<<<<< HEAD
+
+# R E P O R T E S 
+"""def reporteDoctor(request):
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer, pagesize=A4)
+
+        pdf.drawImage("CEM/imagenes/logo.PNG",50,760,width=200,height=50)
+        pdf.setFont("Helvetica",20)
+        pdf.drawString(230,730,"REPORTE") 
+        pdf.setFont("Helvetica",18)
+        pdf.drawString(240,712,"Doctores") 
+
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response"""
+def reporteDoctorIncapacidad(request,pk):
+=======
     ############# prueba de reporte consutla ###################
 def reporteConsultas(request,pk):####################
+>>>>>>> master
     consulta = get_object_or_404(Consulta, pk=pk)
     if consulta.idDoctor != None:
         doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
@@ -379,19 +422,89 @@ def reporteConsultas(request,pk):####################
         paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
     else:
         paciente_consulta = Doctor.objects.none()
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> master
     ##################################################
     response = HttpResponse(content_type='application/pdf')
     #response['Content-Disposition'] = 'attachment; filename="Prueba.pdf"'
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer,
                             pagesize=letter,
+<<<<<<< HEAD
+                            title = "Constancia por Incapacidad",
+                            leftMargin=2*cm)
+=======
                             title = "Constancia por Incapacidad")
+>>>>>>> master
 
     style = getSampleStyleSheet()
     style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
 
     elementos = []
+<<<<<<< HEAD
+    titulo1=Paragraph('<para align=center>CLINICA DE ESPECIALIDADES MEDICAS</para>',style['Heading3'])
+    titulo2=Paragraph('<para align=center>CONSTANCIA MEDICA POR INCAPACIDAD </para>',style['Heading3'])
+    #img1 = Image("CEM/imagenes/logo1.PNG",width=70, height=70 )
+    img1 = Image(0,25,90,60,"CEM/imagenes/logo1RepDoc.PNG")
+    img2 = Image(375,25,135,60,"CEM/imagenes/logo2RepDoc.PNG")
+
+    dibujo = Drawing(30,30)
+    dibujo.add(img1)
+    dibujo2 = Drawing(0,0)
+    dibujo2.add(img2)
+    line= lineaRD(15,-15,488)
+   
+
+    #styleC = style['Heading3']
+    #styleC.alignment = 0
+    #titulo2 = Paragraph("A quien Corresponda",styleC)
+
+    f = consulta.fechaConsulta
+    f2 = f.strftime("%d/%m/%Y")
+    nom1P = paciente_consulta.primerNombrePaciente
+    ape1P = paciente_consulta.primerApellidoPaciente
+    exp = paciente_consulta.expediente
+    nom1D = doctor_consulta.primerNombreDoctor
+    ape1D = doctor_consulta.primerApellidoDoctor
+    especialidad = doctor_consulta.especialidad
+    observaciones = consulta.observaciones
+    meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    ahora = datetime.now()
+    dia = ahora.strftime("%d")
+    mes = meses[ahora.month-1]
+    anio = ahora.strftime("%Y")
+
+    locale.setlocale(locale.LC_ALL,'esp')
+    fech = ahora.strftime("%A %d de %B del  %Y.")
+
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    parrafo = "<b>A quien le interese</b><br/><br/><br/>El infrascrito Medico "+ especialidad +" "+ nom1D + " "+ ape1D +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + nom1P + " " + ape1P + "</b> con expediente clinico numero <b>"+exp+"</b> quien presenta: "+ observaciones +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ f2+""
+    
+    
+    line2 = lineaRD(100,0,372)
+    styleC = style['Heading4']
+    styleC.alignment = 1
+    FYS = "Firma y Sello"
+    elementos.append(titulo1)
+    elementos.append(titulo2)
+    elementos.append(Spacer(1,15))
+    elementos.append(line)    
+    elementos.append(dibujo)
+    elementos.append(dibujo2)
+    elementos.append(Spacer(1,20))
+    elementos.append(Paragraph("<para align=right >"+fech+"</para>",style['BodyText']))
+    elementos.append(Spacer(1,20))
+    elementos.append(Paragraph(parrafo ,styleJ))
+    elementos.append(Spacer(1,70))
+    elementos.append(line2)
+    elementos.append(Paragraph(FYS ,styleC))
+
+    #atr1 = Paragraph(Doctor.primerNombreDoctor,style['Heading2'])
+=======
    # img = Image("CEM/imagenes/logo.PNG",width=200, height=50 )
    # img.hAlign = 'LEFT'
     img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
@@ -403,7 +516,7 @@ def reporteConsultas(request,pk):####################
         
     dibujo.add(img)  
     dibujo.add(img1)
-    dibujo.add(img2)
+    dibujo.add(img2
     dibujo.add(img3)               
     elementos.append(dibujo)
 
@@ -464,11 +577,89 @@ def reporteConsultas(request,pk):####################
     elementos.append(Paragraph(parrafo ,styleJ))
     elementos.append(Spacer(1,10))
     
+>>>>>>> master
     pdf.build(elementos)
     response.write(buffer.getvalue())
     buffer.close()  
     return response
 
+<<<<<<< HEAD
+
+def reporteDoctorConstancia(request,pk):
+    consulta = get_object_or_404(Consulta, pk=pk)
+    if consulta.idDoctor != None:
+        doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
+    else:
+        doctor_consulta = Doctor.objects.none()
+    if consulta.expediente != None:
+        paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
+    else:
+        paciente_consulta = Doctor.objects.none()
+
+    response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'filename="Prueba.pdf"'
+    #response['Content-Disposition'] = 'filename="{}"'.format(file_name)
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title="Constancia Medica",
+                            leftMargin=2*cm,
+                            )
+
+    style = getSampleStyleSheet()
+    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
+    nomApe = paciente_consulta.primerNombrePaciente +" "+ paciente_consulta.primerApellidoPaciente 
+    nomApeD = doctor_consulta.primerNombreDoctor +" "+ doctor_consulta.primerApellidoDoctor
+    #meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    ahora = datetime.now()
+    dia = ahora.strftime("%d")
+    #mesLetra = meses[ahora.month-1]
+    mesNumero = ahora.strftime("%m")
+    anio = ahora.strftime("%Y")
+    locale.setlocale(locale.LC_ALL,'esp')
+    fech = ahora.strftime("%A %d de %B del  %Y.")
+    elementos = []
+    titulo1=Paragraph('<para align=center>CLINICA DE ESPECIALIDADES MEDICAS</para>',style['Heading3'])
+    titulo2=Paragraph('<para align=center>CONSTANCIA MEDICA</para>',style['Heading3'])
+    #img1 = Image("CEM/imagenes/logo1.PNG",width=70, height=70 )
+    img1 = Image(0,25,90,60,"CEM/imagenes/logo1RepDoc.PNG")
+
+    img2 = Image(375,25,135,60,"CEM/imagenes/logo2RepDoc.PNG")
+    dibujo = Drawing(30,30)
+    dibujo.add(img1)
+    dibujo2 = Drawing(0,0)
+    dibujo2.add(img2)
+    line= lineaRD(15,-15,488)
+ 
+    #title = Paragraph('<para align=center><b>Industry Earnings Call Transcripts Report</b></para>',style['Normal'])
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    parrafo = "A quien el interese <br/><br/><br/> Por medio de la presente se hace constar que el (la) paciente: <b>"+nomApe+"</b> paso consulta con el Doctor(a) <b>"+ nomApeD + "</b> el dia " + dia +"/"+ mesNumero +"/"+ anio+"."                        
+    styleC = style['Heading3']
+    styleC.alignment = 1
+    doc = "Dr.(a) "+ nomApeD +" "
+    line2 = lineaRD(100,0,372)
+    #texInferior1=Paragraph("<para color=red >Hospital &emsp; instituto de ojos local 2-40<br/>Boulevard Tutunichapa Sas Salvador</para>",style['BodyText'])
+    #texInferior2=Paragraph("<para color=red >Telefono:2517-9097/2556-5236 Celular. 7237-1722 <br/>cem-atencioncliente@outlook.com</para>",style['BodyText'])
+
+    
+    elementos.append(titulo1)
+    elementos.append(titulo2)
+    elementos.append(Spacer(1,15))
+    elementos.append(line)    
+    elementos.append(dibujo)
+    elementos.append(dibujo2)
+    elementos.append(Spacer(1,20))
+    elementos.append(Paragraph("<para align=right >"+fech+"</para>",style['BodyText']))
+    elementos.append(Spacer(1,20))
+    elementos.append(Paragraph(parrafo,styleJ))
+    elementos.append(Spacer(1,80))
+    elementos.append(line2)
+    elementos.append(Paragraph(doc,styleC))
+    #elementos.append(Spacer(1,290))
+    #elementos.append(texInferior1)
+    #elementos.append(texInferior2)
+=======
 class linea(Flowable):
     def __init__(self,width,height,width2):
         Flowable.__init__(self)
@@ -577,10 +768,17 @@ def reporteDoctores(request, pk):
     elementos.append(Paragraph(parrafo ,styleJ))
     elementos.append(Spacer(1,10))
     
+>>>>>>> master
     pdf.build(elementos)
     response.write(buffer.getvalue())
     buffer.close()  
     return response
+<<<<<<< HEAD
+
+
+
+class lineaRD(Flowable):
+=======
 ######################  FIN REPORTE DE DOCTOR   ###################################
 
  ########################### REPORTE DE PACIENTES############################
@@ -682,7 +880,6 @@ def reportePacientes(request, pk):
    
     elementos.append(Paragraph(parrafo ,styleJ))
     elementos.append(Spacer(1,10))
-
     
     pdf.build(elementos)
     response.write(buffer.getvalue())
@@ -690,6 +887,7 @@ def reportePacientes(request, pk):
     return response
 
 class linea(Flowable):
+>>>>>>> master
     def __init__(self,width,height,width2):
         Flowable.__init__(self)
         self.width = width
@@ -699,6 +897,10 @@ class linea(Flowable):
     def draw(self):
         self.canv.line(self.width,self.height,self.width2,self.height) 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 class movText(Flowable):
     def __init__(self,x,y,text=""):
         Flowable.__init__(self)
@@ -708,197 +910,7 @@ class movText(Flowable):
 
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
+<<<<<<< HEAD
+=======
         ################ FIN   DEL   REPORTE   DE   PACIENTES   ###################
-
-
-	########REPORTE DOCTORES#################
-def reporteDoctorIncapacidad(request,pk):
-    consulta = get_object_or_404(Consulta, pk=pk)
-    if consulta.idDoctor != None:
-        doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
-    else:
-        doctor_consulta = Doctor.objects.none()
-    if consulta.expediente != None:
-        paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
-    else:
-        paciente_consulta = Doctor.objects.none()
-
-    ##################################################
-    response = HttpResponse(content_type='application/pdf')
-    #response['Content-Disposition'] = 'attachment; filename="Prueba.pdf"'
-    buffer = BytesIO()
-    pdf = SimpleDocTemplate(buffer,
-                            pagesize=letter,
-                            title = "Constancia por Incapacidad",
-                            leftMargin=2*cm)
-
-    style = getSampleStyleSheet()
-    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
-
-    elementos = []
-    titulo1=Paragraph('<para align=center>CLINICA DE ESPECIALIDADES MEDICAS</para>',style['Heading3'])
-    titulo2=Paragraph('<para align=center>CONSTANCIA MEDICA POR INCAPACIDAD </para>',style['Heading3'])
-    #img1 = Image("CEM/imagenes/logo1.PNG",width=70, height=70 )
-    img1 = Image(0,25,90,60,"CEM/imagenes/logo1RepDoc.PNG")
-    img2 = Image(375,25,135,60,"CEM/imagenes/logo2RepDoc.PNG")
-
-    dibujo = Drawing(30,30)
-    dibujo.add(img1)
-    dibujo2 = Drawing(0,0)
-    dibujo2.add(img2)
-    line= lineaRD(15,-15,488)
-    #styleC = style['Heading3']
-    #styleC.alignment = 0
-    #titulo2 = Paragraph("A quien Corresponda",styleC)
-
-    f = consulta.fechaConsulta
-    f2 = f.strftime("%d/%m/%Y")
-    nom1P = paciente_consulta.primerNombrePaciente
-    ape1P = paciente_consulta.primerApellidoPaciente
-    exp = paciente_consulta.expediente
-    nom1D = doctor_consulta.primerNombreDoctor
-    ape1D = doctor_consulta.primerApellidoDoctor
-    especialidad = doctor_consulta.especialidad
-    observaciones = consulta.observaciones
-    meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
-    ahora = datetime.now()
-    dia = ahora.strftime("%d")
-    mes = meses[ahora.month-1]
-    anio = ahora.strftime("%Y")
-
-    locale.setlocale(locale.LC_ALL,'esp')
-    fech = ahora.strftime("%A %d de %B del  %Y.")
-
-    styleJ = style['BodyText']
-    styleJ.alignment = TA_JUSTIFY
-    parrafo = "<b>A quien le interese</b><br/><br/><br/>El infrascrito Medico "+ especialidad +" "+ nom1D + " "+ ape1D +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + nom1P + " " + ape1P + "</b> con expediente clinico numero <b>"+exp+"</b> quien presenta: "+ observaciones +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ f2+""
-    
-    
-    line2 = lineaRD(100,0,372)
-    styleC = style['Heading4']
-    styleC.alignment = 1
-    FYS = "Firma y Sello"
-    elementos.append(titulo1)
-    elementos.append(titulo2)
-    elementos.append(Spacer(1,15))
-    elementos.append(line)    
-    elementos.append(dibujo)
-    elementos.append(dibujo2)
-    elementos.append(Spacer(1,20))
-    elementos.append(Paragraph("<para align=right >"+fech+"</para>",style['BodyText']))
-    elementos.append(Spacer(1,20))
-    elementos.append(Paragraph(parrafo ,styleJ))
-    elementos.append(Spacer(1,70))
-    elementos.append(line2)
-    elementos.append(Paragraph(FYS ,styleC))
-
-    #atr1 = Paragraph(Doctor.primerNombreDoctor,style['Heading2'])
-    pdf.build(elementos)
-    response.write(buffer.getvalue())
-    buffer.close()  
-    return response	
-
-
-def reporteDoctorConstancia(request,pk):
-    consulta = get_object_or_404(Consulta, pk=pk)
-    if consulta.idDoctor != None:
-        doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
-    else:
-        doctor_consulta = Doctor.objects.none()
-    if consulta.expediente != None:
-        paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
-    else:
-        paciente_consulta = Doctor.objects.none()
-
-    response = HttpResponse(content_type='application/pdf')
-    #response['Content-Disposition'] = 'filename="Prueba.pdf"'
-    #response['Content-Disposition'] = 'filename="{}"'.format(file_name)
-    buffer = BytesIO()
-    pdf = SimpleDocTemplate(buffer,
-                            pagesize=letter,
-                            title="Constancia Medica",
-                            leftMargin=2*cm,
-                            )
-
-    style = getSampleStyleSheet()
-    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
-    nomApe = paciente_consulta.primerNombrePaciente +" "+ paciente_consulta.primerApellidoPaciente 
-    nomApeD = doctor_consulta.primerNombreDoctor +" "+ doctor_consulta.primerApellidoDoctor
-    #meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
-    ahora = datetime.now()
-    dia = ahora.strftime("%d")
-    #mesLetra = meses[ahora.month-1]
-    mesNumero = ahora.strftime("%m")
-    anio = ahora.strftime("%Y")
-    locale.setlocale(locale.LC_ALL,'esp')
-    fech = ahora.strftime("%A %d de %B del  %Y.")
-    elementos = []
-    titulo1=Paragraph('<para align=center>CLINICA DE ESPECIALIDADES MEDICAS</para>',style['Heading3'])
-    titulo2=Paragraph('<para align=center>CONSTANCIA MEDICA</para>',style['Heading3'])
-    #img1 = Image("CEM/imagenes/logo1.PNG",width=70, height=70 )
-    img1 = Image(0,25,90,60,"CEM/imagenes/logo1RepDoc.PNG")
-
-    img2 = Image(375,25,135,60,"CEM/imagenes/logo2RepDoc.PNG")
-    dibujo = Drawing(30,30)
-    dibujo.add(img1)
-    dibujo2 = Drawing(0,0)
-    dibujo2.add(img2)
-    line= lineaRD(15,-15,488)
- 
-    #title = Paragraph('<para align=center><b>Industry Earnings Call Transcripts Report</b></para>',style['Normal'])
-    styleJ = style['BodyText']
-    styleJ.alignment = TA_JUSTIFY
-    parrafo = "A quien el interese <br/><br/><br/> Por medio de la presente se hace constar que el (la) paciente: <b>"+nomApe+"</b> paso consulta con el Doctor(a) <b>"+ nomApeD + "</b> el dia " + dia +"/"+ mesNumero +"/"+ anio+"."                        
-    styleC = style['Heading3']
-    styleC.alignment = 1
-    doc = "Dr.(a) "+ nomApeD +" "
-    line2 = lineaRD(100,0,372)
-    #texInferior1=Paragraph("<para color=red >Hospital &emsp; instituto de ojos local 2-40<br/>Boulevard Tutunichapa Sas Salvador</para>",style['BodyText'])
-    #texInferior2=Paragraph("<para color=red >Telefono:2517-9097/2556-5236 Celular. 7237-1722 <br/>cem-atencioncliente@outlook.com</para>",style['BodyText'])
-
-    
-    elementos.append(titulo1)
-    elementos.append(titulo2)
-    elementos.append(Spacer(1,15))
-    elementos.append(line)    
-    elementos.append(dibujo)
-    elementos.append(dibujo2)
-    elementos.append(Spacer(1,20))
-    elementos.append(Paragraph("<para align=right >"+fech+"</para>",style['BodyText']))
-    elementos.append(Spacer(1,20))
-    elementos.append(Paragraph(parrafo,styleJ))
-    elementos.append(Spacer(1,80))
-    elementos.append(line2)
-    elementos.append(Paragraph(doc,styleC))
-    #elementos.append(Spacer(1,290))
-    #elementos.append(texInferior1)
-    #elementos.append(texInferior2)
-    pdf.build(elementos)
-    response.write(buffer.getvalue())
-    buffer.close()  
-    return response
-
-
-
-class lineaRD(Flowable):
-    def __init__(self,width,height,width2):
-        Flowable.__init__(self)
-        self.width = width
-        self.height = height
-        self.width2 = width2
-
-    def draw(self):
-        self.canv.line(self.width,self.height,self.width2,self.height) 
-
-
-class movText(Flowable):
-    def __init__(self,x,y,text=""):
-        Flowable.__init__(self)
-        self.x = x
-        self.y = y
-        self.text = text
-
-    def draw(self):
-        self.canv.drawString(self.x,self.y,self.text)
-
-
+>>>>>>> master
