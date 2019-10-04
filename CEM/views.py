@@ -381,24 +381,24 @@ def reporteDoctores(request, pk):
     style = getSampleStyleSheet()
     style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
 
-    elementos = []
+    elementos1 = []
     
-    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
-    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
-    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
-    img3 = Image(115,5,175,18,"CEM/imagenes/repdoctortext.png")
+    img0 = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+    imga = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    imgb = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
+    imgc = Image(115,5,175,18,"CEM/imagenes/repdoctortext.png")
     #img.hAlign = 'LEFT'
-    dibujo = Drawing(30,30)
+    dibujo1 = Drawing(30,30)
     #dibujo.translate(10,10)
-    styleC = style['Heading1']
-    styleC.alignment = 1
-    t1 = Paragraph("Reporte de Doctor",styleC)
+    styleB = style['Heading1']
+    styleB.alignment = 1
+    te1 = Paragraph("Reporte de Doctor",styleB)
 
-    dibujo.add(img)
-    dibujo.add(img1)
-    dibujo.add(img2)
-    dibujo.add(img3)                 #1
-    elementos.append(dibujo)
+    dibujo1.add(img0)
+    dibujo1.add(imga)
+    dibujo1.add(imgb)
+    dibujo1.add(imgc)                 #1
+    elementos1.append(dibujo1)
 
       #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
     """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
@@ -414,11 +414,11 @@ def reporteDoctores(request, pk):
     ahora = datetime.now()
     fecha = ahora.strftime("%A %d de %B del %Y")
     move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
-    elementos.append(move)
+    elementos1.append(move)
             #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
     line = linea(450,0,0)
-    elementos.append(line)
-    elementos.append(Spacer(1,10))
+    elementos1.append(line)
+    elementos1.append(Spacer(1,10))
         
              #ORDEN DE VARIABLES SEGUN consultaDatos.html
     drnom1 = doctor.primerNombreDoctor
@@ -437,24 +437,24 @@ def reporteDoctores(request, pk):
    
 
    #FORMATO  PARA EL PARRAFO
-    styleJ = style['BodyText']
-    styleJ.alignment = TA_JUSTIFY
-    styleJ.fontSize = 15
-    styleJ.fontName="Times-Roman"
+    styleD = style['BodyText']
+    styleD.alignment = TA_JUSTIFY
+    styleD.fontSize = 15
+    styleD.fontName="Times-Roman"
     #styleJ.lineHeight= 1
 
                 #PARRAFO CONCATENADO CON VARIABLES
-    parrafo = "<br/><br/><br/><b>DATOS DE DOCTOR </b><br/><br/><br/><br/><b>Nombre: </b>"+drnom1+" "+drape1+"<br/><br/><br/><b>Especialidad: </b>"+dresp+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(drfecha)+"<br/><br/><br/><b>Telefono: </b>"+drtele+"<br/><br/><br/><b>Correo electronico: </b>"+email+"<br/><br/><br/><b>DUI: </b>"+dui+"<br/><br/><br/><b>NIT: </b>"+nit+"<br/><br/><br/><b>NCF: </b>"+nc
+    parrafo1 = "<br/><br/><br/><b>DATOS DE DOCTOR </b><br/><br/><br/><br/><b>Nombre: </b>"+drnom1+" "+drape1+"<br/><br/><br/><b>Especialidad: </b>"+dresp+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(drfecha)+"<br/><br/><br/><b>Telefono: </b>"+drtele+"<br/><br/><br/><b>Correo electronico: </b>"+email+"<br/><br/><br/><b>DUI: </b>"+dui+"<br/><br/><br/><b>NIT: </b>"+nit+"<br/><br/><br/><b>NCF: </b>"+nc
 
     """styleC = style['Heading4']
     styleC.alignment = 1
     FYS = "firma""" #este texto es por si se usa la firma
     #elementos.append(Paragraph(FYS ,styleC)) 
    
-    elementos.append(Paragraph(parrafo ,styleJ))
-    elementos.append(Spacer(1,10))
+    elementos1.append(Paragraph(parrafo1 ,styleD))
+    elementos1.append(Spacer(1,10))
     
-    pdf.build(elementos)
+    pdf.build(elementos1)
     response.write(buffer.getvalue())
     buffer.close()  
     return response
@@ -473,24 +473,24 @@ def reportePacientes(request, pk):
     style = getSampleStyleSheet()
     style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
 
-    elementos = []
+    elementos2 = []
     
-    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
-    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
-    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
-    img3 = Image(115,5,175,18,"CEM/imagenes/reppacientetext.png")
+    imgx = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+    imgy = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    imgw = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
+    imgz = Image(115,5,175,18,"CEM/imagenes/reppacientetext.png")
     #img.hAlign = 'LEFT'
-    dibujo = Drawing(30,30)
+    dibujo3 = Drawing(30,30)
     #dibujo.translate(10,10)
-    styleC = style['Heading1']
-    styleC.alignment = 1
-    t1 = Paragraph("Reporte de Doctor",styleC)
+    styleA = style['Heading1']
+    styleA.alignment = 1
+    tex1 = Paragraph("Reporte de Doctor",styleA)
 
-    dibujo.add(img)
-    dibujo.add(img1)
-    dibujo.add(img2)
-    dibujo.add(img3)                 #1
-    elementos.append(dibujo)
+    dibujo3.add(imgx)
+    dibujo3.add(imgy)
+    dibujo3.add(imgw)
+    dibujo3.add(imgz)                 #1
+    elementos2.append(dibujo3)
 
       #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
     """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
@@ -506,11 +506,11 @@ def reportePacientes(request, pk):
     ahora = datetime.now()
     fecha = ahora.strftime("%A %d de %B del %Y")
     move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
-    elementos.append(move)
+    elementos2.append(move)
             #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
     line = linea(450,0,0)
-    elementos.append(line)
-    elementos.append(Spacer(1,10))
+    elementos2.append(line)
+    elementos2.append(Spacer(1,10))
         
              #ORDEN DE VARIABLES SEGUN consultaDatos.html
     pexp=paciente.expediente
@@ -543,24 +543,24 @@ def reportePacientes(request, pk):
    
 
    #FORMATO  PARA EL PARRAFO
-    styleJ = style['BodyText']
-    styleJ.alignment = TA_JUSTIFY
-    styleJ.fontSize = 15
-    styleJ.fontName="Times-Roman"
+    styleK = style['BodyText']
+    styleK.alignment = TA_JUSTIFY
+    styleK.fontSize = 15
+    styleK.fontName="Times-Roman"
     #styleJ.lineHeight= 1
 
                 #PARRAFO CONCATENADO CON VARIABLES
-    parrafo = "<br/><br/><br/><b>DATOS DE PACIENTE </b><br/><br/><br/><br/><b>Numero de expediente:    </b>"+str(pexp)+"<br/><br/><br/><b>Nombre:</b>"+pnom1+" "+pape1+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(pfnac)+"<br/><br/><br/><b>Altura: </b>"+str(paltura)+"<br/><br/><br/><b>Peso: </b>"+str(ppeso)+"<br/><br/><br/><b>Telefono: </b>"+str(ptel)+"<br/><br/><br/><b>Institucion de proveniencia: </b>"+str(pinst)+"<br/><br/><br/><b>Aseguradora: </b>"+str(pase)+"<br/><br/><br/><b>Alergias: </b>"+str(paler)+"<br/><br/><br/><b>Domicilio: </b>"+str(pprov)+"<br/><br/><br/><b>Antecedentes: </b>"+str(pantec)
+    parrafo2 = "<br/><br/><br/><b>DATOS DE PACIENTE </b><br/><br/><br/><br/><b>Numero de expediente:    </b>"+str(pexp)+"<br/><br/><br/><b>Nombre:</b>"+pnom1+" "+pape1+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(pfnac)+"<br/><br/><br/><b>Altura: </b>"+str(paltura)+"<br/><br/><br/><b>Peso: </b>"+str(ppeso)+"<br/><br/><br/><b>Telefono: </b>"+str(ptel)+"<br/><br/><br/><b>Institucion de proveniencia: </b>"+str(pinst)+"<br/><br/><br/><b>Aseguradora: </b>"+str(pase)+"<br/><br/><br/><b>Alergias: </b>"+str(paler)+"<br/><br/><br/><b>Domicilio: </b>"+str(pprov)+"<br/><br/><br/><b>Antecedentes: </b>"+str(pantec)
 
     """styleC = style['Heading4']
     styleC.alignment = 1
     FYS = "firma""" #este texto es por si se usa la firma
     #elementos.append(Paragraph(FYS ,styleC)) 
    
-    elementos.append(Paragraph(parrafo ,styleJ))
-    elementos.append(Spacer(1,10))
+    elementos2.append(Paragraph(parrafo2 ,styleK))
+    elementos2.append(Spacer(1,10))
     
-    pdf.build(elementos)
+    pdf.build(elementos2)
     response.write(buffer.getvalue())
     buffer.close()  
     return response
@@ -584,4 +584,4 @@ class movText(Flowable):
 
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
-        ################ FIN   DEL   REPORTE   DE   PACIENTES   ###################
+       ##### ################ FIN   DEL   REPORTE   DE   PACIENTES   ################### ######
