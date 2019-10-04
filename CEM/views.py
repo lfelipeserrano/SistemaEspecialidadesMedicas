@@ -31,8 +31,7 @@ from reportlab.platypus.tables import Table
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import Paragraph,Spacer,Flowable
 from reportlab.lib import colors
-
-cm = 2.54
+from reportlab.lib.units import inch, cm
 
 
 
@@ -404,7 +403,7 @@ def reporteConsultas(request,pk):####################
         
     dibujo.add(img)  
     dibujo.add(img1)
-    dibujo.add(img2
+    dibujo.add(img2)
     dibujo.add(img3)               
     elementos.append(dibujo)
 
