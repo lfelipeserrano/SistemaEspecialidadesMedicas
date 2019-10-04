@@ -7,7 +7,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import permission_required, user_passes_test
 from .validators import validate_email
-from django.db.models import Q
 from django.db.models import *
 from django.db import models 
 from  datetime import datetime
