@@ -180,7 +180,7 @@ def doctorEditar(request, pk):
 def doctorEliminarFuncion(request, pk):
     temp = Doctor.objects.get(pk=pk).delete()
     return redirect('doctores')
-
+    
 #VISTA PACIENTES
 class pacienteInicio(TemplateView):
     template_name = 'pacienteInicio.html'
@@ -311,6 +311,7 @@ def logout_view(request):
     logout(request)
     return redirect('inicio')
 
+
 def get_doc_queryset(query=None):
     queryset =[]
     queries = query.split(" ")
@@ -321,8 +322,8 @@ def get_doc_queryset(query=None):
             Q(especialidad__icontains=q)
         ).distinct()
     
-        for doc in docs:
-            queryset.append(doc)
+    for doc in docs:
+        queryset.append(doc)
     
     return list(set(queryset))
 
@@ -368,7 +369,6 @@ def get_usuario_queryset(query=None):
             queryset.append(usuario)
 
     return list(set(queryset))
-   
     ############# prueba de reporte consutla ###################
 def reporteConsultas(request,pk):####################
     consulta = get_object_or_404(Consulta, pk=pk)
@@ -404,7 +404,7 @@ def reporteConsultas(request,pk):####################
         
     dibujo.add(img)  
     dibujo.add(img1)
-    dibujo.add(img2)
+    dibujo.add(img2
     dibujo.add(img3)               
     elementos.append(dibujo)
 
@@ -416,7 +416,6 @@ def reporteConsultas(request,pk):####################
     dia = dias[ahora.month-1]
     mes = meses[ahora.month-1]
     anio = ahora.strftime("%Y")"""
-   
             #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
     locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
     ahora = datetime.now()
@@ -491,3 +490,222 @@ class movText(Flowable):
     def draw(self):
         self.canv.drawString(self.x,self.y,self.text)
         ################ FIN   DEL   REPORTE   DE   CONSULTAS   ###################
+
+############################  REPORTE DOCTORES  #########################################
+def reporteDoctores(request, pk):
+    doctor = get_object_or_404(Doctor, pk=pk)
+    
+
+    response = HttpResponse(content_type='application/pdf')
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title = "")
+
+    style = getSampleStyleSheet()
+    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
+
+    elementos = []
+    
+    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
+    img3 = Image(115,5,175,18,"CEM/imagenes/repdoctortext.png")
+    #img.hAlign = 'LEFT'
+    dibujo = Drawing(30,30)
+    #dibujo.translate(10,10)
+    styleC = style['Heading1']
+    styleC.alignment = 1
+    t1 = Paragraph("Reporte de Doctor",styleC)
+
+    dibujo.add(img)
+    dibujo.add(img1)
+    dibujo.add(img2)
+    dibujo.add(img3)                 #1
+    elementos.append(dibujo)
+
+      #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
+    """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    dias = ("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo")
+    ahora = datetime.now()
+    #dia = ahora.strftime("%d")
+    dia = dias[ahora.month-1]
+    mes = meses[ahora.month-1]
+    anio = ahora.strftime("%Y")"""
+    
+            #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
+    locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
+    ahora = datetime.now()
+    fecha = ahora.strftime("%A %d de %B del %Y")
+    move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
+    elementos.append(move)
+            #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
+    line = linea(450,0,0)
+    elementos.append(line)
+    elementos.append(Spacer(1,10))
+        
+             #ORDEN DE VARIABLES SEGUN consultaDatos.html
+    drnom1 = doctor.primerNombreDoctor
+    drnom2 = doctor.segundoNombreDoctor
+    drape1 = doctor.primerApellidoDoctor
+    drape2 = doctor.segundoApellidoDoctor
+    dresp = doctor.especialidad
+    drsex = doctor.sexoDoctor
+    drfecha = doctor.fechaNacimientoDoctor
+    drtele = doctor.telefonoDoctor
+    email = doctor.correoElectronico
+    dui = doctor.duiDoctor
+    nit = doctor. nitDoctor
+    nc = doctor.ncfDoctor
+    foto = doctor.fotografiaDoctor
+   
+
+   #FORMATO  PARA EL PARRAFO
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    styleJ.fontSize = 15
+    styleJ.fontName="Times-Roman"
+    #styleJ.lineHeight= 1
+
+                #PARRAFO CONCATENADO CON VARIABLES
+    parrafo = "<br/><br/><br/><b>DATOS DE DOCTOR </b><br/><br/><br/><br/><b>Nombre: </b>"+drnom1+" "+drape1+"<br/><br/><br/><b>Especialidad: </b>"+dresp+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(drfecha)+"<br/><br/><br/><b>Telefono: </b>"+drtele+"<br/><br/><br/><b>Correo electronico: </b>"+email+"<br/><br/><br/><b>DUI: </b>"+dui+"<br/><br/><br/><b>NIT: </b>"+nit+"<br/><br/><br/><b>NCF: </b>"+nc
+
+    """styleC = style['Heading4']
+    styleC.alignment = 1
+    FYS = "firma""" #este texto es por si se usa la firma
+    #elementos.append(Paragraph(FYS ,styleC)) 
+   
+    elementos.append(Paragraph(parrafo ,styleJ))
+    elementos.append(Spacer(1,10))
+    
+    pdf.build(elementos)
+    response.write(buffer.getvalue())
+    buffer.close()  
+    return response
+######################  FIN REPORTE DE DOCTOR   ###################################
+
+ ########################### REPORTE DE PACIENTES############################
+def reportePacientes(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+   
+    response = HttpResponse(content_type='application/pdf')
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title = "")
+
+    style = getSampleStyleSheet()
+    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
+
+    elementos = []
+    
+    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
+    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
+    img3 = Image(115,5,175,18,"CEM/imagenes/reppacientetext.png")
+    #img.hAlign = 'LEFT'
+    dibujo = Drawing(30,30)
+    #dibujo.translate(10,10)
+    styleC = style['Heading1']
+    styleC.alignment = 1
+    t1 = Paragraph("Reporte de Doctor",styleC)
+
+    dibujo.add(img)
+    dibujo.add(img1)
+    dibujo.add(img2)
+    dibujo.add(img3)                 #1
+    elementos.append(dibujo)
+
+      #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
+    """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    dias = ("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo")
+    ahora = datetime.now()
+    #dia = ahora.strftime("%d")
+    dia = dias[ahora.month-1]
+    mes = meses[ahora.month-1]
+    anio = ahora.strftime("%Y")"""
+    
+            #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
+    locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
+    ahora = datetime.now()
+    fecha = ahora.strftime("%A %d de %B del %Y")
+    move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
+    elementos.append(move)
+            #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
+    line = linea(450,0,0)
+    elementos.append(line)
+    elementos.append(Spacer(1,10))
+        
+             #ORDEN DE VARIABLES SEGUN consultaDatos.html
+    pexp=paciente.expediente
+    dres=paciente.doctores
+    pnom1=paciente.primerNombrePaciente
+    pnom2=paciente.segundoNombrePaciente
+    pape1=paciente.primerApellidoPaciente
+    pape2=paciente.segundoApellidoPaciente
+    psexo=paciente.sexoPaciente
+    pfnac=paciente.fechaNacimientoPaciente
+    paltura=paciente.alturaPaciente
+    ppeso=paciente.pesoPaciente
+    ptel=paciente.telefonoPaciente
+    pfoto=paciente.fotografiaPaciente
+    pinst=paciente.institucion
+    pase=paciente.aseguradora
+    paler=paciente.alergias
+    pprov=paciente.lugarProveniencia
+    """ptaba=paciente.tabquista
+    peti=paciente.etilista
+    phiper=paciente.hipertenso
+    pdiab=paciente.diabetico
+    ptuber=paciente.tuberculosis
+    pane=paciente.anemia
+    pconvul=paciente.convulsiones
+    pcanc=paciente.cancer
+    plugcanc=paciente.lugarCancer
+    ptratcanc=paciente.tratamientoCancer"""
+    pantec=paciente.antecedentes
+   
+
+   #FORMATO  PARA EL PARRAFO
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    styleJ.fontSize = 15
+    styleJ.fontName="Times-Roman"
+    #styleJ.lineHeight= 1
+
+                #PARRAFO CONCATENADO CON VARIABLES
+    parrafo = "<br/><br/><br/><b>DATOS DE PACIENTE </b><br/><br/><br/><br/><b>Numero de expediente:    </b>"+str(pexp)+"<br/><br/><br/><b>Nombre:</b>"+pnom1+" "+pape1+"<br/><br/><br/><b>Fecha de Nacimiento: </b>"+str(pfnac)+"<br/><br/><br/><b>Altura: </b>"+str(paltura)+"<br/><br/><br/><b>Peso: </b>"+str(ppeso)+"<br/><br/><br/><b>Telefono: </b>"+str(ptel)+"<br/><br/><br/><b>Institucion de proveniencia: </b>"+str(pinst)+"<br/><br/><br/><b>Aseguradora: </b>"+str(pase)+"<br/><br/><br/><b>Alergias: </b>"+str(paler)+"<br/><br/><br/><b>Domicilio: </b>"+str(pprov)+"<br/><br/><br/><b>Antecedentes: </b>"+str(pantec)
+
+    """styleC = style['Heading4']
+    styleC.alignment = 1
+    FYS = "firma""" #este texto es por si se usa la firma
+    #elementos.append(Paragraph(FYS ,styleC)) 
+   
+    elementos.append(Paragraph(parrafo ,styleJ))
+    elementos.append(Spacer(1,10))
+    
+    pdf.build(elementos)
+    response.write(buffer.getvalue())
+    buffer.close()  
+    return response
+
+class linea(Flowable):
+    def __init__(self,width,height,width2):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+        self.width2 = width2
+
+    def draw(self):
+        self.canv.line(self.width,self.height,self.width2,self.height) 
+
+class movText(Flowable):
+    def __init__(self,x,y,text=""):
+        Flowable.__init__(self)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self):
+        self.canv.drawString(self.x,self.y,self.text)
+        ################ FIN   DEL   REPORTE   DE   PACIENTES   ###################

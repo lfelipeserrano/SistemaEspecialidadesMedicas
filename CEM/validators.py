@@ -54,11 +54,4 @@ def validate_nrc(value):
             raise ValidationError("Ingrese un número de registro de contribuyente válido")
             return value
 #PACIENTE
-
-
-
-
-
-
-
-            
+         

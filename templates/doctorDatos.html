@@ -84,7 +84,11 @@
     <div class="row justify-content-center mt-4">
         <div class="col text-center">
             <a href="{% url 'doctor_editar' doctor.pk %}" class="btn btn-secondary">Editar datos</a>
-            <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor" class="btn btn-danger">Eliminar Doctor</button>  
+            <button data-toggle="modal"  data-target="#confirmacionEliminarDoctor" class="btn btn-danger">Eliminar Doctor</button>
+            <!--Boton para generar PDF-->
+            <div class="float-right">
+                <a href="{% url 'reporteDoc' doctor.pk %}" class="btn btn-primary">Generar PDF</a>
+            </div>  
         </div>
     </div>
     <div class="modal fade" id="confirmacionEliminarDoctor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
