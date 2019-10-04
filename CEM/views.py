@@ -36,6 +36,7 @@ cm = 2.54
 
 
 
+
 # Create your views here.
 
 class inicio(TemplateView):
@@ -368,8 +369,6 @@ def get_usuario_queryset(query=None):
             queryset.append(usuario)
 
     return list(set(queryset))
-
-
 
 #para generar pdf de doctores
 ############################  REPORTE DOCTORES  #########################################
