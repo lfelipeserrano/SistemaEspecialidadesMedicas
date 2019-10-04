@@ -34,6 +34,7 @@ urlpatterns = [
     path('paciente/nuevo/', pacienteNuevo, name='paciente_nuevo'),
     path('paciente/list/', pacientes, name='pacientes'),
     path('paciente/<str:pk>/', pacienteDatos, name='paciente_datos'),
+    path('paciente/reportePacientes/<str:pk>/', reportePacientes, name='reportePac'), #reporte paciente
 
     #URL Doctor
     # path('doctor/', doctorInicio.as_view(), name='doctor'),
@@ -42,10 +43,7 @@ urlpatterns = [
     path('doctor/nuevo/', doctorNuevo, name='doctor_nuevo'),
     path('doctor/<int:pk>/', doctorDatos, name='doctor_datos'),
     path('doctor/list/', doctores, name='doctores'),
-
-    #Reporte pacientes
-    path('doctor/reporteDoctores/<int:pk>/', reporteDoctores, name='reporteDoc'),
-    path('paciente/reportePacientes/<str:pk>/', reportePacientes, name='reportePac'),
+    path('doctor/reporteDoctores/<int:pk>/', reporteDoctores, name='reporteDoc'), #Reporte doctor
 
     path('', inicio.as_view(), name='inicio')
 ]
