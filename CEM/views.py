@@ -29,12 +29,7 @@ from django.http import HttpResponse
 from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
 from reportlab.platypus import SimpleDocTemplate,TableStyle
 from reportlab.platypus.tables import Table
-from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
-from reportlab.platypus import Paragraph,Spacer,Flowable
-from reportlab.lib import colors
-from  datetime import datetime
 
-cm = 2.54
 
 # Create your views here.
 
