@@ -370,7 +370,6 @@ def get_usuario_queryset(query=None):
 
     return list(set(queryset))
 
-#para generar pdf de doctores
 ############################  REPORTE DOCTORES  #########################################
 def reporteDoctores(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
@@ -386,14 +385,15 @@ def reporteDoctores(request, pk):
     style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
 
     elementos1 = []
-    
+    # img = Image("CEM/imagenes/logo.PNG",width=200, height=50 )
+    # img.hAlign = 'LEFT'
     img0 = Image(0,0,50,50,"CEM/imagenes/logoleft.png")
     imga = Image(350,0,100,50,"CEM/imagenes/logocem.png")
     imgb = Image(73,30,260,20,"CEM/imagenes/cemtext.png")
     imgc = Image(115,5,175,18,"CEM/imagenes/repdoctortext.png")
-    #img.hAlign = 'LEFT'
+    
     dibujo1 = Drawing(30,30)
-    #dibujo.translate(10,10)
+    
     styleB = style['Heading1']
     styleB.alignment = 1
     te1 = Paragraph("Reporte de Doctor",styleB)
