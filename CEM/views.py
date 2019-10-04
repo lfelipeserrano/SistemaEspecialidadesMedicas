@@ -370,11 +370,135 @@ def get_usuario_queryset(query=None):
 
     return list(set(queryset))
 
+  ############# prueba de reporte consutla ###################
+def reporteConsultas(request,pk):####################
+    consulta = get_object_or_404(Consulta, pk=pk)
+    if consulta.idDoctor != None:
+        doctor_consulta = Doctor.objects.get(primerApellidoDoctor = consulta.idDoctor)
+    else:
+        doctor_consulta = Doctor.objects.none()
+    if consulta.expediente != None:
+        paciente_consulta = Paciente.objects.get(expediente = consulta.expediente)
+    else:
+        paciente_consulta = Doctor.objects.none()
+    
+    ##################################################
+    response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Prueba.pdf"'
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title = "Constancia por Incapacidad")
+
+    style = getSampleStyleSheet()
+    style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
+
+    elementos = []
+   # img = Image("CEM/imagenes/logo.PNG",width=200, height=50 )
+   # img.hAlign = 'LEFT'
+    img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
+    img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
+    img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
+    img3 = Image(115,5,175,18,"CEM/imagenes/repconsultext.jpg")
+       
+    dibujo = Drawing(30,30)#margen superior e izquierdo de donde empieza el pdf
+        
+    dibujo.add(img)  
+    dibujo.add(img1)
+    dibujo.add(img2)
+    dibujo.add(img3)               
+    elementos.append(dibujo)
+
+            #FORMATO  PARA UTILIZAR FECHA COMO  VARIABLES
+    """meses = ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    dias = ("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo")
+    ahora = datetime.now()
+    #dia = ahora.strftime("%d")
+    dia = dias[ahora.month-1]
+    mes = meses[ahora.month-1]
+    anio = ahora.strftime("%Y")"""
+
+            #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
+    locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
+    ahora = datetime.now()
+    fecha = ahora.strftime("%A %d de %B del %Y")
+    move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
+    elementos.append(move)
+            #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
+    line = linea(450,0,0)
+    elementos.append(line)
+    elementos.append(Spacer(1,10))
+
+            #ORDEN DE VARIABLES SEGUN consultaDatos.html
+    f = consulta.fechaConsulta
+    f2 = f.strftime("%d/%m/%Y")
+    pacnom1 = paciente_consulta.primerNombrePaciente
+    pacape1 = paciente_consulta.primerApellidoPaciente
+    docnom1 = doctor_consulta.primerNombreDoctor
+    docape1 = doctor_consulta.primerApellidoDoctor
+    peso = paciente_consulta.pesoPaciente
+    altura = paciente_consulta.alturaPaciente
+    presion = consulta.presionConsulta
+    temp = consulta.temperatura
+    pulso = consulta.pulso
+    regla = consulta.fechaUltimaRegla
+    obs = consulta.observaciones
+    receta = consulta.recetas
+    exsol = consulta.examenesSolicitados
+    repexa = consulta.reporteExamenes
+
+                #FORMATO  PARA EL PARRAFO
+    styleJ = style['BodyText']
+    styleJ.alignment = TA_JUSTIFY
+    styleJ.fontSize = 15
+    styleJ.fontName="Times-Roman"
+    #styleJ.lineHeight= 1
+
+                #PARRAFO CONCATENADO CON VARIABLES
+    parrafo = "<br/><br/><br/><b>Fecha: </b>"+f2+"<br/><br/><b>Paciente: </b>"+pacnom1+" "+pacape1+"<br/><br/><b>Doctor: </b>"+docnom1+" "+docape1+"<br/><br/><b>Peso en libras: </b>"+str(peso)+"<br/><br/><b>Altura en centimetros: </b>"+str(altura)+"<br/><br/><b>Presion: </b>"+str(presion)+"<br/><br/><b>Tempreratura en grados centigrados: </b>"+str(temp)+"<br/><br/><b>Pulso: </b>"+str(pulso)+"<br/><br/><b>Observaciones: </b>"+obs+"<br/><br/><b>Recetas: </b>"+receta+"<br/><br/><b>Examenes solicitados: </b>"+exsol+"<br/><br/><b>Reporte de examenes: </b>"+repexa
+
+
+    """styleC = style['Heading4']
+    styleC.alignment = 1
+    FYS = "firma""" #este texto es por si se usa la firma
+    #elementos.append(Paragraph(FYS ,styleC)) 
+   
+    #elementos.append(titulo2)
+    #elementos.append(Spacer(1,5))
+    elementos.append(Paragraph(parrafo ,styleJ))
+    elementos.append(Spacer(1,10))
+    
+    pdf.build(elementos)
+    response.write(buffer.getvalue())
+    buffer.close()  
+    return response
+
+class linea(Flowable):
+    def __init__(self,width,height,width2):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+        self.width2 = width2
+
+    def draw(self):
+        self.canv.line(self.width,self.height,self.width2,self.height) 
+
+class movText(Flowable):
+    def __init__(self,x,y,text=""):
+        Flowable.__init__(self)
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self):
+        self.canv.drawString(self.x,self.y,self.text)
+
+        ################ FIN   DEL   REPORTE   DE   CONSULTAS   ###################
+
 ############################  REPORTE DOCTORES  #########################################
 def reporteDoctores(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
     
-
     response = HttpResponse(content_type='application/pdf')
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer,
