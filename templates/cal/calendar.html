@@ -10,9 +10,9 @@
     </div>
     <div class="row justify-content-center mt-4">
         <div class="col text-center">
-            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ prev_month }}"> Mes Previo </a>
             <a class="btn btn-secondary" href="{% url 'event_new' %}"> New Event </a>
-            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+            <a class="btn btn-secondary" href="{% url 'calendar' %}?{{ next_month }}"> Siguiente Mes </a>
         </div>
     </div>
 {% endblock content%}
