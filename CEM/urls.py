@@ -1,9 +1,15 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+
+from django.utils.decorators import method_decorator
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .views import *
 
 urlpatterns = [
-    path('logout/', logout_view, name="logout"),
+     path('logout/', logout_view, name="logout"),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name="login"),
     path('permisoDenegado/', permisoDenegado, name='permisos'),
 
@@ -20,7 +26,8 @@ urlpatterns = [
     path('consulta/nuevo/', consultaNuevo, name='consulta_nuevo'),
     path('consulta/list/', consultas, name='consultas'),
     path('consulta/<int:pk>/', consultaDatos, name='consulta_datos'),
-
+    path('consulta/reporteDoctorIncapacidad/<int:pk>/', reporteDoctorIncapacidad, name='reporteDoctorInc'),
+    path('consulta/reporteDoctorConstancia/<int:pk>/', reporteDoctorConstancia, name='reporteDoctorCons'),
     #URL Paciente
     # path('paciente/', pacienteInicio.as_view(), name='paciente'),
     path('paciente/<str:pk>/eliminar', pacienteEliminarFuncion, name='paciente_eliminar'),
@@ -28,6 +35,7 @@ urlpatterns = [
     path('paciente/nuevo/', pacienteNuevo, name='paciente_nuevo'),
     path('paciente/list/', pacientes, name='pacientes'),
     path('paciente/<str:pk>/', pacienteDatos, name='paciente_datos'),
+    path('paciente/reportePacientes/<str:pk>/', reportePacientes, name='reportePac'), #reporte paciente
 
     #URL Doctor
     # path('doctor/', doctorInicio.as_view(), name='doctor'),
@@ -36,6 +44,13 @@ urlpatterns = [
     path('doctor/nuevo/', doctorNuevo, name='doctor_nuevo'),
     path('doctor/<int:pk>/', doctorDatos, name='doctor_datos'),
     path('doctor/list/', doctores, name='doctores'),
+    path('doctor/reporteDoctores/<int:pk>/', reporteDoctores, name='reporteDoc'), #Reporte doctor
+
+    #URL reporte consultas
+    path('reporte_consultas_pdf/', login_required(reporteConsultas), name="reporte_consultas_pdf"),
+    path('consulta/reporteConsultas/<int:pk>/', reporteConsultas, name="reporteCons"),
 
     path('', inicio.as_view(), name='inicio')
+
+    
 ]

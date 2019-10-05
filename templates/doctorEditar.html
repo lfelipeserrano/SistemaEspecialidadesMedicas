@@ -4,6 +4,13 @@
 {{ form.media }}
 <h1 class="h1 mb-4 text-gray-800">Editar doctor</h1>
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+        <div class="form-group col-12">
+            <label>Doctor:</label>
+            <br>
+        {{ form.user }}
+        </div>
+    </div>
     <div class="form-row">
         <div class="form-group col-md-4">
             <label>Primer nombre:</label>
@@ -83,8 +90,8 @@
         <br>
         {{ form.fotografiaDoctor }}
     </div>
-    <div class="col-md-12">
-        <div class="float-right">
+    <div class="row justify-content-center mt-4">
+        <div class="col text-center">
             <a href="{% url 'doctores' %}" class="btn btn-secondary mr-2">Cancelar</a>
             <input type="submit" value="Guardar" class="btn btn-primary mr-2">
         </div>

@@ -6,10 +6,14 @@ from .models import Doctor, Paciente, Consulta
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
-        fields = ('primerNombreDoctor', 'segundoNombreDoctor', 'primerApellidoDoctor', 'segundoApellidoDoctor', 'especialidad', 'sexoDoctor', 'fechaNacimientoDoctor',
+        fields = ('user','primerNombreDoctor', 'segundoNombreDoctor', 'primerApellidoDoctor', 'segundoApellidoDoctor', 'especialidad', 'sexoDoctor', 'fechaNacimientoDoctor',
         'telefonoDoctor', 'correoElectronico', 'duiDoctor', 'nitDoctor', 'ncfDoctor', 'fotografiaDoctor', )
         widgets = {
-            'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y')
+            'fechaNacimientoDoctor' : DatePickerInput(format='%d/%m/%Y'),
+            'nitDoctor': forms.TextInput(attrs={'placeholder':'9999-999999-999-9'}),
+            'duiDoctor': forms.TextInput(attrs={'placeholder':'99999999-9'}),
+            'ncfDoctor': forms.TextInput(attrs={'placeholder':'999999-9'}),
+            'telefonoDoctor': forms.TextInput(attrs={'placeholder':'9999-9999'})
         }           
    
 
@@ -26,7 +30,9 @@ class PacienteForm(forms.ModelForm):
         widgets = {
             'fechaNacimientoPaciente' : DatePickerInput(format='%d/%m/%Y'),
             'alturaPaciente' : forms.TextInput(attrs={'placeholder':'Altura en centimetros'}),
-            'pesoPaciente' : forms.TextInput(attrs={'placeholder':'Peso en libras'})
+            'pesoPaciente' : forms.TextInput(attrs={'placeholder':'Peso en libras'}),
+            'telefonoPaciente' : forms.TextInput(attrs={'placeholder':'9999-9999'})
+
         }
 
     # idDoctor = forms.ModelChoiceField(queryset=Doctor.objects.all())

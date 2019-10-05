@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
+{% block extrahead %}
+{% endblock %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +23,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
@@ -64,13 +67,13 @@
           <span>Usuarios</span>
         </a>
         <div id="collapseTwo0" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Acciones:</h6>
+          <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+            <h6 class="collapse-header" style="color: white">Acciones:</h6>
             {% if perms.CEM.add_user %}
-              <a class="collapse-item" href="{% url 'signup' %}">Agregar</a>
+              <a class="collapse-item" href="{% url 'signup' %}" style="color: white">Agregar</a>
             {% endif %}
             {% if perms.CEM.view_user %}
-              <a class="collapse-item" href="{% url 'usuarios' %}">Listar</a>
+              <a class="collapse-item" href="{% url 'usuarios' %}" style="color: white">Listar</a>
             {% endif %}
           </div>
         </div>
@@ -93,13 +96,13 @@
           <span>Doctores</span>
         </a>
         <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Acciones:</h6>
+          <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+            <h6 class="collapse-header" style="color: white">Acciones:</h6>
             {% if perms.CEM.add_doctor %}
-              <a class="collapse-item" href="{% url 'doctor_nuevo' %}">Agregar</a>
+              <a class="collapse-item" href="{% url 'doctor_nuevo' %}" style="color: white">Agregar</a>
             {% endif %}
             {% if perms.CEM.view_doctor %}
-              <a class="collapse-item" href="{% url 'doctores' %}">Listar</a>
+              <a class="collapse-item" href="{% url 'doctores' %}" style="color: white">Listar</a>
             {% endif %}
           </div>
         </div>
@@ -122,13 +125,13 @@
            <span>Pacientes</span>
          </a>
          <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-           <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">Acciones:</h6>
+           <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+             <h6 class="collapse-header" style="color: white">Acciones:</h6>
             {% if perms.CEM.add_paciente %}
-              <a class="collapse-item" href="{% url 'paciente_nuevo' %}">Agregar</a>
+              <a class="collapse-item" href="{% url 'paciente_nuevo' %}" style="color: white">Agregar</a>
             {% endif %}
             {% if perms.CEM.view_paciente %}
-              <a class="collapse-item" href="{% url 'pacientes' %}">Listar</a>
+              <a class="collapse-item" href="{% url 'pacientes' %}" style="color: white">Listar</a>
             {% endif %}
            </div>
          </div>
@@ -151,13 +154,39 @@
           <span>Consultas</span>
         </a>
         <div id="collapseTwo3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Acciones:</h6>
+          <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+            <h6 class="collapse-header" style="color: white">Acciones:</h6>
             {% if perms.CEM.add_consulta %}
-              <a class="collapse-item" href="{% url 'consulta_nuevo' %}">Agregar</a>
+              <a class="collapse-item" href="{% url 'consulta_nuevo' %}" style="color: white">Agregar</a>
             {% endif %}
             {% if perms.CEM.view_consulta %}
-              <a class="collapse-item" href="{% url 'consultas' %}">Listar</a>
+              <a class="collapse-item" href="{% url 'consultas' %}" style="color: white">Listar</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+      {% endif %}
+
+      {% if perms.calendario.view_event or perms.calendario.change_event or perms.calendario.add_event or perms.calendario.delete_event %}
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Calendario
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo4" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-calendar-alt"></i>
+          <span>Calendario</span>
+        </a>
+        <div id="collapseTwo4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+            <h6 class="collapse-header" style="color: white">Acciones:</h6>
+            {% if perms.calendario.view_event %}
+              <a class="collapse-item" href="{% url 'calendar' %}" style="color: white">Calendario</a>
             {% endif %}
           </div>
         </div>
@@ -286,6 +315,8 @@
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/jquery.mask.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/mascara.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>

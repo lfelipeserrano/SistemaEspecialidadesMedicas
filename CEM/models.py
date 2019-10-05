@@ -1,10 +1,12 @@
 from django.db import models
 from datetime import date
 from .validators import validate_email,validate_nombre,validate_apellido,validate_telefono,validate_dui,validate_nit,validate_nrc
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Doctor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default = 1)
     primerNombreDoctor = models.CharField(max_length=50, validators=[validate_nombre])
     segundoNombreDoctor = models.CharField(max_length=50, blank = True, null=True,validators=[validate_nombre])
     primerApellidoDoctor = models.CharField(max_length=50,validators=[validate_apellido])

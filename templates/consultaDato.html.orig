@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-8">
+                <p><b>Fecha:</b> {{ consulta.fechaConsulta }}</p>
+        </div>
+        <div class="col-md-4 ">
+            <div class="float-right"> 
+<<<<<<< HEAD
+            <a href="{% url 'reporteDoctorCons' consulta.pk %}" class="btn btn-primary">Constancia Medica</a>
+            <a href="{% url 'reporteDoctorInc' consulta.pk %}" class="btn btn-primary">Constancia por Incapacidad</a>
+=======
+            <a href="{% url 'reporteCons' consulta.pk %}" class="btn btn-primary">PDF DE CONSULTAS</a>
+>>>>>>> master
+            </div>
+        </div>
+        
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p><b>Paciente:</b> {{ paciente_consulta.primerNombrePaciente }} {{ paciente_consulta.primerApellidoPaciente }}</p>
+        
+                <a href="#" data-toggle="modal" data-target="#datosPacientes">Ver datos</a>
+       </div>
+    </div>
+        <div class="row">
+        <div class="col-md-4">
+            <p><b>Doctor:</b> {{ doctor_consulta.primerNombreDoctor }} {{ doctor_consulta.primerApellidoDoctor }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col md-4">
+            <p><b>Peso:</b> {{ consulta.pesoConsulta }}</p>
+        </div>
+        <div class="col md-4">
+            <p><b>Altura:</b> {{ consulta.alturaConsulta }}</p>
+        </div>
+        <div class="col md-4">
+            <p><b>Presión:</b> {{ consulta.presionConsulta }}</p>
+        </div>
+        <div class="col md-4">
+            <p><b>Temperatura:</b> {{ consulta.temperatura }}</p>
+        </div>
+        <div class="col md-4">
+            <p><b>Pulso:</b> {{ consulta.pulso }}</p>
+        </div>
+    </div>
+    {% if paciente_consulta.sexoPaciente %}
+        <p></p>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <p><b>Fecha de ultima regla:</b> {{ consulta.fechaUltimaRegla }}</p>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Observaciones:</b></p>
+            {{ consulta.observaciones }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Receta:</b></p>
+            {{ consulta.recetas }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Exámenes solicitados:</b></p>
+            {{ consulta.examenesSolicitados }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Reporte de exámenes:</b></p>
+            <br>
+            {{ consulta.reporteExamenes }}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col text-center">
+            <a href="{% url 'consulta_editar' consulta.pk %}" class="btn btn-secondary">Editar datos</a>
+            <button data-toggle="modal"  data-target="#confirmacionEliminarConsulta" class="btn btn-danger">Eliminar Consulta</button>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmacionEliminarConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Eliminar consulta</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que quiere eliminar los datos?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'consulta_eliminar' pk=consulta.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Confirmar" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="datosPacientes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos generales de {{ paciente_consulta.primerNombrePaciente }}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <b>Primer nombre:</b> {{ paciente_consulta.primerNombrePaciente }}
+                    <br>
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Segundo nombre:</b> {{ paciente_consulta.segundoNombrePaciente }}
+                        <br>
+                    {% endif %}
+                    <b>Primer apellido:</b> {{ paciente_consulta.primerApellidoPaciente }}
+                    <br>
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Segundo apellido:</b> {{ paciente_consulta.SegundoApellidoPaciente }}
+                        <br>
+                    {% endif %}
+                    <b>Fecha de nacimiento:</b> {{ paciente_consulta.fechaNacimientoPaciente }}
+                    <br>
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Altura:</b> {{ paciente_consulta.alturaPaciente }}
+                        <br>
+                    {% endif %}
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Peso:</b> {{ paciente_consulta.pesoPaciente }}
+                        <br>
+                    {% endif %}
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Alergias:</b> {{ paciente_consulta.alergias }}
+                        <br>
+                    {% endif %}
+                    {% if paciente_consulta.segundoNombrePaciente != None %}
+                        <b>Lugar de proveniencia:</b> {{ paciente_consulta.lugarProveniencia }}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
