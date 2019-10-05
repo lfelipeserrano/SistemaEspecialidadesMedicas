@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="h1 mb-4 text-gray-800">Doctores</h1>
+    <h1 class="h1 mb-4 text-gray-800">Usuarios</h1>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -41,7 +41,7 @@
             function DoNav(theUrl){
                 document.location.href = theUrl;
             }
-    
+
             function seleccionGrupo() {
                 var grupo = document.getElementById("grupoSelect").value;
                 console.log(grupo);
@@ -50,4 +50,3 @@
             document.getElementById("id_q").value = "{{ query }}"
         </script>
 {% endblock content %}
-    
