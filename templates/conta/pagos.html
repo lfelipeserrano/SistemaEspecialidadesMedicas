@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1 class="h1 mb-4 text-gray-800">Pagos</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de pagos en la clínica</h6>
+                </div>           
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                        <tr onclick="DoNav('{% url 'pago_datos' pago.pk %}')">
+                            <td>{{ pago.fechaPago }}</td>
+                            <td>{{ pago.idDoctor }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+        document.getElementById("id_q").value = "{{ query }}"
+    </script>
+{% endblock content %}
+    

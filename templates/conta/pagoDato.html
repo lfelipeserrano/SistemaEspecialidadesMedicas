@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Doctor:</b>{{ pago.idDoctor }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Monto:</b>{{ pago.montoPago }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><b>Fecha:</b>{{ pago.fechaPago }}</p>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col text-center">
+            <a href="{% url 'pago_editar' pago.pk %}" class="btn btn-secondary">Editar datos</a>
+            <button data-toggle="modal"  data-target="#confirmacionEliminarPago" class="btn btn-danger">Eliminar Pago</button>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmacionEliminarPago" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Eliminar Pago</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que quiere eliminar este pago?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'pago_eliminar' pk=pago.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Confirmar" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
