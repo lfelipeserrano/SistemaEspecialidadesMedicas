@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from conntabilidad.forms import PagoForm
 from conntabilidad.models import Pago
 from django.db.models import *
+from datetime import datetime
 
 
 class inicio(TemplateView):
@@ -56,7 +57,8 @@ def get_pago_queryset(query = None):
     queries = query.split(" ")
     for q in queries:
         pagos = Pago.objects.filter(
-            Q(fechaPago__icontains=q)
+            Q(fechaPago__month=q)  &
+            Q(fechaPago__year = datetime.now().year)
         ).distinct()
 
         for pago in pagos:
