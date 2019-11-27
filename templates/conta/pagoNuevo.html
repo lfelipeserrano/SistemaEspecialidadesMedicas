@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1 class="h1 mb-4 text-gray-800">Nuevo pago</h1>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="row">
+            <div class="form-group col-12">
+                <label>Doctor:</label>
+                <br>
+                {{ form.idDoctor }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+                <label>Monto:</label>
+                <br>
+                {{ form.montoPago }}
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col text-center">
+                <a href="{% url 'pagos' %}" class="btn btn-secondary mr-2">Cancelar</a>
+                <input type="submit" value="Guardar" class="btn btn-primary mr-2">
+            </div>
+        </div>
+    </form>
+{% endblock content %}
+    
