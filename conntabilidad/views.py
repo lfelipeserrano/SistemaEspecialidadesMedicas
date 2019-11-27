@@ -10,7 +10,7 @@ class inicio(TemplateView):
     template_name = 'conta/contabilidad.html'
 
 def pagos(request):
-    query = ""
+    query = None
     if request.GET:
         query = request.GET['q']
         query = str(query)
@@ -57,7 +57,7 @@ def get_pago_queryset(query = None):
     queries = query.split(" ")
     for q in queries:
         pagos = Pago.objects.filter(
-            Q(fechaPago__month=q)  &
+            Q(fechaPago__month = q)  &
             Q(fechaPago__year = datetime.now().year)
         ).distinct()
 
