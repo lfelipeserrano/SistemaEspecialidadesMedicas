@@ -2,12 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from conntabilidad.forms import PagoForm
 from conntabilidad.models import Pago
+from CEM.models import Doctor
 from django.db.models import *
 from datetime import datetime
-
-
-class inicio(TemplateView):
-    template_name = 'conta/contabilidad.html'
 
 def pagos(request):
     query = None
@@ -19,6 +16,23 @@ def pagos(request):
     else :
         pagos = Pago.objects.all()
     return render(request, 'conta/pagos.html', {'pagos':pagos})
+
+def pagosDiario(request):
+    sumatoria = 0
+    doctores = []
+    pagosDiarios = Pago.objects.filter(
+        Q(fechaPago__day = datetime.now().day) &
+        Q(fechaPago__month = datetime.now().month) &
+        Q(fechaPago__year = datetime.now().year)
+    ).distinct()
+
+    for pago in pagosDiarios:
+        sumatoria += pago.montoPago
+        doctores.append(Doctor.objects.filter(primerApellidoDoctor = pago.idDoctor))
+    
+    print(doctores)
+    print(pagosDiarios)
+    return render(request, 'conta/pagoDiario.html', {'pagosDiarios':pagosDiarios, 'sumatoria':sumatoria, 'doctores':doctores})
 
 def pagoDatos(request, pk):
     pago = get_object_or_404(Pago, pk=pk)

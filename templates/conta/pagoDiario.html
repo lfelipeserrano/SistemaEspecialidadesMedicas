@@ -14,44 +14,43 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form method="get" id="selectMesForm">
-                            <label>Mes:
-                                <select name="q" id="mesSelect" onchange="seleccionMes()" class="custom-select custom-select-sm form-control form-control-sm">
-                                    <option value="None">Selecciones un mes</option>
-                                    <option value="1">Enero</option>
-                                    <option value="2">Febrero</option>
-                                    <option value="3">Marzo</option>
-                                    <option value="4">Abril</option>
-                                    <option value="5">Mayo</option>
-                                    <option value="6">Junio</option>
-                                    <option value="7">Julio</option>
-                                    <option value="8">Agosto</option>
-                                    <option value="9">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
-                                </select>
-                            </label>
-                        </form>
-                    </div>
-                </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Fecha(Día-Mes-Año)</th>
                             <th>Doctor</th>
+                            <th>Monto</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pago in pagos %}
+                        {% for pago in pagosDiarios %}
                         <tr onclick="DoNav('{% url 'pago_datos' pago.pk %}')">
                             <td>{{ pago.fechaPago|date:'d-m-Y' }}</td>
                             <td>{{ pago.idDoctor }}</td>
+                            <td>{{ pago.montoPago }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctores %}
+                            <tr>
+                                <td>{{ doctor.primerApellidoDoctor }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <td><b>Total:</b></td>
+                        <td><b>{{ sumatoria }}</b></td>
+                    </tr>
                 </table>
             </div>
         </div>
