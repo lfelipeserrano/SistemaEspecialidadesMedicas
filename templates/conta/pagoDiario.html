@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
     <h1 class="h1 mb-4 text-gray-800">Pagos</h1>
 
@@ -36,12 +35,20 @@
                     <thead>
                         <tr>
                             <th>Doctor</th>
+                            <th>Correspondiente</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for doctor in doctores %}
                             <tr>
                                 <td>{{ doctor.primerApellidoDoctor }}</td>
+                                <td>
+                                {% for pago in pagosDiarios %}
+                                    {% ifequal doctor.primerApellidoDoctor|stringformat:"i" pago.idDoctor|stringformat:"i" %}
+                                        
+                                    {% endifequal %}
+                                {% endfor %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

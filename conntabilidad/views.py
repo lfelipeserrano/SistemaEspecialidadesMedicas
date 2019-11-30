@@ -19,7 +19,7 @@ def pagos(request):
 
 def pagosDiario(request):
     sumatoria = 0
-    doctores = []
+    doctores = Doctor.objects.none()
     pagosDiarios = Pago.objects.filter(
         Q(fechaPago__day = datetime.now().day) &
         Q(fechaPago__month = datetime.now().month) &
@@ -28,10 +28,8 @@ def pagosDiario(request):
 
     for pago in pagosDiarios:
         sumatoria += pago.montoPago
-        doctores.append(Doctor.objects.filter(primerApellidoDoctor = pago.idDoctor))
-    
-    print(doctores)
-    print(pagosDiarios)
+        doctores |= Doctor.objects.filter(primerApellidoDoctor = pago.idDoctor)
+
     return render(request, 'conta/pagoDiario.html', {'pagosDiarios':pagosDiarios, 'sumatoria':sumatoria, 'doctores':doctores})
 
 def pagoDatos(request, pk):
