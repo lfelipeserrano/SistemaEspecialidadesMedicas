@@ -10,5 +10,9 @@ urlpatterns = [
     path('conta/pago/<int:pk>/editar', pagoEditar, name='pago_editar'),
     path('conta/pago/nuevo/', pagoNuevo, name='pago_nuevo'),
     path('conta/pago/list/', pagos, name='pagos'),
-    path('conta/pago/<int:pk>/', pagoDatos, name='pago_datos')
+    path('conta/pago/<int:pk>/', pagoDatos, name='pago_datos'),
+
+
+    path('conta/reporteIngresos', reporteContable, name='reporteContable')
+
 ]

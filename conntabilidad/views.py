@@ -5,6 +5,18 @@ from conntabilidad.models import Pago
 from django.db.models import *
 from datetime import datetime
 
+#### Para reporte #####
+from io import BytesIO
+from django.http import HttpResponse 
+
+from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
+from reportlab.platypus import SimpleDocTemplate,TableStyle
+from reportlab.platypus.tables import Table
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import Paragraph,Spacer,Flowable
+from reportlab.lib import colors
+from reportlab.lib.units import inch, cm
+from reportlab.lib.pagesizes import A4, letter, landscape #nueva
 
 class inicio(TemplateView):
     template_name = 'conta/contabilidad.html'
@@ -65,3 +77,54 @@ def get_pago_queryset(query = None):
             queryset.append(pago)
     
     return list(set(queryset))
+
+########################## Resporte contable de ingresos ##############################
+
+def reporteContable(request):
+    suma = Pago.objects.all().aggregate(s = Sum('montoPago'))
+    valor = suma['s']
+    #suma = Pago.objects.all()
+
+    #valor = dict.get('montoPago__sum') 
+
+    response = HttpResponse(content_type='application/pdf')
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer,
+                            pagesize=letter,
+                            title="Reporte de Ingresos",
+                                )
+
+    style = getSampleStyleSheet()
+
+    versuma = Paragraph('Total de Ingresos: '+str(valor),style['BodyText'])
+    elementos = []
+    img1 = Image(0,0,200,60,"CEM/imagenes/logo.PNG")
+    dibujo = Drawing(30,30)
+    dibujo.add(img1)
+
+    titulo = Paragraph('Reporte de Ingresos', style['Heading1'])
+     #table
+    encabezados = ('Doctor','Pago')
+    info_tabla = [(pago.idDoctor, pago.montoPago) for pago in Pago.objects.all()]
+    tabla = Table([encabezados]+ info_tabla, colWidths=[120,120]) 
+    tabla.setStyle(TableStyle(
+            [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+            ]
+        ))
+    """p=0   
+    for i in Pago.objects.all():
+        p = p + i.montoPago
+    versuma = Paragraph(str(p),style['BodyText'])"""
+
+    elementos.append(dibujo)
+    elementos.append(titulo)
+    elementos.append(tabla)
+    elementos.append(versuma)
+    pdf.build(elementos)
+    response.write(buffer.getvalue())
+    buffer.close()  
+    return response 
+
