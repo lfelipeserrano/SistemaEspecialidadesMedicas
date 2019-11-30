@@ -39,18 +39,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for doctor in doctores %}
+                        {% for key,value in pagoDoctores.items  %}
                             <tr>
-                                <td>{{ doctor.primerApellidoDoctor }}</td>
-                                <td>
-                                {% for pago in pagosDiarios %}
-                                    {% ifequal doctor.primerApellidoDoctor|stringformat:"i" pago.idDoctor|stringformat:"i" %}
-                                        
-                                    {% endifequal %}
-                                {% endfor %}
-                                </td>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
                             </tr>
-                        {% endfor %}
+                        {% endfor %} 
                     </tbody>
                 </table>
                 <table class="table table-bordered">
