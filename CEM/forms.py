@@ -45,7 +45,7 @@ class ConsultaForm(forms.ModelForm):
     class Meta:
         model = Consulta
         fields = ('idDoctor', 'expediente', 'fechaConsulta', 'pesoConsulta', 'presionConsulta', 'temperatura', 'pulso', 'alturaConsulta', 'observaciones', 'recetas', 'examenesSolicitados',
-            'reporteExamenes', 'fechaUltimaRegla', )
+            'reporteExamenes', 'fechaUltimaRegla', 'incapacidadCantidad','incapacidadTiempo',)
         widgets = {
             'fechaConsulta' : DatePickerInput(format='%d/%m/%Y')
         }
