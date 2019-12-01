@@ -77,11 +77,27 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="col-md-12">
+            <div class="col-12 col-lg-6">
                 <label>Reporte de exámenes:</label>
                 <br>
                 {{ form.reporteExamenes }}
             </div>
+            <div class="col-12 col-lg-6">
+                        <input onclick="habilitar()" id="check1" type="checkbox" name="transporte" value="1" class="mb-3"> Dara Incapacidad?
+                        <br>
+                        <label for="">Cantidad</label>
+                        <br>
+                        {{form.incapacidadCantidad }}
+                    
+                        <br>
+                        <label for="col-12 col-sm-12 col-md-12 col-lg-4">Tiempo</label>
+                        <br>
+                        {{form.incapacidadTiempo }}
+                
+               
+            </div>
+    
+           
         </div>
         <div class="row justify-content-center mt-4">
             <div class="col text-center">
@@ -90,4 +106,22 @@
             </div>
         </div>
     </form>
+        <script>
+        document.getElementById("id_incapacidadTiempo").disabled=true;
+        document.getElementById("id_incapacidadCantidad").disabled=true;
+        function habilitar(){
+
+
+            if (document.getElementById('check1' ).checked==true){
+                document.getElementById("id_incapacidadTiempo").disabled=false;
+                document.getElementById("id_incapacidadCantidad").disabled=false;
+            }
+            else
+            {
+                document.getElementById("id_incapacidadTiempo").disabled=true;
+                document.getElementById("id_incapacidadCantidad").disabled=true;
+
+            }
+        }    
+    </script>
 {% endblock content %}
