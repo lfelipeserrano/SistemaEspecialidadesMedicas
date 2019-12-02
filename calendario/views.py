@@ -156,7 +156,7 @@ def reporteCM(request):
     styleJ.fontName="Times-Roman"
     #styleJ.lineHeight= 1
                 #PARRAFO CONCATENADO CON VARIABLES
-    parrafo = "<br/><br/><br/><b>EL PACIENTE: </b>"+pacnom1+pacape1+"<br/><br/><br/><b>TIENE UNA CITA CON EL DOCTOR: </b>"+docnom1+docape1+"<br/><br/><br/><b>CON TITULO DE: </b> "+titulo+"<br/><br/><br/><b>DETALLADA CON: </b>"+desc+"<br/><br/><br/><b>QUE COMIENZA EN: </b>"+str(fstar)+" <br/><br/><br/><b>Y TERMINA: </b>"+str(fend)
+    parrafo = "<br/><br/><br/><b>EL PACIENTE: </b>"+pacnom1+" "+pacape1+"<br/><br/><br/><b>TIENE UNA CITA CON EL DOCTOR: </b>"+docnom1+" "+docape1+"<br/><br/><br/><b>CON TITULO DE: </b> "+titulo+"<br/><br/><br/><b>DETALLADA CON: </b>"+desc+"<br/><br/><br/><b>QUE COMIENZA EN: </b>"+str(fstar)+" <br/><br/><br/><b>Y TERMINA: </b>"+str(fend)
 
     elementos.append(Paragraph(parrafo ,styleJ))
     elementos.append(Spacer(1,10))
