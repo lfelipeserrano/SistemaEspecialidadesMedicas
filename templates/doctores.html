@@ -27,15 +27,6 @@
                             </label>
                         </form>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="float-right">
-                            <form method="get">
-                                <label>Búsqueda:
-                                    <input type="search" class="form-control form-control-sm" placeholder="Nombre/Apellido" name="q" id="id_q">
-                                </label>
-                            </form>
-                        </div>
-                    </div>
                 </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -67,14 +58,20 @@
             document.location.href = theUrl;
         }
 
+        $(document).ready(function() {
+            $('#dataTable').DataTable( {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+                }
+            } );
+        } );
+
         function seleccionEspecialidad() {
             // var especialidad = document.getElementById("especialidadSelect").value;
             // console.log(especialidad);
             document.getElementById("selectEspecialidadForm").submit();
             document.getElementById("especialidadSelect").value = "{{ query }}";
         }
-
-        document.getElementById("id_q").value = "{{ query }}"
     </script>
 
        
