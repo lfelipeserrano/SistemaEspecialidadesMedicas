@@ -31,6 +31,11 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="row justify-content-end">
+                    <div class="col-md-3">
+                        <a href="{% url 'reporteContable' %}" class="btn btn-primary float-right mb-3" > Generar PDF</a>
+                    </div>
+                </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -55,6 +60,7 @@
                 </table>
             </div>
         </div>
+        
     </div>
     <script>
         function DoNav(theUrl){
