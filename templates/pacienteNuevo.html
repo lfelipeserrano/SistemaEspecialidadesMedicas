@@ -13,19 +13,19 @@
         </div>
         
         <div class="form-row form-group mt-2">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <label for="">Primer nombre:</label>
                 <br>
                 {{ form.primerNombrePaciente }}
                 {{form.primerNombrePaciente.errors}}
             </div>
-            <div class="col-4">       
+            <div class="col-12 col-md-6 col-lg-4">       
                 <label for="">Segundo nombre:</label>
                 <br>
                 {{ form.segundoNombrePaciente }}
                 {{form.segundoNombrePaciente.errors}}
             </div>
-            <div class="col-4">  
+            <div class="col-12 col-md-6 col-lg-4 mt-3">  
                 <label for="">Sexo:</label>
                 <br>
                 <input type="radio" name="sexo" value="True" required> Masculino
@@ -36,19 +36,19 @@
 
 
         <div class="form-row form-group mt-4">
-            <div class=" col-md-4">
+            <div class=" col-md-6 col-lg-4">
                 <label for="">Primer apellido:</label>
                 <br>
                 {{ form.primerApellidoPaciente }}
                 {{form.primerApellidoPaciente.errors}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <label for="">Segundo apellido:</label>
                 <br>
                 {{ form.segundoApellidoPaciente }}
                 {{form.segundoApellidoPaciente.errors}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <label for="">Fecha de nacimiento:</label>
                 <br>
                 {{ form.fechaNacimientoPaciente }}
@@ -56,17 +56,17 @@
         </div>
 
         <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-6 col-lg-4">
                     <label for="">Altura:</label>
                     <br>
                     {{ form.alturaPaciente }}
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-6 col-lg-4">
                     <label for="">Peso:</label>
                     <br>
                     {{ form.pesoPaciente }}
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-12 col-md-6 col-lg-4">
                     <label for="">Teléfono:</label>
                     <br>
                     {{ form.telefonoPaciente }}
@@ -74,23 +74,23 @@
             </div>
 
         <div class="form-row mt-4  justify-content-between">
-            <div class="form-group col-md-2">
+            <div class="form-group col-12 col-sm-6 col-lg-2">
                 <label for="">Doctores asignados:</label>
                 <br>
                 {{ form.doctores }}
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-12 col-sm-6 col-lg-2">
                     <label for="">Lugar de proveniencia:</label>
                     <br>
                     {{ form.lugarProveniencia }}
             </div>
 
-            <div class="form-group col-md-2">
+            <div class="form-group col-12 col-sm-6 col-lg-2">
                 <label for="">Institución de proveniencia:</label>
                 <br>
                 {{ form.institucion }}
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-12 col-sm-6 col-lg-2">
                 <label for="">Aseguradora:</label>
                 <br>
                 {{ form.aseguradora }}
@@ -98,13 +98,13 @@
         </div>
 
         <div class="form-row form-group">
-            <div class="col-4">
+            <div class="col-12 col-xl-6">
                 <label for="">Alergias</label>
                 <br>
                 {{ form.alergias }}
             </div>
 
-            <div class="col-8">
+            <div class="col-12 col-xl-6 mt-3">
                     <label for="">Antecedentes:</label>
                     <br>
                     <div class="form-check">
@@ -146,17 +146,22 @@
                         </label> 
                     </div> 
                     
-                        <div class="form-check mt-3">
-                            <label class="form-check-label ">
-                                {{ form.cancer }} Cáncer
-                            </label> 
-                        
-                            <label class="ml-5">Lugar de cáncer:</label>
-                            {{ form.lugarCancer }}
-                        
-                            <label class="ml-5">Tratamiento:</label>
-                            {{ form.tratamientoCancer }}
-                        </div>
+                        <div class="row">
+                            <div class="form-check mt-3 col-12">
+                                <label class="form-check-label ">
+                                    {{ form.cancer }} Cáncer
+                                </label> 
+                                <br>
+                                <label class="mt-2">Lugar de cáncer:</label>
+                                <br>
+                                {{ form.lugarCancer }}
+                                <br>
+                                <label class="">Tratamiento:</label>
+                                <br>
+                                {{ form.tratamientoCancer }}
+                                
+                            </div>    
+                    </div>
                     
                                         
             </div>
@@ -164,13 +169,13 @@
 
 
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-12 col-xl-6">
                 <label for="">Otros antecedentes:</label>
                 <br>
                 {{ form.antecedentes }}
             </div>
 
-            <div class="form-group col-4  align-self-end">
+            <div class="form-group col-12 col-xl-6 align-self-center">
                 <label>Fotografía:</label>
                 <br>
                 {{ form.fotografiaPaciente }}
