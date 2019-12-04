@@ -117,12 +117,14 @@ def get_pago_queryset(query = None):
 ########################## Resporte contable de ingresos ##############################
 
 def reporteContable(request):
-    suma = Pago.objects.all().aggregate(s = Sum('montoPago'))
-    valor = suma['s']
-    #suma = Pago.objects.all()
-
-    #valor = dict.get('montoPago__sum') 
-
+    #suma = Pago.objects.all().aggregate(s = Sum('montoPago'))
+    #valor = suma['s']
+    cursor = connection.cursor()
+    cursor.execute(" select SUM(p.\"montoPago\") as suma from conntabilidad_pago as p where TO_DATE(to_char(p.\"fechaPago\",'YYYY-MM-DD'),'YYYY-MM-DD') = current_date ")
+    lista = cursor.fetchall()
+    l = lista[0]
+    valor =  l[0]
+    
     response = HttpResponse(content_type='application/pdf')
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer,
@@ -143,9 +145,9 @@ def reporteContable(request):
     encabezados = ('                             Doctor','','Monto')
     #info_tabla = [(pago.idDoctor, pago.montoPago) for pago in Pago.objects.all()]
     #2da alternativa
-    cursor = connection.cursor()
-    cursor.execute(" select d.\"primerNombreDoctor\",d.\"primerApellidoDoctor\",SUM(p.\"montoPago\") as total from \"CEM_doctor\" as d inner join conntabilidad_pago as p on d.id = p.\"idDoctor_id\" group by d.\"primerApellidoDoctor\",d.\"primerNombreDoctor\" order by total DESC ")
-    info_tabla = cursor.fetchall()
+    cursor2 = connection.cursor()
+    cursor2.execute(" select d.\"primerNombreDoctor\",d.\"primerApellidoDoctor\",SUM(p.\"montoPago\") as total from \"CEM_doctor\" as d inner join conntabilidad_pago as p on d.id = p.\"idDoctor_id\" where TO_DATE(to_char(p.\"fechaPago\",'YYYY-MM-DD'),'YYYY-MM-DD') = current_date group by d.\"primerApellidoDoctor\",d.\"primerNombreDoctor\"  ")
+    info_tabla = cursor2.fetchall()
     tabla = Table([encabezados]+ info_tabla, colWidths=[100,100,150]) 
     tabla.setStyle(TableStyle(
             [
