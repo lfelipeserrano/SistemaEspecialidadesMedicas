@@ -795,6 +795,8 @@ def reporteDoctorIncapacidad(request,pk):
     elementos.append(Spacer(1,70))
     elementos.append(line2)
     elementos.append(Paragraph(FYS ,styleC))
+    elementos.append(Paragraph("Dr.(a) "+ nom1D+ " "+ape1D +" " ,styleC))
+
 
     #atr1 = Paragraph(Doctor.primerNombreDoctor,style['Heading2'])
     pdf.build(elementos)
