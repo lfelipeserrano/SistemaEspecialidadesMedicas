@@ -13,4 +13,6 @@ urlpatterns = [
    url(r'^event/detail/(?P<event_id>\d+)/$', views.eventDetail, name='event_detail'),
    path('event/<int:event_id>/eliminar/', views.eventoEliminar, name='event_eliminar'),
    path('event/permisoDenegado/', permisoDenegado, name='permisos'),
+
+   path('cal/reporteCM/', reporteCM, name='reporteCM'),
 ]

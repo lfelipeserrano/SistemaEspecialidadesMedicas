@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from CEM.models import Doctor, Paciente
+from CEM.models import Doctor, Paciente, Consulta
 
 # Create your models here.
 class Event(models.Model):
