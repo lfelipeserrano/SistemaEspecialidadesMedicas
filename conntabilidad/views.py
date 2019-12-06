@@ -5,6 +5,7 @@ from conntabilidad.models import Pago
 from CEM.models import Doctor
 from django.db.models import *
 from datetime import datetime
+from django.contrib.auth.decorators import permission_required
 
 #### Para reporte #####
 from io import BytesIO
@@ -19,6 +20,7 @@ from reportlab.lib.units import inch, cm
 from reportlab.lib.pagesizes import A4, letter, landscape #nueva
 from django.db import connection
 
+@permission_required('conntabilidad.view_pago', login_url='permisos')
 def pagos(request):
     query = None
     if request.GET:
@@ -30,6 +32,7 @@ def pagos(request):
         pagos = Pago.objects.all()
     return render(request, 'conta/pagos.html', {'pagos':pagos})
 
+@permission_required('conntabilidad.view_pago', login_url='permisos')
 def pagosDiario(request):
     sumatoria = 0
     doctores = Doctor.objects.none()
@@ -53,10 +56,12 @@ def pagosDiario(request):
 
     return render(request, 'conta/pagoDiario.html', {'pagosDiarios':pagosDiarios, 'sumatoria':sumatoria, 'doctores':doctores, 'pagoDoctores':pagoDoctores})
 
+@permission_required('conntabilidad.view_pago', login_url='permisos')
 def pagoDatos(request, pk):
     pago = get_object_or_404(Pago, pk=pk)
     return render(request, 'conta/pagoDato.html', {'pago':pago})
 
+@permission_required('conntabilidad.add_pago', login_url='permisos')
 def pagoNuevo(request):
     if request.method == 'POST':
         form = PagoForm(request.POST)
@@ -67,6 +72,7 @@ def pagoNuevo(request):
         form = PagoForm()
     return render(request, 'conta/pagoNuevo.html', {'form':form})
 
+@permission_required('conntabilidad.change_pago', login_url='permisos')
 def pagoEditar(request, pk):
     pago = get_object_or_404(Pago, pk=pk)
     if request.method == 'POST':
@@ -81,6 +87,7 @@ def pagoEditar(request, pk):
         form = PagoForm(instance = pago)
     return render(request, 'conta/pagoEditar.html', {'form':form})
 
+@permission_required('conntabilidad.delte_pago', login_url='permisos')
 def pagoEliminarFuncion(request, pk):
     temp = Pago.objects.get(pk=pk).delete()
     return redirect('pagos')
