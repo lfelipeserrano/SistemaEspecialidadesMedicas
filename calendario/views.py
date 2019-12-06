@@ -114,7 +114,7 @@ def reporteCM(request):
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer,
                             pagesize=letter,
-                            title = "CITA MEDICA")
+                            title = "AVISO DE CITA MEDICA")
     style = getSampleStyleSheet()
     style.add(ParagraphStyle(name='centro', alignment = TA_CENTER ))
 
@@ -122,7 +122,7 @@ def reporteCM(request):
     img = Image(0,0,50,50,"CEM/imagenes/logoleft.png")#alineacion del  logo-> (rigth-moving, top-moving, weigh, heigh,"url")
     img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
     img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
-    img3 = Image(115,5,175,18,"CEM/imagenes/repconsultext.jpg")
+    img3 = Image(115,5,175,18,"CEM/imagenes/citamedica.jpg")
        
     dibujo = Drawing(30,30)#margen superior e izquierdo de donde empieza el pdf
     dibujo.add(img)  
