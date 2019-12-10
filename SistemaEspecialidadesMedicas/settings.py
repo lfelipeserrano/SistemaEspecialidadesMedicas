@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'CEM',
     'calendario',
+    'conntabilidad',
 ]
 
 MIDDLEWARE = [

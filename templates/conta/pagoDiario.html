@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="h1 mb-4 text-gray-800">Pagos</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de pagos en la clínica</h6>
+                </div>           
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Fecha(Día-Mes-Año)</th>
+                            <th>Doctor</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagosDiarios %}
+                        <tr onclick="DoNav('{% url 'pago_datos' pago.pk %}')">
+                            <td>{{ pago.fechaPago|date:'d-m-Y' }}</td>
+                            <td>{{ pago.idDoctor }}</td>
+                            <td>{{ pago.montoPago }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="row justify-content-end">
+                    <div class="col-md-3">
+                        <a href="{% url 'reporteContable' %}" class="btn btn-primary float-right mb-3" target="_blank"> Generar PDF</a>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Correspondiente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,value in pagoDoctores.items  %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <td><b>Total:</b></td>
+                        <td><b>{{ sumatoria }}</b></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        function DoNav(theUrl){
+            document.location.href = theUrl;
+        }
+        document.getElementById("id_q").value = "{{ query }}"
+
+        function seleccionMes() {
+            // var especialidad = document.getElementById("especialidadSelect").value;
+            // console.log(especialidad);
+            document.getElementById("selectMesForm").submit();
+            document.getElementById("mesSelect").value = "{{ query }}";
+        }
+    </script>
+{% endblock content %}
+    

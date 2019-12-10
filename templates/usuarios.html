@@ -9,17 +9,6 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                        <div class="float-left">
-                            <form method="get">
-                                <label>Búsqueda:
-                                    <input type="search" class="form-control form-control-sm" placeholder="Usuario" name="q" id="id_q">
-                                </label>
-                            </form>
-                        </div>
-                    </div>
-                </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -42,11 +31,12 @@
                 document.location.href = theUrl;
             }
 
-            function seleccionGrupo() {
-                var grupo = document.getElementById("grupoSelect").value;
-                console.log(grupo);
-            }
-
-            document.getElementById("id_q").value = "{{ query }}"
+            $(document).ready(function() {
+            $('#dataTable').DataTable( {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+                    }
+                } );
+            } );
         </script>
 {% endblock content %}

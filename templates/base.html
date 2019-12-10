@@ -28,7 +28,23 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+  
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/jquery.mask.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/mascara.js' %}"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"></script>
 
 </head>
 
@@ -196,6 +212,38 @@
       <hr class="sidebar-divider d-none d-md-block">
       {% endif %}
 
+     {% if perms.calendario.view_event or perms.calendario.change_event or perms.calendario.add_event or perms.calendario.delete_event %}
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Contabilidad
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo5" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="far fa-money-bill-alt"></i>
+          <span>Contabilidad</span>
+        </a>
+        <div id="collapseTwo5" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="py-2 collapse-inner rounded" style="background-color: rgba(250,250,250,0.1)">
+            <h6 class="collapse-header" style="color: white">Acciones:</h6>
+            {% if perms.calendario.view_event %}
+              <a class="collapse-item" href="{% url 'pago_nuevo' %}" style="color: white">Agregar</a>
+            {% endif %}
+            {% if perms.calendario.view_event %}
+              <a class="collapse-item" href="{% url 'pago_diario' %}" style="color: white">Pago Diario</a>
+            {% endif %}
+            {% if perms.calendario.view_event %}
+              <a class="collapse-item" href="{% url 'pagos' %}" style="color: white">Pagos</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+      {% endif %}
+
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -312,17 +360,7 @@
     </div>
   </div>
   
-  <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'vendor/jquery/jquery.mask.min.js' %}"></script>
-  <script src="{% static 'vendor/jquery/mascara.js' %}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+  
 
 </body>
 

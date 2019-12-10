@@ -769,9 +769,13 @@ def reporteDoctorIncapacidad(request,pk):
     locale.setlocale(locale.LC_ALL,'esp')
     fech = ahora.strftime("%A %d de %B del  %Y.")
 
+    ######
+    incapCant = consulta.incapacidadCantidad
+    incapTiempo = consulta.incapacidadTiempo
+
     styleJ = style['BodyText']
     styleJ.alignment = TA_JUSTIFY
-    parrafo = "<b>A quien le interese</b><br/><br/><br/>El infrascrito Medico "+ especialidad +" "+ nom1D + " "+ ape1D +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + nom1P + " " + ape1P + "</b> con expediente clinico numero <b>"+exp+"</b> quien presenta: "+ observaciones +" Se le indicó tratamiento y reposo por ___ horas a partir de la presente fecha "+ f2+""
+    parrafo = "<b>A quien le interese</b><br/><br/><br/>El infrascrito Medico "+ especialidad +" "+ nom1D + " "+ ape1D +" de la Clinica de Especialidades Medicas CEM, por medio de la presente hago constar que el señor(a) <b>" + nom1P + " " + ape1P + "</b> con expediente clinico numero <b>"+exp+"</b> quien presenta: "+ observaciones +" Se le indicó tratamiento y reposo por " + str(incapCant) + " "+ str(incapTiempo) +" a partir de la presente fecha "+ f2+""
     
     
     line2 = lineaRD(100,0,372)
@@ -791,6 +795,8 @@ def reporteDoctorIncapacidad(request,pk):
     elementos.append(Spacer(1,70))
     elementos.append(line2)
     elementos.append(Paragraph(FYS ,styleC))
+    elementos.append(Paragraph("Dr.(a) "+ nom1D+ " "+ape1D +" " ,styleC))
+
 
     #atr1 = Paragraph(Doctor.primerNombreDoctor,style['Heading2'])
     pdf.build(elementos)
