@@ -25,7 +25,7 @@ SECRET_KEY = 'vywna#2ly^^aes7674pj)9agg@8-7f^c2dmtzgg6_$8vt1+31m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['flpserrano97.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'SistemaEspecialidadesMedicas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sistemaespecialidadesmedicas',
-        'USER': 'super',
-        'PASSWORD': 'dsicem2019',
-        'HOST': 'flpserrano97-1216.postgres.pythonanywhere-services.com',
-        'PORT': '11216',
+        'NAME': 'SistemaEspecialidadesMedicas',
+        'USER': 'DSI',
+        'PASSWORD': 'dsi2019',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -129,11 +129,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/CEM/imagenes/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'CEM/imagenes')
-# STATICFILES_DIRS = [
-#     'static'
-# ]
+STATICFILES_DIRS = [
+    'static'
+]
 
 LOGIN_REDIRECT_URL = 'inicio'
