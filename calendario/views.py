@@ -11,7 +11,7 @@ import calendar
 #### Para reporte #####
 from io import BytesIO
 import locale
-from django.http import HttpResponse 
+from django.http import HttpResponse
 from reportlab.graphics.shapes import Image,Drawing,Line     #capa mas baja
 from reportlab.platypus import SimpleDocTemplate,TableStyle
 from reportlab.platypus.tables import Table
@@ -45,7 +45,7 @@ class CalendarView(generic.ListView):
                     html_cal = cal.formatmonth(doctor, withyear=True)
         else :
             html_cal = cal.formatmonth(withyear=True)
-            
+
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
@@ -77,7 +77,7 @@ def event(request, event_id=None):
         instance = get_object_or_404(Event, pk=event_id)
     else:
         instance = Event()
-    
+
     form = EventForm(request.POST or None, instance=instance)
     if request.POST and form.is_valid():
         form.save()
@@ -123,18 +123,18 @@ def reporteCM(request):
     img1 = Image(350,0,100,50,"CEM/imagenes/logocem.png")
     img2 = Image(73,30,260,20,"CEM/imagenes/cemtext.jpg")
     img3 = Image(115,5,175,18,"CEM/imagenes/citamedica.jpg")
-       
+
     dibujo = Drawing(30,30)#margen superior e izquierdo de donde empieza el pdf
-    dibujo.add(img)  
+    dibujo.add(img)
     dibujo.add(img1)
     dibujo.add(img2)
-    dibujo.add(img3)               
+    dibujo.add(img3)
     elementos.append(dibujo)
             #FORMATO PARA LA FECHA ACTUAL DE LA MAQUINA
-    locale.setlocale(locale.LC_ALL, 'esp')#genera en espanol  la fecha 
+    locale.setlocale(locale.LC_ALL, 'es_ES')#genera en espanol  la fecha
     ahora = datetime.now()
     fecha = ahora.strftime("%A %d de %B del %Y")
-    move = movText(275,-20,fecha) #move = movText(387,25,fecha) 
+    move = movText(275,-20,fecha) #move = movText(387,25,fecha)
     elementos.append(move)
             #SE DIBUJA UNA LINEA DEBAJO DE LAS IMAGENES
     line = linea(450,0,0)
@@ -160,10 +160,10 @@ def reporteCM(request):
 
     elementos.append(Paragraph(parrafo ,styleJ))
     elementos.append(Spacer(1,10))
-    
+
     pdf.build(elementos)
     response.write(buffer.getvalue())
-    buffer.close()  
+    buffer.close()
     return response
 
 class linea(Flowable):
@@ -174,7 +174,7 @@ class linea(Flowable):
         self.width2 = width2
 
     def draw(self):
-        self.canv.line(self.width,self.height,self.width2,self.height) 
+        self.canv.line(self.width,self.height,self.width2,self.height)
 
 class movText(Flowable):
     def __init__(self,x,y,text=""):
